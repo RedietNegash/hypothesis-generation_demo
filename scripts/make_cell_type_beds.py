@@ -3,7 +3,6 @@ import gzip
 import re
 from pathlib import Path
 
-import numpy as np
 import pandas as pd
 
 BASE_DIR = Path("/mnt/hdd_1/rediet/fly-ldsc")
@@ -81,7 +80,7 @@ for ct in cell_types_order:
             missing_genes.add(g)
             continue
         rec = gtf.loc[g]
-        rows.append((rec["chrom"], rec["start"], rec["end"], g, 0, rec["strand"]))
+        rows.append(("chr" + rec["chrom"], rec["start"], rec["end"], g, 0, rec["strand"]))
 
     if not rows:
         print(f"  WARNING: no GTF hits for {ct!r}, skipping", flush=True)
