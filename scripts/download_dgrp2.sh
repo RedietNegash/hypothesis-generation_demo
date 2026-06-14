@@ -33,12 +33,13 @@ for CHROM in "${CHROMS[@]}"; do
     fi
     echo "chr$CHROM: extracting ..."
     plink --bfile "$TMP/$STEM" \
-          --chr "$CHROM" \
+          --chr "chr$CHROM" \
           --allow-extra-chr \
           --keep-allele-order \
           --make-bed \
           --out "$OUT" \
           --silent
+    sed -i "s/^chr${CHROM}\t/${CHROM}\t/" "${OUT}.bim"
     N=$(wc -l < "${OUT}.bim")
     echo "  -> ${N} SNPs written"
 done
