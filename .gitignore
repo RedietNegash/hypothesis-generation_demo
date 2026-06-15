@@ -145,6 +145,11 @@ pip-selfcheck.json
 # *.iml
 # *.ipr
 
+/data
+/s3:/
+/notebooks/__marimo__/
+/tools
+
 # CMake
 cmake-build-*/
 
