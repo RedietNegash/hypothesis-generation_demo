@@ -287,5 +287,51 @@ def __(subprocess, os, all_cell_types, cell_type_beds, python27_path, ldsc27_pat
     return
 
 
+@app.cell
+def __(mo):
+    mo.md("## 4. Calculate LD scores")
+    return
+
+
+@app.cell
+def __(subprocess, os, all_cell_types, python27_path, concurrent, multiprocessing, FLY_CHROMS, DGRP_PREFIX):
+    os.makedirs("data/ldscores", exist_ok=True)
+
+    def _calc_ld(args):
+        ct, ch = args
+        _dir = f"data/ldscores/{ct}"
+        os.makedirs(_dir, exist_ok=True)
+        _out = f"{_dir}/{ct}.{ch}.l2.ldscore.gz"
+        if os.path.exists(_out):
+            return f"[{ct}] chr{ch} exists"
+        try:
+            subprocess.run(
+                [
+                    python27_path, "tools/ldsc/ldsc.py",
+                    "--l2",
+                    "--bfile",      f"{DGRP_PREFIX}.{ch}",
+                    "--ld-wind-kb", "1000",
+                    "--annot",      f"data/annotations/{ct}.{ch}.annot.gz",
+                    "--thin-annot",
+                    "--out",        f"{_dir}/{ct}.{ch}",
+                ],
+                check=True, capture_output=True,
+            )
+            return f"[{ct}] chr{ch} done"
+        except subprocess.CalledProcessError as e:
+            return f"ERROR [{ct}] chr{ch}: {e.stderr[:200] if e.stderr else ''}"
+
+    _tasks = [(ct, ch) for ct in all_cell_types for ch in FLY_CHROMS]
+    _max_workers = min(multiprocessing.cpu_count() - 1, 8)
+    print(f"Running LD score calculation ({_max_workers} workers, {len(_tasks)} tasks)...")
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers=_max_workers) as _ex:
+        for _res in _ex.map(_calc_ld, _tasks):
+            print(_res)
+
+    print("\nAll LD scores calculated")
+    return
+
+
 if __name__ == "__main__":
     app.run()
