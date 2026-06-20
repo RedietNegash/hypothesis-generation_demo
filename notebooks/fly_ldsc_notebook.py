@@ -333,5 +333,72 @@ def __(subprocess, os, all_cell_types, python27_path, concurrent, multiprocessin
     return
 
 
+@app.cell
+def __(mo):
+    mo.md("## 5. Process GWAS summary statistics")
+    return
+
+
+@app.cell
+def __(GWAS_FILE, SUMSTATS_FILE, os, pd, python27_path):
+    if GWAS_FILE is None or not os.path.isfile(GWAS_FILE):
+        print("No GWAS file configured — skipping sumstats processing")
+        print("When fly GWAS data is available, set GWAS_INPUT_FILE in cell 2.")
+    elif SUMSTATS_FILE and os.path.exists(SUMSTATS_FILE):
+        print(f"Sumstats already exists: {SUMSTATS_FILE}")
+    else:
+        import gzip as _gzip
+        os.makedirs("data/gwas", exist_ok=True)
+
+        _lower = GWAS_FILE.lower()
+        _is_gz = _lower.endswith(".gz") or _lower.endswith(".bgz")
+        _open_fn = _gzip.open if _is_gz else open
+
+        with _open_fn(GWAS_FILE, "rt") as _fh:
+            for _line in _fh:
+                if not _line.startswith("#"):
+                    _peek = _line
+                    break
+        _sep = "\t" if "\t" in _peek else " "
+
+        _df = pd.read_csv(GWAS_FILE, sep=_sep, compression="gzip" if _is_gz else None, low_memory=False)
+        _df.columns = [c.lstrip("#").strip() for c in _df.columns]
+        print(f"Columns: {list(_df.columns)}")
+
+        _cl = {c.lower(): c for c in _df.columns}
+        _snp_col  = _cl.get("snp") or _cl.get("rsid") or _cl.get("variant_id") or _cl.get("id")
+        _a1_col   = _cl.get("a1") or _cl.get("effect_allele") or _cl.get("alt")
+        _a2_col   = _cl.get("a2") or _cl.get("other_allele") or _cl.get("ref")
+        _beta_col = _cl.get("beta") or _cl.get("logor") or _cl.get("b")
+        _se_col   = _cl.get("se") or _cl.get("stderr") or _cl.get("standard_error")
+        _p_col    = _cl.get("p") or _cl.get("p_value") or _cl.get("pvalue") or _cl.get("p-value")
+        _n_col    = _cl.get("n") or _cl.get("n_samples") or _cl.get("neff")
+        _z_col    = _cl.get("z") or _cl.get("zscore")
+
+        _rename = {}
+        if _snp_col:  _rename[_snp_col]  = "SNP"
+        if _a1_col:   _rename[_a1_col]   = "A1"
+        if _a2_col:   _rename[_a2_col]   = "A2"
+        if _beta_col: _rename[_beta_col] = "BETA"
+        if _se_col:   _rename[_se_col]   = "SE"
+        if _p_col:    _rename[_p_col]    = "P"
+        if _n_col:    _rename[_n_col]    = "N"
+        if _z_col:    _rename[_z_col]    = "Z"
+        _df = _df.rename(columns=_rename)
+
+        if "Z" not in _df.columns and "BETA" in _df.columns and "SE" in _df.columns:
+            _df["Z"] = pd.to_numeric(_df["BETA"], errors="coerce") / pd.to_numeric(_df["SE"], errors="coerce")
+
+        if "N" not in _df.columns:
+            print("WARNING: No sample size column found — set N manually below")
+            _df["N"] = 1000
+
+        _keep = [c for c in ["SNP", "A1", "A2", "Z", "N"] if c in _df.columns]
+        _out  = _df[_keep].dropna(subset=["SNP", "Z"])
+        _out.to_csv(SUMSTATS_FILE, sep="\t", index=False, compression="gzip")
+        print(f"Written {len(_out):,} variants to {SUMSTATS_FILE}")
+    return
+
+
 if __name__ == "__main__":
     app.run()
