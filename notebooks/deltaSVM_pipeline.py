@@ -5,6 +5,12 @@ app = marimo.App(width="medium")
 
 
 @app.cell
+def __():
+    import marimo as mo
+    return (mo,)
+
+
+@app.cell
 def __(mo):
     mo.md(r"""
     # deltaSVM Pipeline
