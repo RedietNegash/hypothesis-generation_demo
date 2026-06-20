@@ -337,5 +337,28 @@ echo "=== $CHR FULLY DONE ==="
     return CHR_RESTART, result_restart
 
 
+@app.cell
+def __(mo):
+    mo.md(r"""## 8. Orchestrate Full Pipeline Across Chromosomes""")
+    return
+
+
+@app.cell
+def __(subprocess):
+    CHROMS_RUN = "chr1 chr2 chr3"
+    result_pipeline = subprocess.run(["bash", "-c", f"""
+cd /mnt/hdd_1/rediet/deltaSVM
+for CHR in {CHROMS_RUN}; do
+    echo "=== Starting $CHR ==="
+    bash /mnt/hdd_1/rediet/deltaSVM/restart_chr.sh $CHR
+    echo "=== $CHR FULLY DONE ==="
+done
+echo "ALL DONE!"
+    """], capture_output=True, text=True)
+    print(result_pipeline.stdout)
+    print(result_pipeline.stderr)
+    return CHROMS_RUN, result_pipeline
+
+
 if __name__ == "__main__":
     app.run()
