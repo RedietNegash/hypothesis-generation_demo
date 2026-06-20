@@ -241,5 +241,51 @@ def __(os, re):
     return (all_cell_types, cell_type_beds)
 
 
+@app.cell
+def __(mo):
+    mo.md("## 3. Generate cell-type annotations (BED → .annot.gz)")
+    return
+
+
+@app.cell
+def __(subprocess, os, all_cell_types, cell_type_beds, python27_path, ldsc27_path, FLY_CHROMS, DGRP_PREFIX):
+    os.makedirs("data/annotations", exist_ok=True)
+    _env = os.environ.copy()
+    _env["PATH"] = f"{ldsc27_path}/bin:" + _env.get("PATH", "")
+
+    for _ct in all_cell_types:
+        _all_exist = all(
+            os.path.exists(f"data/annotations/{_ct}.{_ch}.annot.gz")
+            for _ch in FLY_CHROMS
+        )
+        if _all_exist:
+            print(f"  {_ct}: all annotations exist, skipping")
+            continue
+
+        print(f"\nProcessing {_ct}...")
+        _bed = cell_type_beds[_ct]
+        for _ch in FLY_CHROMS:
+            _out = f"data/annotations/{_ct}.{_ch}.annot.gz"
+            if os.path.exists(_out):
+                continue
+            _r = subprocess.run(
+                [
+                    python27_path, "tools/ldsc/make_annot.py",
+                    "--bed-file",   _bed,
+                    "--bimfile",    f"{DGRP_PREFIX}.{_ch}.bim",
+                    "--annot-file", _out,
+                ],
+                capture_output=True, text=True, env=_env,
+            )
+            if _r.returncode != 0:
+                print(f"  ERROR chr{_ch}: {_r.stderr[:200]}")
+            else:
+                print(f"  chr{_ch}", end=" ", flush=True)
+        print(f"\n  {_ct} done")
+
+    print("\nAll annotations generated")
+    return
+
+
 if __name__ == "__main__":
     app.run()
