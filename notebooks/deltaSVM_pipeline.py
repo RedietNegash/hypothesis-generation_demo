@@ -173,5 +173,40 @@ echo "$CHR setup done!"
     return CHR_SETUP, result_setup
 
 
+@app.cell
+def __(mo):
+    mo.md(r"""## 4. Run All Chromosomes in Parallel""")
+    return
+
+
+@app.cell
+def __(subprocess):
+    result_parallel = subprocess.run(["bash", "-c", """
+CHROMS="chr1 chr2 chr3 chr4 chr5 chr6 chr7 chr8 chr9 chr10 chr11 chr12 chr13 chr14 chr15 chr16 chr17 chr18 chr19 chr20 chr21 chr22 chrX chrY"
+BASE_DIR="/mnt/hdd_1/rediet/deltaSVM"
+
+for CHROM in $CHROMS; do
+    WORK_DIR="$BASE_DIR/runs/$CHROM"
+    mkdir -p "$WORK_DIR"
+    cp -r "$BASE_DIR/scripts" "$WORK_DIR/"
+    cp -r "$BASE_DIR/resources" "$WORK_DIR/"
+    cp -r "$BASE_DIR/gkmsvm_models" "$WORK_DIR/"
+    cp "$BASE_DIR/run.sh" "$WORK_DIR/"
+    cp "$BASE_DIR/snp_batches/$CHROM.tsv" "$WORK_DIR/input_snp.tsv"
+    echo "Starting $CHROM..."
+    cd "$WORK_DIR"
+    bash run.sh > "$WORK_DIR/run.log" 2>&1 &
+    cd "$BASE_DIR"
+done
+
+echo "All chromosomes started in parallel!"
+wait
+echo "All done!"
+    """], capture_output=True, text=True)
+    print(result_parallel.stdout)
+    print(result_parallel.stderr)
+    return result_parallel,
+
+
 if __name__ == "__main__":
     app.run()
