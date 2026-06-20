@@ -198,5 +198,48 @@ def __(os, FLY_CHROMS, DGRP_PREFIX):
     return (dgrp_ready,)
 
 
+@app.cell
+def __(mo):
+    mo.md("## 2. Discover cell-type BED files")
+    return
+
+
+@app.cell
+def __(os, re):
+    os.makedirs("data/peaks", exist_ok=True)
+
+    def _sanitize(name):
+        return re.sub(r"[^A-Za-z0-9_\-]", "_", name)
+
+    _bed_files = [
+        f for f in os.listdir("data/peaks")
+        if f.endswith(".bed") and not f.startswith(".")
+    ]
+
+    cell_type_beds = {}
+    _seen = {}
+    for _f in sorted(_bed_files):
+        _raw  = os.path.splitext(_f)[0]
+        _safe = _sanitize(_raw)
+        if _safe in _seen:
+            _safe += "_2"
+        _seen[_safe] = _raw
+        cell_type_beds[_safe] = os.path.join("data/peaks", _f)
+
+    all_cell_types = sorted(cell_type_beds.keys())
+
+    if not all_cell_types:
+        print("WARNING: No BED files found in data/peaks/")
+        print("  Place one BED file per cell type: data/peaks/<cell_type>.bed")
+        print("  BED format: chrom (e.g. chr2L), start, end (dm6 coordinates)")
+    else:
+        print(f"{len(all_cell_types)} cell types found:")
+        for _ct in all_cell_types:
+            _n = sum(1 for _ in open(cell_type_beds[_ct]))
+            print(f"  {_ct}: {_n:,} peaks")
+
+    return (all_cell_types, cell_type_beds)
+
+
 if __name__ == "__main__":
     app.run()
