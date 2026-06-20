@@ -487,5 +487,45 @@ def __(os, all_cell_types, CTS_FILE, FLY_CHROMS):
     return (COMPLETED_CELL_TYPES,)
 
 
+@app.cell
+def __(mo):
+    mo.md("## 8. Run LDSC cell-type-specific heritability analysis")
+    return
+
+
+@app.cell
+def __(CTS_FILE, SUMSTATS_FILE, RESULTS_PREFIX, os, subprocess, python27_path):
+    _baseline_exists = os.path.exists("data/ldscores/baseline/baseline.2L.l2.ldscore.gz")
+
+    if SUMSTATS_FILE is None or not os.path.exists(SUMSTATS_FILE):
+        print(f"Skipping — sumstats not found: {SUMSTATS_FILE}")
+    elif not os.path.exists(CTS_FILE):
+        print(f"Skipping — CTS file not found: {CTS_FILE}")
+    else:
+        os.makedirs("results", exist_ok=True)
+        print("Running LDSC CTS analysis...")
+
+        _cmd = [
+            python27_path, "tools/ldsc/ldsc.py",
+            "--h2-cts",         SUMSTATS_FILE,
+            "--ref-ld-chr-cts", CTS_FILE,
+            "--out",            RESULTS_PREFIX,
+        ]
+
+        if _baseline_exists:
+            _cmd += ["--ref-ld-chr", "data/ldscores/baseline/baseline."]
+            print("  Using DGRP baseline LD scores")
+        else:
+            print("  No baseline LD scores — running without baseline (Option A)")
+
+        _r = subprocess.run(_cmd, capture_output=True, text=True)
+        print(_r.stdout[-2000:] if _r.stdout else "")
+        if _r.returncode != 0:
+            print(f"STDERR: {_r.stderr[-1000:]}")
+        else:
+            print("LDSC CTS analysis complete")
+    return
+
+
 if __name__ == "__main__":
     app.run()
