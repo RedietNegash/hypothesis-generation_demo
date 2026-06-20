@@ -360,5 +360,25 @@ echo "ALL DONE!"
     return CHROMS_RUN, result_pipeline
 
 
+@app.cell
+def __(mo):
+    mo.md(r"""## 9. Check Pipeline Progress""")
+    return
+
+
+@app.cell
+def __(subprocess):
+    result_progress = subprocess.run(["bash", "-c", """
+for CHR in chr1 chr2 chr3 chr4 chr5 chr6 chr7 chr8 chr9 chr10 chr11 chr12 chr13 chr14 chr15 chr16 chr17 chr18 chr19 chr20 chr21 chr22 chrX chrY; do
+    COUNT=$(ls /mnt/hdd_1/rediet/deltaSVM/runs/$CHR/tmp/*.merge.gkm.tsv 2>/dev/null | wc -l)
+    PARQUET=$(ls /mnt/hdd_1/rediet/deltaSVM/runs/$CHR/out/*_deltasvm.parquet 2>/dev/null && echo "done" || echo "not done")
+    echo "$CHR: $COUNT/94 TFs | $PARQUET"
+done
+    """], capture_output=True, text=True)
+    print(result_progress.stdout)
+    print(result_progress.stderr)
+    return result_progress,
+
+
 if __name__ == "__main__":
     app.run()
