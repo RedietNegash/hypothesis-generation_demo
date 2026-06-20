@@ -400,5 +400,61 @@ def __(GWAS_FILE, SUMSTATS_FILE, os, pd, python27_path):
     return
 
 
+@app.cell
+def __(mo):
+    mo.md("## 6. Build baseline LD scores (fly genome-wide)")
+    return
+
+
+@app.cell
+def __(mo):
+    mo.md("""
+    **Note on fly baseline model:**
+
+    The human pipeline uses a pre-built baseline LD score model (1000G hg38 baseline v1.2).
+    For *Drosophila*, no equivalent pre-built baseline exists. You have two options:
+
+    **Option A — No baseline (CTS only)**
+    Run `--h2-cts` without `--ref-ld-chr` baseline. This tests enrichment relative to the
+    genome-wide LD score, which is simpler but less well-powered.
+
+    **Option B — Compute a genome-wide DGRP baseline**
+    Run `ldsc.py --l2` on all DGRP SNPs (no annotation / `--thin-annot`) to get a
+    baseline LD score file. Use that as `--ref-ld-chr` in the CTS step.
+
+    Cell 6b below computes Option B. Skip it if you want Option A.
+    """)
+    return
+
+
+@app.cell
+def __(subprocess, os, python27_path, FLY_CHROMS, DGRP_PREFIX):
+    os.makedirs("data/ldscores/baseline", exist_ok=True)
+
+    for _ch in FLY_CHROMS:
+        _out = f"data/ldscores/baseline/baseline.{_ch}.l2.ldscore.gz"
+        if os.path.exists(_out):
+            print(f"  chr{_ch} baseline exists, skipping")
+            continue
+        print(f"  Computing baseline chr{_ch}...", end=" ", flush=True)
+        _r = subprocess.run(
+            [
+                python27_path, "tools/ldsc/ldsc.py",
+                "--l2",
+                "--bfile",      f"{DGRP_PREFIX}.{_ch}",
+                "--ld-wind-kb", "1000",
+                "--out",        f"data/ldscores/baseline/baseline.{_ch}",
+            ],
+            capture_output=True,
+        )
+        if _r.returncode != 0:
+            print(f"ERROR: {_r.stderr[:200] if _r.stderr else ''}")
+        else:
+            print("done")
+
+    print("Baseline LD scores ready")
+    return
+
+
 if __name__ == "__main__":
     app.run()
