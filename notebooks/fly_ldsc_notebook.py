@@ -161,5 +161,42 @@ def __(Path, subprocess, os):
     return TOOLS_DIR, LDSC_DIR, ldsc27_path, python27_path
 
 
+@app.cell
+def __(mo):
+    mo.md("## 1. Validate DGRP reference files")
+    return
+
+
+@app.cell
+def __(os, FLY_CHROMS, DGRP_PREFIX):
+    os.makedirs("data/reference", exist_ok=True)
+
+    _missing = []
+    for _ch in FLY_CHROMS:
+        for _ext in [".bed", ".bim", ".fam"]:
+            _f = f"{DGRP_PREFIX}.{_ch}{_ext}"
+            if not os.path.exists(_f):
+                _missing.append(_f)
+
+    if _missing:
+        print("WARNING: The following DGRP reference files are missing:")
+        for _f in _missing:
+            print(f"  {_f}")
+        print("\nTo generate DGRP plink files:")
+        print("  1. Download DGRP2 VCF from http://dgrp2.gnets.ncsu.edu/")
+        print("  2. Split by chromosome: bcftools view -r {chrom} dgrp2.vcf.gz | ...")
+        print("  3. Convert to plink: plink --vcf dgrp2.{chrom}.vcf.gz --make-bed --out data/reference/DGRP.{chrom}")
+        dgrp_ready = False
+    else:
+        print(f"All DGRP reference files present for chromosomes: {FLY_CHROMS}")
+        for _ch in FLY_CHROMS:
+            _bim = f"{DGRP_PREFIX}.{_ch}.bim"
+            _n = sum(1 for _ in open(_bim))
+            print(f"  chr{_ch}: {_n:,} SNPs")
+        dgrp_ready = True
+
+    return (dgrp_ready,)
+
+
 if __name__ == "__main__":
     app.run()
