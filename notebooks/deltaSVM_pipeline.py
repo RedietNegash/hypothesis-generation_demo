@@ -380,5 +380,36 @@ done
     return result_progress,
 
 
+@app.cell
+def __(mo):
+    mo.md(r"""## 10. Convert Results to Parquet""")
+    return
+
+
+@app.cell
+def __(pd):
+    df_result = pd.read_csv("out/summary.pred.tsv", sep="\t")
+
+    df_result = df_result.rename(columns={
+        "snp": "variant",
+        "tf": "TfName",
+        "preferred_allele": "Effect",
+        "deltaSVM_score": "Score"
+    })
+
+    df_result["rsId"] = "."
+    df_result["TfId"] = "."
+
+    df_result = df_result[df_result["Effect"].isin(["Gain", "Loss"])]
+    df_result = df_result[["variant", "rsId", "TfId", "TfName", "Effect", "Score"]]
+
+    print(df_result)
+    print(f"\nTotal rows after filtering: {len(df_result)}")
+
+    df_result.to_parquet("out/deltasvm_results.parquet", index=False)
+    print("Saved to out/deltasvm_results.parquet")
+    return df_result,
+
+
 if __name__ == "__main__":
     app.run()
