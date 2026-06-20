@@ -456,5 +456,36 @@ def __(subprocess, os, python27_path, FLY_CHROMS, DGRP_PREFIX):
     return
 
 
+@app.cell
+def __(mo):
+    mo.md("## 7. Create CTS reference file")
+    return
+
+
+@app.cell
+def __(os, all_cell_types, CTS_FILE, FLY_CHROMS):
+    os.makedirs("results", exist_ok=True)
+
+    COMPLETED_CELL_TYPES = []
+    for _ct in all_cell_types:
+        _complete = all(
+            os.path.exists(f"data/ldscores/{_ct}/{_ct}.{_ch}.l2.ldscore.gz")
+            for _ch in FLY_CHROMS
+        )
+        if _complete:
+            COMPLETED_CELL_TYPES.append(_ct)
+        else:
+            _missing = [c for c in FLY_CHROMS
+                        if not os.path.exists(f"data/ldscores/{_ct}/{_ct}.{c}.l2.ldscore.gz")]
+            print(f"  {_ct}: INCOMPLETE — missing chr {_missing}")
+
+    with open(CTS_FILE, "w") as _f:
+        for _ct in COMPLETED_CELL_TYPES:
+            _f.write(f"{_ct}\tdata/ldscores/{_ct}/{_ct}.\n")
+
+    print(f"CTS file written: {CTS_FILE}  ({len(COMPLETED_CELL_TYPES)} cell types)")
+    return (COMPLETED_CELL_TYPES,)
+
+
 if __name__ == "__main__":
     app.run()
