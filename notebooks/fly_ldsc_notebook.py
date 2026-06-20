@@ -527,5 +527,58 @@ def __(CTS_FILE, SUMSTATS_FILE, RESULTS_PREFIX, os, subprocess, python27_path):
     return
 
 
+@app.cell
+def __(mo):
+    mo.md("## 9. Results — FDR correction, ranking, and save")
+    return
+
+
+@app.cell
+def __(RESULTS_PREFIX, pd, np, os):
+    _results_file = f"{RESULTS_PREFIX}.cell_type_results"
+
+    if not os.path.exists(_results_file):
+        print(f"Results file not found: {_results_file}")
+        print("Run Section 8 first to generate LDSC output.")
+        cts_results = None
+    else:
+        cts_results = pd.read_csv(_results_file, sep="\t")
+
+        pval_col = [c for c in cts_results.columns if "Coefficient_p_value" in c or "P_value" in c]
+        if pval_col:
+            pcol = pval_col[0]
+            cts_results["p_fdr"] = _bh_correct(cts_results[pcol].values)
+            cts_results["significant"] = cts_results["p_fdr"] < 0.05
+            cts_results = cts_results.sort_values(pcol)
+
+            sig = cts_results[cts_results["significant"]]
+            print(f"Total cell types tested: {len(cts_results)}")
+            print(f"Significant after FDR < 0.05: {len(sig)}")
+            if len(sig):
+                print("\nTop significant cell types:")
+                print(sig[["Name", pcol, "p_fdr"]].head(10).to_string(index=False))
+        else:
+            print("Could not find p-value column. Columns found:")
+            print(list(cts_results.columns))
+
+        out_path = "results/fly_ldsc_cts_results.tsv"
+        cts_results.to_csv(out_path, sep="\t", index=False)
+        print(f"\nSaved results to {out_path}")
+
+    return (cts_results,)
+
+
+def _bh_correct(pvals):
+    n = len(pvals)
+    order = np.argsort(pvals)
+    ranked = np.empty(n)
+    ranked[order] = np.arange(1, n + 1)
+    fdr = pvals * n / ranked
+    fdr = np.minimum.accumulate(fdr[order][::-1])[::-1]
+    result = np.empty(n)
+    result[order] = np.minimum(fdr, 1.0)
+    return result
+
+
 if __name__ == "__main__":
     app.run()
