@@ -132,7 +132,7 @@ def __():
 
     print(f"\nTotal OT variants: {len(ot_variants):,}")
 
-    CHROMS = [f'chr{i}' for i in range(1, 23)] + ['chrX', 'chrY']
+    CHROMS = [f'chr{i}' for i in range(1, 23)]
     for CHR in CHROMS:
         snp_file = f'/mnt/hdd_1/rediet/deltaSVM/snp_batches/{CHR}.tsv'
         out_file = f'/mnt/hdd_1/rediet/deltaSVM/snp_batches/{CHR}_ot.tsv'
@@ -188,7 +188,7 @@ def __(mo):
 @app.cell
 def __(subprocess):
     result_parallel = subprocess.run(["bash", "-c", """
-CHROMS="chr1 chr2 chr3 chr4 chr5 chr6 chr7 chr8 chr9 chr10 chr11 chr12 chr13 chr14 chr15 chr16 chr17 chr18 chr19 chr20 chr21 chr22 chrX chrY"
+CHROMS="chr1 chr2 chr3 chr4 chr5 chr6 chr7 chr8 chr9 chr10 chr11 chr12 chr13 chr14 chr15 chr16 chr17 chr18 chr19 chr20 chr21 chr22"
 BASE_DIR="/mnt/hdd_1/rediet/deltaSVM"
 
 for CHROM in $CHROMS; do
@@ -375,7 +375,7 @@ def __(mo):
 @app.cell
 def __(subprocess):
     result_progress = subprocess.run(["bash", "-c", """
-for CHR in chr1 chr2 chr3 chr4 chr5 chr6 chr7 chr8 chr9 chr10 chr11 chr12 chr13 chr14 chr15 chr16 chr17 chr18 chr19 chr20 chr21 chr22 chrX chrY; do
+for CHR in chr1 chr2 chr3 chr4 chr5 chr6 chr7 chr8 chr9 chr10 chr11 chr12 chr13 chr14 chr15 chr16 chr17 chr18 chr19 chr20 chr21 chr22; do
     COUNT=$(ls /mnt/hdd_1/rediet/deltaSVM/runs/$CHR/tmp/*.merge.gkm.tsv 2>/dev/null | wc -l)
     PARQUET=$(ls /mnt/hdd_1/rediet/deltaSVM/runs/$CHR/out/*_deltasvm.parquet 2>/dev/null && echo "done" || echo "not done")
     echo "$CHR: $COUNT/94 TFs | $PARQUET"
