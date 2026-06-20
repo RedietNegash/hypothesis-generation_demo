@@ -66,5 +66,34 @@ def __(mo, os):
     return BASE_DIR, GWAS_INPUT_FILE, FLY_CHROMS, DGRP_PREFIX
 
 
+@app.cell
+def __(GWAS_INPUT_FILE, os, re):
+    _path = GWAS_INPUT_FILE.value.strip()
+    if _path and os.path.isfile(_path):
+        _basename = os.path.basename(_path)
+        _no_ext = _basename
+        for _ext in [".tsv.gz", ".txt.gz", ".gz", ".tsv", ".txt", ".csv", ".bgz"]:
+            if _no_ext.endswith(_ext):
+                _no_ext = _no_ext[: -len(_ext)]
+                break
+        GWAS_STEM      = re.sub(r"[^A-Za-z0-9_\-]", "_", _no_ext)
+        GWAS_FILE      = _path
+        SUMSTATS_FILE  = f"data/gwas/{GWAS_STEM}.sumstats.gz"
+        CTS_FILE       = f"data/{GWAS_STEM}_cell_types.cts"
+        RESULTS_PREFIX = f"results/{GWAS_STEM}_CellTypeSpecific"
+        print(f"GWAS stem      : {GWAS_STEM}")
+        print(f"GWAS file      : {GWAS_FILE}")
+        print(f"Sumstats file  : {SUMSTATS_FILE}")
+        print(f"Results prefix : {RESULTS_PREFIX}")
+    else:
+        GWAS_STEM      = None
+        GWAS_FILE      = None
+        SUMSTATS_FILE  = None
+        CTS_FILE       = "data/cell_types.cts"
+        RESULTS_PREFIX = "results/CellTypeSpecific"
+        print("No GWAS file specified — GWAS steps will be skipped")
+    return GWAS_STEM, GWAS_FILE, SUMSTATS_FILE, CTS_FILE, RESULTS_PREFIX
+
+
 if __name__ == "__main__":
     app.run()
