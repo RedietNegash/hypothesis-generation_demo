@@ -42,5 +42,29 @@ def __(mo):
     return
 
 
+@app.cell
+def __(mo, os):
+    BASE_DIR = Path("/mnt/hdd_1/rediet/fly-ldsc")
+
+    GWAS_INPUT_FILE = mo.ui.text(
+        value="data/gwas/",
+        label="GWAS input file path (leave empty to skip GWAS steps)",
+        full_width=True,
+    )
+
+    FLY_CHROMS = ["2L", "2R", "3L", "3R", "4", "X"]
+
+    DGRP_PREFIX = "data/reference/DGRP"
+
+    mo.vstack([
+        mo.md("### Configuration"),
+        GWAS_INPUT_FILE,
+        mo.md(f"Base dir   : `{BASE_DIR}`"),
+        mo.md(f"Chromosomes: `{', '.join(FLY_CHROMS)}`"),
+        mo.md(f"DGRP prefix: `{DGRP_PREFIX}.<chrom>.bed/bim/fam`"),
+    ])
+    return BASE_DIR, GWAS_INPUT_FILE, FLY_CHROMS, DGRP_PREFIX
+
+
 if __name__ == "__main__":
     app.run()
