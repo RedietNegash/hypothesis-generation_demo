@@ -362,7 +362,7 @@ def __(BASE_DIR, pd):
         print("Downloading Study 1 longevity summary from DGRPool...")
         urllib.request.urlretrieve(_SUMMARY_URL, _RAW_FILE)
     else:
-        print(f"Already downloaded: {_RAW_FILE}")
+        print(f"Already downloaded: {_RAW_FILE}")   
 
     with _gzip.open(_RAW_FILE, "rt") as _f:
         _df = pd.read_csv(_f, sep="\t")
@@ -387,7 +387,50 @@ def __(BASE_DIR, pd):
 
 @app.cell
 def __(mo):
-    mo.md("## 6. Process GWAS summary statistics")
+    mo.md("""
+    ## 6. Genotype QC
+
+    Filter DGRP2 genotypes per chromosome arm before running GWAS.
+
+    - `--maf 0.01` — remove SNPs with minor allele frequency < 1% (too rare to test reliably with n=132)
+    - `--geno 0.05` — remove SNPs missing in more than 5% of lines (low-quality genotyping)
+
+    Cleaned files saved to `data/gwas/tmp/qc/<chrom>.bed/bim/fam`
+    """)
+    return
+
+
+@app.cell
+def __(BASE_DIR, FLY_CHROMS, subprocess):
+    _QC_DIR  = BASE_DIR / "data" / "gwas" / "tmp" / "qc"
+    _REF_DIR = BASE_DIR / "data" / "reference"
+    _QC_DIR.mkdir(parents=True, exist_ok=True)
+
+    print("Running per-chromosome QC (MAF >= 0.01, SNP missingness <= 0.05)...")
+    for _chrom in FLY_CHROMS:
+        _out = _QC_DIR / _chrom
+        if _out.with_suffix(".bed").exists():
+            print(f"  {_chrom}: already done, skipping")
+            continue
+        _result = subprocess.run([
+            "plink2",
+            "--bfile",         str(_REF_DIR / f"DGRP.{_chrom}"),
+            "--maf",           "0.01",
+            "--geno",          "0.05",
+            "--allow-extra-chr",
+            "--make-bed",
+            "--out",           str(_out),
+        ], capture_output=True, text=True)
+        if _result.returncode != 0:
+            print(f"  ERROR on {_chrom}:\n{_result.stderr[-300:]}")
+        else:
+            _n = sum(1 for _ in open(f"{_out}.bim"))
+            print(f"  {_chrom}: {_n:,} SNPs after QC")
+
+
+@app.cell
+def __(mo):
+    mo.md("## 7. Process GWAS summary statistics")
     return
 
 
