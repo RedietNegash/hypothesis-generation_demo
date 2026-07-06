@@ -335,7 +335,59 @@ def __(subprocess, os, all_cell_types, python27_path, concurrent, multiprocessin
 
 @app.cell
 def __(mo):
-    mo.md("## 5. Process GWAS summary statistics")
+    mo.md("""
+    ## 5. Phenotype Preparation
+
+    Download longevity phenotype data from DGRPool Study 1 (Arya et al. 2010)
+    and average male and female measurements per DGRP line.
+
+    **Source**: https://dgrpool.epfl.ch/studies/1/
+    **Phenotype**: Mean longevity (days) per DGRP line, both sexes averaged
+    """)
+    return
+
+
+@app.cell
+def __(BASE_DIR, pd):
+    import urllib.request, gzip as _gzip
+
+    _SUMMARY_URL = "https://dgrpool.epfl.ch/studies/1/get_file?name=summary.tsv"
+    _RAW_FILE    = BASE_DIR / "data" / "gwas" / "study1_longevity_raw.tsv"
+    _PHENO_FILE  = BASE_DIR / "data" / "gwas" / "lifespan_both_sex.pheno"
+    _PHENO_NAME  = "longevity_both_sex"
+
+    (BASE_DIR / "data" / "gwas").mkdir(parents=True, exist_ok=True)
+
+    if not _RAW_FILE.exists():
+        print("Downloading Study 1 longevity summary from DGRPool...")
+        urllib.request.urlretrieve(_SUMMARY_URL, _RAW_FILE)
+    else:
+        print(f"Already downloaded: {_RAW_FILE}")
+
+    with _gzip.open(_RAW_FILE, "rt") as _f:
+        _df = pd.read_csv(_f, sep="\t")
+
+    _avg = _df.groupby("DGRP")["mn_Longevity"].mean().reset_index()
+    _avg.columns = ["DGRP", _PHENO_NAME]
+    _avg["FID"] = "line"
+    _avg["IID"] = _avg["DGRP"].str.replace("DGRP_", "", regex=False).str.lstrip("0")
+    _avg = _avg[["FID", "IID", _PHENO_NAME]].dropna()
+
+    _fam = pd.read_csv(
+        BASE_DIR / "data" / "reference" / "DGRP.2L.fam", sep=" ", header=None,
+        names=["FID", "IID", "f", "m", "s", "p"]
+    )
+    _overlap = set(_avg["IID"].astype(str)) & set(_fam["IID"].astype(str))
+    print(f"Lines averaged: {len(_avg)}  |  DGRP2 overlap: {len(_overlap)}")
+
+    _avg.to_csv(_PHENO_FILE, sep="\t", index=False)
+    print(f"Saved: {_PHENO_FILE}")
+    _avg
+
+
+@app.cell
+def __(mo):
+    mo.md("## 6. Process GWAS summary statistics")
     return
 
 
