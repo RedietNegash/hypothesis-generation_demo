@@ -430,7 +430,68 @@ def __(BASE_DIR, FLY_CHROMS, subprocess):
 
 @app.cell
 def __(mo):
-    mo.md("## 7. Process GWAS summary statistics")
+    mo.md("""
+    ## 7. Population Structure PCA
+
+    Merge all 6 QC'd chromosome arms into one genome-wide dataset, then compute
+    top 10 principal components to capture DGRP population structure.
+
+    PCs reflect genetic ancestry differences among the 132 lines (e.g. cosmopolitan
+    vs. ancestral strains). Including them as covariates in the GWAS model regresses
+    out population stratification so association signals reflect true genotype-phenotype
+    effects rather than ancestry.
+
+    Outputs: `data/gwas/tmp/dgrp_pca.eigenvec` (PC scores per line)
+    """)
+    return
+
+
+@app.cell
+def __(BASE_DIR, FLY_CHROMS, subprocess):
+    _QC_DIR   = BASE_DIR / "data" / "gwas" / "tmp" / "qc"
+    _MERGED   = BASE_DIR / "data" / "gwas" / "tmp" / "merged_qc"
+    _PCA_OUT  = BASE_DIR / "data" / "gwas" / "tmp" / "dgrp_pca"
+    _EIGENVEC = BASE_DIR / "data" / "gwas" / "tmp" / "dgrp_pca.eigenvec"
+
+    if _EIGENVEC.exists():
+        print(f"PCA already computed: {_EIGENVEC}")
+    else:
+        # Write merge list (all chroms after the first)
+        _merge_list = BASE_DIR / "data" / "gwas" / "tmp" / "pca_merge_list.txt"
+        with open(_merge_list, "w") as _f:
+            for _chrom in FLY_CHROMS[1:]:
+                _p = _QC_DIR / _chrom
+                _f.write(f"{_p}.bed {_p}.bim {_p}.fam\n")
+
+        print("Merging QC'd chromosomes for genome-wide PCA...")
+        _r = subprocess.run([
+            "plink",
+            "--bfile",      str(_QC_DIR / FLY_CHROMS[0]),
+            "--merge-list", str(_merge_list),
+            "--allow-extra-chr",
+            "--make-bed",
+            "--out",        str(_MERGED),
+        ], capture_output=True, text=True)
+        if _r.returncode != 0:
+            print(f"Merge ERROR:\n{_r.stderr[-400:]}")
+        else:
+            print("Computing 10 PCs...")
+            _r2 = subprocess.run([
+                "plink2",
+                "--bfile",       str(_MERGED),
+                "--allow-extra-chr",
+                "--pca",         "10",
+                "--out",         str(_PCA_OUT),
+            ], capture_output=True, text=True)
+            if _r2.returncode != 0:
+                print(f"PCA ERROR:\n{_r2.stderr[-400:]}")
+            else:
+                print(f"PCA done: {_EIGENVEC}")
+
+
+@app.cell
+def __(mo):
+    mo.md("## 8. Process GWAS summary statistics")
     return
 
 
