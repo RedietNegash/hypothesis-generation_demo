@@ -97,7 +97,7 @@ def __(GWAS_INPUT_FILE, os, re):
 
 @app.cell
 def __(mo):
-    mo.md("## 0. Setup: download and configure LDSC")
+    mo.md("#### 0. Setup: download and configure LDSC")
     return
 
 
@@ -163,7 +163,7 @@ def __(Path, subprocess, os):
 
 @app.cell
 def __(mo):
-    mo.md("## 1. Validate DGRP reference files")
+    mo.md("#### 1. Validate DGRP reference files")
     return
 
 
@@ -200,7 +200,7 @@ def __(os, FLY_CHROMS, DGRP_PREFIX):
 
 @app.cell
 def __(mo):
-    mo.md("## 2. Discover cell-type BED files")
+    mo.md("#### 2. Discover cell-type BED files")
     return
 
 
@@ -243,7 +243,7 @@ def __(os, re):
 
 @app.cell
 def __(mo):
-    mo.md("## 3. Generate cell-type annotations (BED → .annot.gz)")
+    mo.md("#### 3. Generate cell-type annotations (BED → .annot.gz)")
     return
 
 
@@ -289,7 +289,7 @@ def __(subprocess, os, all_cell_types, cell_type_beds, python27_path, ldsc27_pat
 
 @app.cell
 def __(mo):
-    mo.md("## 4. Calculate LD scores")
+    mo.md("#### 4. Calculate LD scores")
     return
 
 
@@ -336,7 +336,7 @@ def __(subprocess, os, all_cell_types, python27_path, concurrent, multiprocessin
 @app.cell
 def __(mo):
     mo.md("""
-    ## 5. Phenotype Preparation
+    #### 5. Phenotype Preparation
 
     Download longevity phenotype data from DGRPool Study 1 (Arya et al. 2010)
     and average male and female measurements per DGRP line.
@@ -388,7 +388,7 @@ def __(BASE_DIR, pd):
 @app.cell
 def __(mo):
     mo.md("""
-    ## 6. Genotype QC
+    #### 6. Genotype QC
 
     Filter DGRP2 genotypes per chromosome arm before running GWAS.
 
@@ -432,7 +432,7 @@ def __(BASE_DIR, FLY_CHROMS, subprocess):
 @app.cell
 def __(mo):
     mo.md("""
-    ## 7. Population Structure PCA
+    #### 7. Population Structure PCA
 
     Merge all 6 QC'd chromosome arms into one genome-wide dataset, then compute
     top 10 principal components to capture DGRP population structure.
@@ -492,7 +492,7 @@ def __(BASE_DIR, FLY_CHROMS, subprocess):
 @app.cell
 def __(mo):
     mo.md("""
-    ## 8. GWAS Association Testing
+    #### 8. GWAS Association Testing
 
     Run plink2 linear regression per chromosome arm using PC1 and PC2 from Section 7
     as covariates. Including PCs in the model regresses out population stratification,
@@ -601,7 +601,7 @@ def __(BASE_DIR, FLY_CHROMS, subprocess, pd, glob, python27_path, Path):
 @app.cell
 def __(mo):
     mo.md("""
-    ## 9. GWAS Results: Manhattan & QQ Plots
+    #### 9. GWAS Results: Manhattan & QQ Plots
 
     Visualize the association results to confirm statistical control and identify top hits.
 
@@ -694,7 +694,7 @@ def __(BASE_DIR, pd, np):
 
 @app.cell
 def __(mo):
-    mo.md("## 10. Process GWAS summary statistics")
+    mo.md("#### 10. Process GWAS summary statistics")
     return
 
 
@@ -761,7 +761,7 @@ def __(GWAS_FILE, SUMSTATS_FILE, os, pd, python27_path):
 
 @app.cell
 def __(mo):
-    mo.md("## 6. Build baseline LD scores (fly genome-wide)")
+    mo.md("#### 6. Build baseline LD scores (fly genome-wide)")
     return
 
 
@@ -817,7 +817,7 @@ def __(subprocess, os, python27_path, FLY_CHROMS, DGRP_PREFIX):
 
 @app.cell
 def __(mo):
-    mo.md("## 7. Create CTS reference file")
+    mo.md("#### 7. Create CTS reference file")
     return
 
 
@@ -848,7 +848,7 @@ def __(os, all_cell_types, CTS_FILE, FLY_CHROMS):
 
 @app.cell
 def __(mo):
-    mo.md("## 8. Run LDSC cell-type-specific heritability analysis")
+    mo.md("#### 8. Run LDSC cell-type-specific heritability analysis")
     return
 
 
@@ -889,7 +889,7 @@ def __(CTS_FILE, SUMSTATS_FILE, RESULTS_PREFIX, os, subprocess, python27_path):
 @app.cell
 def __(mo):
     mo.md("""
-    ## 11. Cell-Type Heritability Enrichment Results
+    #### 11. Cell-Type Heritability Enrichment Results
 
     Read the h2-cts output and visualize which cell types show significant enrichment
     for longevity heritability. Each cell type's coefficient represents the contribution
