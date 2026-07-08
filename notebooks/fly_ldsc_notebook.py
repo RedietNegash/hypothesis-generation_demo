@@ -886,5 +886,60 @@ def __(CTS_FILE, SUMSTATS_FILE, RESULTS_PREFIX, os, subprocess, python27_path):
     return
 
 
+@app.cell
+def __(mo):
+    mo.md("""
+    ## 11. Cell-Type Heritability Enrichment Results
+
+    Read the h2-cts output and visualize which cell types show significant enrichment
+    for longevity heritability. Each cell type's coefficient represents the contribution
+    of its open-chromatin regions to SNP heritability beyond the genome-wide average.
+
+    Threshold: p < 0.05 (one-sided) highlighted; all cell types shown for context.
+    """)
+    return
+
+
+@app.cell
+def __(RESULTS_PREFIX, pd, np):
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as _plt
+    import os as _os
+
+    _RESULTS_FILE = RESULTS_PREFIX + ".cell_type_results.txt"
+
+    if not _os.path.exists(_RESULTS_FILE):
+        print(f"Results not found: {_RESULTS_FILE}")
+        print("Run the LDSC h2-cts section first.")
+    else:
+        _df = pd.read_csv(_RESULTS_FILE, sep="\t")
+        _df = _df.sort_values("Coefficient_P_value")
+        _df["logp"] = -np.log10(_df["Coefficient_P_value"])
+        _df["sig"] = _df["Coefficient_P_value"] < 0.05
+
+        _top = _df.head(20).iloc[::-1]  # top 20, reversed for horizontal bar plot
+
+        _fig, _ax = _plt.subplots(figsize=(9, max(4, len(_top) * 0.4)))
+        _colors = ["#C0392B" if s else "#7FB3D3" for s in _top["sig"]]
+        _ax.barh(_top["Name"], _top["logp"], color=_colors, height=0.7)
+        _ax.axvline(-np.log10(0.05), color="black", linestyle="--", lw=0.8, label="p=0.05")
+        _ax.set_xlabel("-log10(p-value)")
+        _ax.set_title("Cell-Type Heritability Enrichment — Longevity (DGRP2)")
+        _ax.legend(fontsize=8)
+        _plt.tight_layout()
+
+        _out = _RESULTS_FILE.replace(".cell_type_results.txt", "_enrichment_plot.png")
+        _plt.savefig(_out, dpi=150, bbox_inches="tight")
+        _plt.show()
+        print(f"Saved: {_out}")
+
+        print(f"\nSignificant cell types (p < 0.05): {_df['sig'].sum()}")
+        print(_df[_df["sig"]][["Name", "Coefficient", "Coefficient_std_error", "Coefficient_P_value"]]
+              .to_string(index=False))
+        print(f"\nTop 10 cell types:")
+        print(_df[["Name", "Coefficient", "Coefficient_P_value"]].head(10).to_string(index=False))
+
+
 if __name__ == "__main__":
     app.run()
