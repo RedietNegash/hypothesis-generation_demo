@@ -600,7 +600,101 @@ def __(BASE_DIR, FLY_CHROMS, subprocess, pd, glob, python27_path, Path):
 
 @app.cell
 def __(mo):
-    mo.md("## 9. Process GWAS summary statistics")
+    mo.md("""
+    ## 9. GWAS Results: Manhattan & QQ Plots
+
+    Visualize the association results to confirm statistical control and identify top hits.
+
+    - **Manhattan plot**: −log10(p) across all chromosomes; suggestive threshold at p = 1×10⁻⁵
+    - **QQ plot**: observed vs expected −log10(p); Lambda GC measures genomic inflation
+      (values near 1.0 indicate well-controlled population stratification)
+    """)
+    return
+
+
+@app.cell
+def __(BASE_DIR, pd, np):
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as _plt
+    import glob as _glob
+    import scipy.stats as _st
+
+    _TMP_DIR    = BASE_DIR / "data" / "gwas" / "tmp"
+    _PHENO_NAME = "longevity_both_sex"
+    _MERGED_Z   = BASE_DIR / "data" / "gwas" / "lifespan_both_sex_z.tsv"
+    _CHROM_ORDER = ["2L", "2R", "3L", "3R", "4", "X"]
+
+    if not _MERGED_Z.exists():
+        print("No GWAS results found — run Section 8 first")
+    else:
+        # Load Z/P table and join chromosome positions from .glm.linear files
+        _df = pd.read_csv(_MERGED_Z, sep="\t")
+        _files = sorted(_glob.glob(str(_TMP_DIR / f"lifespan_both_*.{_PHENO_NAME}.glm.linear")))
+        _pos = pd.concat(
+            [pd.read_csv(_f, sep="\t", usecols=["#CHROM", "ID", "POS", "P"])
+             for _f in _files], ignore_index=True
+        ).rename(columns={"#CHROM": "CHR", "ID": "SNP"})
+        _df = _df.merge(_pos[["SNP", "CHR", "POS"]], on="SNP", how="left")
+        _df["P"] = pd.to_numeric(_df["P"], errors="coerce")
+        _df = _df.dropna(subset=["P", "POS"]).query("P > 0")
+
+        # Build cumulative positions across chromosomes
+        _df["CHR"] = pd.Categorical(_df["CHR"].astype(str), categories=_CHROM_ORDER, ordered=True)
+        _df = _df.sort_values(["CHR", "POS"])
+        _offset, _offsets = 0, {}
+        for _ch in _CHROM_ORDER:
+            _offsets[_ch] = _offset
+            _mx = _df[_df["CHR"] == _ch]["POS"].max()
+            if not pd.isna(_mx):
+                _offset += int(_mx) + 1_000_000
+        _df["cum_pos"] = _df.apply(lambda r: r["POS"] + _offsets.get(str(r["CHR"]), 0), axis=1)
+        _df["logp"] = -np.log10(_df["P"])
+
+        # Lambda GC
+        _chi2 = _st.chi2.ppf(1 - _df["P"].clip(upper=1 - 1e-15), df=1)
+        _lambda_gc = float(np.median(_chi2) / 0.4549)
+        print(f"SNPs plotted : {len(_df):,}")
+        print(f"Lambda GC    : {_lambda_gc:.3f}")
+
+        _fig, (_ax1, _ax2) = _plt.subplots(1, 2, figsize=(16, 5))
+
+        # Manhattan
+        _pal = ["#4878CF", "#D65F5F"]
+        for _i, _ch in enumerate(_CHROM_ORDER):
+            _s = _df[_df["CHR"] == _ch]
+            _ax1.scatter(_s["cum_pos"], _s["logp"], c=_pal[_i % 2], s=1, alpha=0.5, rasterized=True)
+        _ax1.axhline(-np.log10(1e-5), color="orange", linestyle="--", lw=0.8, label="p=1e-5")
+        _ax1.axhline(-np.log10(5e-8), color="red",    linestyle="--", lw=0.8, label="p=5e-8")
+        _mids = {_ch: _df[_df["CHR"] == _ch]["cum_pos"].median() for _ch in _CHROM_ORDER}
+        _ax1.set_xticks([v for v in _mids.values() if not pd.isna(v)])
+        _ax1.set_xticklabels([k for k, v in _mids.items() if not pd.isna(v)])
+        _ax1.set_xlabel("Chromosome")
+        _ax1.set_ylabel("-log10(p)")
+        _ax1.set_title("Manhattan Plot — Longevity (DGRP2)")
+        _ax1.legend(fontsize=8)
+
+        # QQ
+        _n = len(_df)
+        _exp = -np.log10(np.arange(1, _n + 1) / (_n + 1))
+        _obs = np.sort(_df["logp"].values)[::-1]
+        _ax2.scatter(_exp, _obs, s=1, alpha=0.4, color="#4878CF")
+        _ax2.plot([0, _exp.max()], [0, _exp.max()], "r--", lw=1)
+        _ax2.set_xlabel("Expected -log10(p)")
+        _ax2.set_ylabel("Observed -log10(p)")
+        _ax2.set_title(f"QQ Plot  (λ GC = {_lambda_gc:.3f})")
+
+        _plt.tight_layout()
+        _out = BASE_DIR / "results" / "lifespan_gwas_manhattan_qq.png"
+        _out.parent.mkdir(exist_ok=True)
+        _plt.savefig(_out, dpi=150, bbox_inches="tight")
+        _plt.show()
+        print(f"Saved: {_out}")
+
+
+@app.cell
+def __(mo):
+    mo.md("## 10. Process GWAS summary statistics")
     return
 
 
