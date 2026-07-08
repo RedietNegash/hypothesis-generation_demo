@@ -415,6 +415,7 @@ def __(BASE_DIR, FLY_CHROMS, subprocess):
         _result = subprocess.run([
             "plink2",
             "--bfile",         str(_REF_DIR / f"DGRP.{_chrom}"),
+
             "--maf",           "0.01",
             "--geno",          "0.05",
             "--allow-extra-chr",
@@ -456,7 +457,6 @@ def __(BASE_DIR, FLY_CHROMS, subprocess):
     if _EIGENVEC.exists():
         print(f"PCA already computed: {_EIGENVEC}")
     else:
-        # Write merge list (all chroms after the first)
         _merge_list = BASE_DIR / "data" / "gwas" / "tmp" / "pca_merge_list.txt"
         with open(_merge_list, "w") as _f:
             for _chrom in FLY_CHROMS[1:]:
@@ -491,7 +491,116 @@ def __(BASE_DIR, FLY_CHROMS, subprocess):
 
 @app.cell
 def __(mo):
-    mo.md("## 8. Process GWAS summary statistics")
+    mo.md("""
+    ## 8. GWAS Association Testing
+
+    Run plink2 linear regression per chromosome arm using PC1 and PC2 from Section 7
+    as covariates. Including PCs in the model regresses out population stratification,
+    so the association signal reflects true genotype–phenotype effects.
+
+    - `--linear hide-covar` — additive linear model; suppress covariate rows from output
+    - `--covar-col-nums 3-4` — eigenvec columns 3 and 4 are PC1 and PC2
+    - `--no-psam-pheno` — use the explicit `--pheno` file, ignore .fam phenotype column
+
+    After all chromosomes finish, results are merged, Z-scores computed (Z = BETA / SE),
+    and sumstats munged with `munge_sumstats.py` for LDSC input.
+    """)
+    return
+
+
+@app.cell
+def __(BASE_DIR, FLY_CHROMS, subprocess, pd, glob, python27_path, Path):
+    import glob as _glob
+    import json as _json
+
+    _QC_DIR     = BASE_DIR / "data" / "gwas" / "tmp" / "qc"
+    _TMP_DIR    = BASE_DIR / "data" / "gwas" / "tmp"
+    _REF_DIR    = BASE_DIR / "data" / "reference"
+    _EIGENVEC   = _TMP_DIR / "dgrp_pca.eigenvec"
+    _PHENO_FILE = BASE_DIR / "data" / "gwas" / "lifespan_both_sex.pheno"
+    _PHENO_NAME = "longevity_both_sex"
+    _MERGED_Z   = BASE_DIR / "data" / "gwas" / "lifespan_both_sex_z.tsv"
+    _SUMSTATS   = BASE_DIR / "data" / "gwas" / "lifespan_both_sex.sumstats.gz"
+
+    if not _EIGENVEC.exists():
+        print("ERROR: PCA eigenvec not found — run Section 7 first")
+    elif _SUMSTATS.exists():
+        print(f"Sumstats already munged: {_SUMSTATS}")
+    else:
+        print("Running plink2 linear GWAS with PC1+PC2 covariates per chromosome arm...")
+        for _chrom in FLY_CHROMS:
+            _out = _TMP_DIR / f"lifespan_both_{_chrom}"
+            _glm = _TMP_DIR / f"lifespan_both_{_chrom}.{_PHENO_NAME}.glm.linear"
+            if _glm.exists():
+                print(f"  {_chrom}: already done, skipping")
+                continue
+            _r = subprocess.run([
+                "plink2",
+                "--bfile",          str(_QC_DIR / _chrom),
+                "--pheno",          str(_PHENO_FILE),
+                "--pheno-name",     _PHENO_NAME,
+                "--covar",          str(_EIGENVEC),
+                "--covar-col-nums", "3-4",
+                "--linear",         "hide-covar",
+                "--out",            str(_out),
+                "--no-psam-pheno",
+                "--allow-extra-chr",
+            ], capture_output=True, text=True)
+            if _r.returncode != 0:
+                print(f"  ERROR on {_chrom}:\n{_r.stderr[-300:]}")
+            else:
+                print(f"  {_chrom}: done")
+
+        # Merge all chromosome results
+        _files = sorted(_glob.glob(str(_TMP_DIR / f"lifespan_both_*.{_PHENO_NAME}.glm.linear")))
+        if not _files:
+            print("No .glm.linear files found — plink2 may not have run")
+        else:
+            print(f"\nMerging {len(_files)} chromosome files...")
+            _merged = pd.concat(
+                [pd.read_csv(_f, sep="\t") for _f in _files], ignore_index=True
+            )
+            _merged = _merged.rename(columns={"#CHROM": "CHR", "ID": "SNP", "OBS_CT": "N"})
+            _merged["Z"] = _merged["BETA"] / _merged["SE"]
+
+            _bim = pd.concat([
+                pd.read_csv(_f, sep="\t", header=None,
+                            names=["CHR", "SNP", "CM", "BP", "A1", "A2"])
+                for _f in sorted(_glob.glob(str(_REF_DIR / "DGRP.*.bim")))
+            ]).drop_duplicates("SNP")
+            _merged = _merged.merge(_bim[["SNP", "A2"]], on="SNP", how="left")
+
+            _out_df = _merged[["SNP", "A1", "A2", "Z", "N", "P"]].dropna()
+            _out_df.to_csv(_MERGED_Z, sep="\t", index=False)
+            print(f"Merged: {len(_out_df):,} SNPs → {_MERGED_Z.name}")
+
+            # Munge for LDSC
+            _conda_json = subprocess.run(
+                ["conda", "env", "list", "--json"], capture_output=True, text=True
+            )
+            _py27 = str(Path([e for e in _json.loads(_conda_json.stdout)["envs"] if "ldsc27" in e][0]) / "bin" / "python")
+            _munge = subprocess.run([
+                _py27, "tools/ldsc/munge_sumstats.py",
+                "--sumstats",        str(_MERGED_Z),
+                "--snp",             "SNP",
+                "--a1",              "A1",
+                "--a2",              "A2",
+                "--signed-sumstats", "Z,0",
+                "--N-col",           "N",
+                "--out",             str(BASE_DIR / "data" / "gwas" / "lifespan_both_sex"),
+            ], capture_output=True, text=True)
+            for _line in _munge.stdout.splitlines():
+                if any(k in _line for k in ["SNPs remain", "chi^2", "Lambda", "Written", "finished"]):
+                    print(f"  {_line.strip()}")
+            if _munge.returncode == 0:
+                print(f"\nLDSC-ready sumstats: {_SUMSTATS}")
+            else:
+                print(f"Munge ERROR:\n{_munge.stderr[-400:]}")
+
+
+@app.cell
+def __(mo):
+    mo.md("## 9. Process GWAS summary statistics")
     return
 
 
