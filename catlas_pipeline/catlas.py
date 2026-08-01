@@ -227,8 +227,10 @@ CELL_TYPES = [
 import os
 import subprocess
 
+import numpy as np
 import pandas as pd
 import pyranges as pr
+from statsmodels.stats.multitest import fdrcorrection
 
 CATLAS_BASE_URL = "https://catlas.org/humanenhancer/data/cCREs"
 GENOME_BP = 3_100_000_000
@@ -313,3 +315,185 @@ def build_variant_pyranges(
     if keep_idx:
         data["variant_idx"] = df_variants.index.values
     return pr.PyRanges(pd.DataFrame(data))
+
+
+def generate_local_permutations(
+    df_variants: pd.DataFrame, n_perm: int, window: int, seed: int = 0
+) -> pr.PyRanges:
+
+    rng = np.random.default_rng(seed)
+    chrom = (
+        df_variants["chr"]
+        .apply(lambda c: f"chr{c}" if not str(c).startswith("chr") else c)
+        .values
+    )
+    pos = df_variants["pos"].values
+
+    chroms_rep, starts_rep, ends_rep, perm_ids = [], [], [], []
+    for p in range(1, n_perm + 1):
+        offsets = rng.integers(-window, window + 1, size=len(pos))
+        new_pos = np.clip(pos + offsets, 1, None)
+        chroms_rep.append(chrom)
+        starts_rep.append(new_pos - 1)
+        ends_rep.append(new_pos)
+        perm_ids.append(np.full(len(pos), p))
+
+    perm_df = pd.DataFrame(
+        {
+            "Chromosome": np.concatenate(chroms_rep),
+            "Start": np.concatenate(starts_rep),
+            "End": np.concatenate(ends_rep),
+            "perm_id": np.concatenate(perm_ids),
+        }
+    )
+    return pr.PyRanges(perm_df)
+
+
+def compute_celltype_breadth(
+    df_variants: pd.DataFrame, catlas_dir: str, cell_types=None
+) -> pd.DataFrame:
+
+    cell_types = cell_types or CELL_TYPES
+    all_peaks_rows = []
+    for ct in cell_types:
+        peaks = get_celltype_peaks(ct, catlas_dir)
+        if peaks is None:
+            continue
+        all_peaks_rows.append(
+            pd.DataFrame(
+                {
+                    "Chromosome": peaks.Chromosome,
+                    "Start": peaks.Start,
+                    "End": peaks.End,
+                    "cell_type": ct,
+                }
+            )
+        )
+    all_peaks_pr = pr.PyRanges(pd.concat(all_peaks_rows, ignore_index=True))
+
+    variant_pr = build_variant_pyranges(df_variants, keep_idx=True)
+    joined = variant_pr.join(all_peaks_pr)
+    breadth = pd.Series(joined.variant_idx).value_counts()
+
+    df_out = df_variants.copy()
+    df_out["n_celltypes_accessible"] = df_out.index.map(breadth).fillna(0).astype(int)
+    df_out["pct_celltypes_accessible"] = df_out["n_celltypes_accessible"] / len(
+        cell_types
+    )
+    return df_out
+
+
+def filter_promiscuous_variants(
+    df_variants: pd.DataFrame,
+    catlas_dir: str,
+    threshold: float,
+    label: str = "",
+    cell_types=None,
+) -> pd.DataFrame:
+    df_scored = compute_celltype_breadth(df_variants, catlas_dir, cell_types)
+    df_filtered = df_scored[df_scored["pct_celltypes_accessible"] <= threshold].copy()
+    print(
+        f"[{label}] Excluded {len(df_scored) - len(df_filtered)}/{len(df_scored)} "
+        f"promiscuous variants (>{threshold:.0%} of cell types) -- {len(df_filtered)} remain"
+    )
+    return df_filtered
+
+
+def screen_celltypes(
+    df_variants: pd.DataFrame,
+    catlas_dir: str,
+    label: str = "",
+    n_perm: int = 100_000,
+    window: int = 1_000_000,
+    seed: int = 0,
+    cell_types=None,
+) -> pd.DataFrame:
+
+    cell_types = cell_types or CELL_TYPES
+    variant_pr = build_variant_pyranges(df_variants, keep_idx=False)
+    perm_pr = generate_local_permutations(
+        df_variants, n_perm=n_perm, window=window, seed=seed
+    )
+    n_total = len(df_variants)
+    results = []
+
+    for cell_type in cell_types:
+        peak_pr = get_celltype_peaks(cell_type, catlas_dir)
+        if peak_pr is None:
+            continue
+
+        n_in = len(variant_pr.overlap(peak_pr))
+        if n_in == 0:
+            continue
+
+        ov = perm_pr.overlap(peak_pr)
+        null_counts = (
+            pd.Series(ov.perm_id)
+            .value_counts()
+            .reindex(range(1, n_perm + 1), fill_value=0)
+            .values
+            if len(ov)
+            else np.zeros(n_perm)
+        )
+
+        p_perm = (np.sum(null_counts >= n_in) + 1) / (n_perm + 1)
+        null_mean = null_counts.mean()
+        enrichment = n_in / null_mean if null_mean > 0 else np.inf
+
+        results.append(
+            {
+                "cell_type": cell_type,
+                "n_variants_in_peaks": n_in,
+                "n_total_variants": n_total,
+                "null_mean_in_peaks": round(float(null_mean), 2),
+                "enrichment_ratio": round(float(enrichment), 3)
+                if np.isfinite(enrichment)
+                else enrichment,
+                "p_perm": p_perm,
+            }
+        )
+
+    cols = [
+        "cell_type",
+        "n_variants_in_peaks",
+        "n_total_variants",
+        "null_mean_in_peaks",
+        "enrichment_ratio",
+        "p_perm",
+    ]
+    results_df = (
+        pd.DataFrame(results, columns=cols).sort_values("p_perm")
+        if results
+        else pd.DataFrame(columns=cols)
+    )
+    if len(results_df):
+        _, results_df["FDR"] = fdrcorrection(results_df["p_perm"])
+    print(
+        f"[{label}] Tested {len(results_df)}/{len(cell_types)} cell types "
+        f"({len(cell_types) - len(results_df)} had zero overlapping variants), "
+        f"n_perm={n_perm}, window=+/-{window:,}bp"
+    )
+    return results_df
+
+
+def get_shortlist(
+    results_df: pd.DataFrame, fdr_threshold: float = 0.10, top_n_fallback: int = 15
+) -> list:
+
+    if len(results_df) == 0:
+        print("No cell types tested -- nothing to shortlist.")
+        return []
+    shortlist = results_df.loc[results_df["FDR"] < fdr_threshold, "cell_type"].tolist()
+    if shortlist:
+        print(
+            f"Shortlisted {len(shortlist)} cell types at FDR < {fdr_threshold}: {shortlist}"
+        )
+        return shortlist
+    fallback = (
+        results_df.sort_values("p_perm").head(top_n_fallback)["cell_type"].tolist()
+    )
+    print(
+        f"No cell types passed FDR < {fdr_threshold} -- exporting top {len(fallback)} "
+        f"by rank instead (exploratory only, not statistically confirmed): {fallback}"
+    )
+    return fallback
