@@ -7,6 +7,7 @@ from pathlib import Path
 
 BASE_DIR = Path("/mnt/hdd_1/rediet/fly-ldsc")
 FLY_CHROMS = ["2L", "2R", "3L", "3R", "4", "X"]
+CHROM_MAP = {"2L": "1", "2R": "2", "3L": "3", "3R": "4", "4": "5", "X": "X", "23": "X"}
 
 MAGMA_BIN = BASE_DIR / "tools" / "magma" / "magma"
 
@@ -23,6 +24,8 @@ GTF_URL = (
 MAGMA_DIR = BASE_DIR / "data" / "magma"
 GENE_LOC_FILE = MAGMA_DIR / "gene_loc.txt"
 SNP_LOC_FILE = MAGMA_DIR / "snp_loc.txt"
+ANNOT_PREFIX = MAGMA_DIR / "dgrp_lifespan_female"
+ANNOT_FILE = MAGMA_DIR / "dgrp_lifespan_female.genes.annot"
 
 
 def ensure_gtf():
@@ -59,18 +62,43 @@ def build_gene_location_file():
             if not m:
                 continue
             gene, chrom, start, stop, strand = m.group(1), f[0], f[3], f[4], f[6]
-            out.write(f"{gene}\t{chrom}\t{start}\t{stop}\t{strand}\n")
+            out.write(f"{gene}\t{CHROM_MAP[chrom]}\t{start}\t{stop}\t{strand}\n")
             n += 1
 
     print(f"  {n:,} genes written to {GENE_LOC_FILE}")
 
 
 def build_snp_location_file():
-    raise NotImplementedError
+    if SNP_LOC_FILE.exists():
+        print(f"SNP location file already exists: {SNP_LOC_FILE}")
+        return
+
+    MAGMA_DIR.mkdir(parents=True, exist_ok=True)
+    n = 0
+    with open(SNP_LOC_FILE, "w") as out:
+        for ch in FLY_CHROMS:
+            bim_file = BASE_DIR / "data" / "reference" / f"DGRP.{ch}.bim"
+            with open(bim_file) as fh:
+                for line in fh:
+                    chrom, snp, _cm, pos, _a1, _a2 = line.rstrip("\n").split("\t")
+                    out.write(f"{snp}\t{CHROM_MAP[chrom]}\t{pos}\n")
+                    n += 1
+
+    print(f"  {n:,} SNPs written to {SNP_LOC_FILE}")
 
 
 def run_annotate():
-    raise NotImplementedError
+    if ANNOT_FILE.exists():
+        print(f"Annotation file already exists: {ANNOT_FILE}")
+        return
+
+    subprocess.run([
+        str(MAGMA_BIN),
+        "--annotate", "nonhuman",
+        "--snp-loc", str(SNP_LOC_FILE),
+        "--gene-loc", str(GENE_LOC_FILE),
+        "--out", str(ANNOT_PREFIX),
+    ], check=True)
 
 
 def run_gene_analysis():
@@ -83,3 +111,5 @@ def run_geneset_analysis():
 
 if __name__ == "__main__":
     build_gene_location_file()
+    build_snp_location_file()
+    run_annotate()
