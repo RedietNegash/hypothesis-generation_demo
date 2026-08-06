@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import gzip
 import re
+import shutil
 import subprocess
 from pathlib import Path
 
@@ -9,11 +10,15 @@ FLY_CHROMS = ["2L", "2R", "3L", "3R", "4", "X"]
 
 MAGMA_BIN = BASE_DIR / "tools" / "magma" / "magma"
 
+GTF_FILE = BASE_DIR / "data" / "genes" / "Drosophila_melanogaster.BDGP6.54.62.chr.gtf.gz"
+GTF_SHARED_PATH = Path(
+    "/mnt/hdd_2/saulo/snet/rejuve.bio/das/shared_rep/data/input/dmel/gencode"
+    "/Drosophila_melanogaster.BDGP6.54.62.chr.gtf.gz"
+)
 GTF_URL = (
     "https://ftp.ensembl.org/pub/release-112/gtf/drosophila_melanogaster/"
     "Drosophila_melanogaster.BDGP6.46.112.gtf.gz"
 )
-GTF_FILE = BASE_DIR / "data" / "genes" / "Drosophila_melanogaster.BDGP6.46.112.gtf.gz"
 
 MAGMA_DIR = BASE_DIR / "data" / "magma"
 GENE_LOC_FILE = MAGMA_DIR / "gene_loc.txt"
@@ -23,9 +28,11 @@ SNP_LOC_FILE = MAGMA_DIR / "snp_loc.txt"
 def ensure_gtf():
     if GTF_FILE.exists():
         return
-    print(f"GTF not found locally — downloading from {GTF_URL} ...", flush=True)
     GTF_FILE.parent.mkdir(parents=True, exist_ok=True)
-    subprocess.run(["curl", "-sL", "-o", str(GTF_FILE), GTF_URL], check=True)
+    if GTF_SHARED_PATH.exists():
+        shutil.copy(GTF_SHARED_PATH, GTF_FILE)
+    else:
+        subprocess.run(["curl", "-sL", "-o", str(GTF_FILE), GTF_URL], check=True)
 
 
 def build_gene_location_file():
