@@ -27,6 +27,13 @@ SNP_LOC_FILE = MAGMA_DIR / "snp_loc.txt"
 ANNOT_PREFIX = MAGMA_DIR / "dgrp_lifespan_female"
 ANNOT_FILE = MAGMA_DIR / "dgrp_lifespan_female.genes.annot"
 
+MERGED_QC_SOURCE = BASE_DIR / "data" / "gwas" / "tmp" / "merged_qc"
+MAGMA_BFILE = MAGMA_DIR / "merged_qc"
+PHENO_FILE = BASE_DIR / "data" / "gwas" / "lifespan_female.pheno"
+PHENO_NAME = "S18_1537_F"
+GENE_OUT_PREFIX = MAGMA_DIR / "dgrp_lifespan_female_gene"
+GENE_OUT_FILE = MAGMA_DIR / "dgrp_lifespan_female_gene.genes.out"
+
 
 def ensure_gtf():
     if GTF_FILE.exists():
@@ -101,8 +108,42 @@ def run_annotate():
     ], check=True)
 
 
+def prepare_magma_bfile():
+    bim_out = MAGMA_BFILE.with_suffix(".bim")
+    if bim_out.exists():
+        print(f"MAGMA bfile already prepared: {MAGMA_BFILE}")
+        return
+
+    MAGMA_DIR.mkdir(parents=True, exist_ok=True)
+    for ext in [".bed", ".fam"]:
+        dst = MAGMA_BFILE.with_suffix(ext)
+        if not dst.exists():
+            dst.symlink_to(MERGED_QC_SOURCE.with_suffix(ext).resolve())
+
+    n = 0
+    with open(MERGED_QC_SOURCE.with_suffix(".bim")) as fh, open(bim_out, "w") as out:
+        for line in fh:
+            chrom, snp, cm, pos, a1, a2 = line.rstrip("\n").split("\t")
+            out.write(f"{CHROM_MAP[chrom]}\t{snp}\t{cm}\t{pos}\t{a1}\t{a2}\n")
+            n += 1
+
+    print(f"  {n:,} SNPs remapped into {bim_out}")
+
+
 def run_gene_analysis():
-    raise NotImplementedError
+    if GENE_OUT_FILE.exists():
+        print(f"Gene analysis results already exist: {GENE_OUT_FILE}")
+        return
+
+    prepare_magma_bfile()
+    subprocess.run([
+        str(MAGMA_BIN),
+        "--bfile", str(MAGMA_BFILE),
+        "--pheno", f"file={PHENO_FILE}", f"use={PHENO_NAME}",
+        "--covar", "chrX-use-sex=0",
+        "--gene-annot", str(ANNOT_FILE),
+        "--out", str(GENE_OUT_PREFIX),
+    ], check=True)
 
 
 def run_geneset_analysis():
@@ -113,3 +154,4 @@ if __name__ == "__main__":
     build_gene_location_file()
     build_snp_location_file()
     run_annotate()
+    run_gene_analysis()
