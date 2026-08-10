@@ -1,10 +1,26 @@
 #!/usr/bin/env python3
+"""
+verify_harmonisation.py
+=======================
+Tests two hypotheses with LDSC h2-cts (222 cell types):
+
+  Group A (pre-harmonised) — FinnGen R12 + GCST with sumstatQCValues
+    Path A: OT/FinnGen file directly → LDSC   (skip harmoniser)
+    Path B: Raw file → harmonizer.sh → LDSC
+    Expect: ρ > 0.95  →  safe to skip harmonisation
+
+  Group B (inverse / not harmonised) — GCST without sumstatQCValues
+    Path A: Raw file → LDSC                    (no harmonisation)
+    Path B: Raw file → harmonizer.sh → LDSC
+    Expect: ρ < 0.95  →  harmonisation matters for un-harmonised studies
+"""
 import os, json, glob, subprocess, requests
 import numpy as np
 import pandas as pd
-from pathlib import Path
 from scipy import stats
 from statsmodels.stats.multitest import fdrcorrection
+
+pd.set_option("future.no_silent_downcasting", True)
 
 PARQUET      = "/mnt/hdd_1/rediet/ad-regulome/data/opentargets_studies/studies.parquet"
 OUT_DIR      = "/mnt/hdd_1/rediet/ad-regulome/data/gwas/verify_harmonisation"
@@ -15,6 +31,7 @@ BASELINE     = "data/OSF/baseline_v1.2/baseline."
 LDSCORES     = "data/ldscores/all_merged_cCREs/all_merged_cCREs."
 WEIGHTS      = "data/OSF/weights/weights.hm3_noMHC."
 EBI_FTP      = "http://ftp.ebi.ac.uk/pub/databases/gwas/summary_statistics"
+HM_LIST_URL  = "https://ftp.ebi.ac.uk/pub/databases/gwas/summary_statistics/harmonised_list.txt"
 
 HARMONIZER_SCRIPT   = "/mnt/hdd_1/abdu/gwas-sumstats-harmoniser/harmonizer.sh"
 HARMONIZER_REF_DIR  = "/mnt/hdd_1/abdu/gwas-sumstats-harmoniser/data/gwas_harm_ref"
@@ -25,76 +42,133 @@ NEXTFLOW_ENV = {
     "JAVA_HOME": "/mnt/hdd_1/rediet/jdk-17",
 }
 
-N_STUDIES    = 1
+N_STUDIES    = 1      # studies to sample per group (A and B)
 RANDOM_SEED  = 42
 AMBIGUOUS    = [{"A", "T"}, {"C", "G"}]
 
 os.makedirs(OUT_DIR, exist_ok=True)
 
+# ── Step 1: Build harmonised-URL lookup (one download replaces per-study FTP scraping) ──
 print("=" * 60)
-print("Step 1: Sampling studies from Open Targets parquet")
+print("Step 1: Building harmonised URL lookup from EBI list")
+print("=" * 60)
+
+
+def build_hm_lookup():
+    """
+    Download harmonised_list.txt once (cached) → {study_id: full_harmonised_url}.
+    Replaces the old approach of making 2 HTTP requests per study to scrape
+    FTP directory listings.  Format of each line:
+      ./GCST90615001-GCST90616000/GCST90615056/harmonised/GCST90615056.h.tsv.gz
+    """
+    cache = os.path.join(OUT_DIR, "harmonised_list.txt")
+    if not os.path.exists(cache):
+        print(f"  Downloading {HM_LIST_URL} ...")
+        resp = requests.get(HM_LIST_URL, timeout=300)
+        resp.raise_for_status()
+        with open(cache, "w") as f:
+            f.write(resp.text)
+        print(f"  Saved → {cache}")
+    else:
+        print(f"  Using cached harmonised_list.txt")
+
+    lookup = {}
+    with open(cache) as f:
+        for line in f:
+            line = line.strip()
+            if not line.endswith(".h.tsv.gz"):
+                continue
+            parts = line.lstrip("./").split("/")
+            if len(parts) < 4:
+                continue
+            rng_folder, study_id, _, fname = parts[0], parts[1], parts[2], parts[-1]
+            if "build37" in fname.lower():
+                continue
+            lookup[study_id] = f"{EBI_FTP}/{rng_folder}/{study_id}/harmonised/{fname}"
+
+    print(f"  {len(lookup):,} harmonised studies indexed")
+    return lookup
+
+
+HM_LOOKUP = build_hm_lookup()
+
+# ── Step 2: Sample studies — Group A (harmonised) + Group B (inverse) ──────
+print("\n" + "=" * 60)
+print("Step 2: Sampling studies from Open Targets parquet")
 print("=" * 60)
 
 df = pd.read_parquet(PARQUET)
 
-eligible = df[
-    (df["studyType"] == "gwas") &
-    (df["hasSumstats"].fillna(False) == True) &
-    (
-        (df["projectId"] == "FINNGEN_R12") |
-        df["sumstatQCValues"].apply(
-            lambda x: isinstance(x, (list, np.ndarray)) and len(x) > 0
-        )
-    )
-][["studyId", "projectId", "traitFromSource", "nSamples", "nCases",
-   "nControls", "publicationFirstAuthor", "summarystatsLocation"]].copy()
+has_qc = df["sumstatQCValues"].apply(
+    lambda x: isinstance(x, (list, np.ndarray)) and len(x) > 0
+)
+base_filter = (df["studyType"] == "gwas") & df["hasSumstats"].fillna(False)
+_cols = ["studyId", "projectId", "traitFromSource", "nSamples", "nCases",
+         "nControls", "publicationFirstAuthor", "summarystatsLocation"]
 
-sample = eligible.sample(N_STUDIES, random_state=RANDOM_SEED).reset_index(drop=True)
-sample["trait"] = sample["traitFromSource"].str[:50]
+# Group A: FinnGen R12 OR GCST with QC values (OT already harmonised these)
+eligible_a = df[base_filter & ((df["projectId"] == "FINNGEN_R12") | has_qc)][_cols].copy()
+eligible_a["group"] = "A"
 
-print(f"  Total eligible studies : {len(eligible):,}")
-print(f"    FinnGen R12          : {(eligible['projectId']=='FINNGEN_R12').sum():,}")
-print(f"    GCST with QC values  : {(eligible['projectId']!='FINNGEN_R12').sum():,}")
-print(f"\n  Random sample of {N_STUDIES}:\n")
-print(sample[["studyId", "projectId", "trait", "nSamples", "nCases"]].to_string(index=False))
+# Group B (inverse): GCST studies WITHOUT sumstatQCValues — not harmonised by OT
+eligible_b = df[base_filter & (df["projectId"] == "GCST") & ~has_qc][_cols].copy()
+eligible_b["group"] = "B"
+
+sample_a = eligible_a.sample(N_STUDIES, random_state=RANDOM_SEED).reset_index(drop=True)
+sample_b = eligible_b.sample(N_STUDIES, random_state=RANDOM_SEED).reset_index(drop=True)
+sample   = pd.concat([sample_a, sample_b], ignore_index=True)
+sample["trait"] = sample["traitFromSource"].str[:45]
+
+print(f"  Group A eligible : {len(eligible_a):,}  "
+      f"(FinnGen={( eligible_a['projectId']=='FINNGEN_R12').sum():,}  "
+      f"GCST={( eligible_a['projectId']!='FINNGEN_R12').sum():,})")
+print(f"  Group B eligible : {len(eligible_b):,}  (GCST without QC values)")
+print(f"\n  Sample ({N_STUDIES} per group):\n")
+print(sample[["studyId", "projectId", "group", "trait", "nSamples"]].to_string(index=False))
 
 
 def gcst_range(study_id):
     num = int(study_id.replace("GCST", ""))
     lo  = (num // 1000) * 1000 + 1
-    hi  = lo + 999
-    return f"GCST{lo:06d}-GCST{hi:06d}"
+    return f"GCST{lo:06d}-GCST{lo+999:06d}"
 
 
-def find_urls(study_id):
-    rng      = gcst_range(study_id)
-    base_url = f"{EBI_FTP}/{rng}/{study_id}"
-    raw_url  = None
-    hm_url   = None
+def find_raw_url(study_id):
+    """
+    Get the raw summary-stats URL from the EBI FTP root directory listing.
+    One HTTP request per study; harmonised URL now comes from HM_LOOKUP.
+    """
+    base_url = f"{EBI_FTP}/{gcst_range(study_id)}/{study_id}"
+    try:
+        resp = requests.get(base_url + "/", timeout=30)
+        if resp.status_code == 200:
+            for line in resp.text.split("\n"):
+                if 'href="' in line and "Parent" not in line:
+                    s = line.find('href="') + 6
+                    e = line.find('"', s)
+                    fname = line[s:e]
+                    if fname.endswith((".gz", ".txt", ".tsv")) and "/" not in fname:
+                        return f"{base_url}/{fname}"
+    except Exception as ex:
+        print(f"    WARNING: FTP listing failed: {ex}")
+    return None
 
-    root_resp = requests.get(base_url + "/", timeout=30)
-    if root_resp.status_code == 200:
-        for line in root_resp.text.split("\n"):
-            if 'href="' in line and "Parent" not in line:
-                start = line.find('href="') + 6
-                end   = line.find('"', start)
-                fname = line[start:end]
-                if fname.endswith((".gz", ".txt", ".tsv")) and "/" not in fname:
-                    raw_url = f"{base_url}/{fname}"
-                    break
 
-    hm_resp = requests.get(base_url + "/harmonised/", timeout=30)
-    if hm_resp.status_code == 200:
-        for line in hm_resp.text.split("\n"):
-            if ".h.tsv.gz" in line and "build37" not in line.lower() and "Build37" not in line:
-                start = line.find('href="') + 6
-                end   = line.find('"', start)
-                fname = line[start:end]
-                if fname.endswith(".h.tsv.gz"):
-                    hm_url = f"{base_url}/harmonised/{fname}"
-                    break
-
-    return raw_url, hm_url
+def download_finngen(gcs_path, out_path):
+    """Download a FinnGen file from GCS using the summarystatsLocation column."""
+    if os.path.exists(out_path):
+        print(f"    Already downloaded: {os.path.basename(out_path)}")
+        return True
+    print(f"    gsutil cp {gcs_path} {out_path}")
+    result = subprocess.run(
+        ["gsutil", "cp", gcs_path, out_path],
+        capture_output=True, text=True, timeout=600
+    )
+    if result.returncode == 0:
+        print(f"    Saved: {os.path.basename(out_path)}")
+        return True
+    print(f"    gsutil ERROR:\n{result.stderr[-300:]}")
+    return False
 
 
 def download_file(url, out_path):
@@ -173,6 +247,23 @@ def build_sumstats_ot(hm_path, n_samples):
         df = df.rename(columns={snp_col: "SNP", a1_col: "A1", a2_col: "A2",
                                  beta_col: "BETA", se_col: "SE"})
 
+    return to_sumstats(df, n_samples)
+
+
+def build_sumstats_raw(reformatted_path, n_samples):
+    """
+    Group B — Path A: use the reformatted raw file directly (no harmonisation).
+    reformat_gwas() writes lowercase SSF column names (snp, a1, a2, beta, se),
+    so we just rename them to the uppercase format to_sumstats() expects.
+    """
+    df = pd.read_csv(reformatted_path, sep="\t", compression="gzip", low_memory=False)
+    df = df.rename(columns={"snp": "SNP", "a1": "A1", "a2": "A2",
+                             "beta": "BETA", "se": "SE"})
+    required = {"SNP", "A1", "A2", "BETA", "SE"}
+    if not required.issubset(df.columns):
+        print(f"    Missing columns {required - set(df.columns)}. Have: {list(df.columns)}")
+        return None
+    print(f"    Read {len(df):,} variants from raw reformatted file (no harmonisation)")
     return to_sumstats(df, n_samples)
 
 
@@ -379,37 +470,56 @@ def run_ldsc(sumstats_path, out_prefix, python27):
     return results_file
 
 
-def compare_results(study_id, res_hm, res_raw):
-    r_hm  = pd.read_csv(res_hm,  sep="\t").sort_values("Coefficient_P_value")
-    r_raw = pd.read_csv(res_raw, sep="\t").sort_values("Coefficient_P_value")
-    _, r_hm["FDR"]  = fdrcorrection(r_hm["Coefficient_P_value"].fillna(1))
-    _, r_raw["FDR"] = fdrcorrection(r_raw["Coefficient_P_value"].fillna(1))
+def compare_results(study_id, res_a, res_b, group):
+    """Compare LDSC h2-cts results from Path A vs Path B for either group."""
+    r_a = pd.read_csv(res_a, sep="\t").sort_values("Coefficient_P_value")
+    r_b = pd.read_csv(res_b, sep="\t").sort_values("Coefficient_P_value")
+    _, r_a["FDR"] = fdrcorrection(r_a["Coefficient_P_value"].fillna(1))
+    _, r_b["FDR"] = fdrcorrection(r_b["Coefficient_P_value"].fillna(1))
 
-    merged = r_hm[["Name", "Coefficient_P_value"]].merge(
-        r_raw[["Name", "Coefficient_P_value"]], on="Name", suffixes=("_hm", "_raw")
+    merged = r_a[["Name", "Coefficient_P_value"]].merge(
+        r_b[["Name", "Coefficient_P_value"]], on="Name", suffixes=("_a", "_b")
     )
-    rho, p = stats.spearmanr(merged["Coefficient_P_value_hm"], merged["Coefficient_P_value_raw"])
+    rho, p = stats.spearmanr(merged["Coefficient_P_value_a"], merged["Coefficient_P_value_b"])
+
+    if group == "A":
+        label_a = "OT harmonised  (skip harmoniser)"
+        label_b = "Raw → harmonizer.sh"
+    else:
+        label_a = "Raw file       (no harmonisation)"
+        label_b = "Raw → harmonizer.sh"
 
     print(f"\n  {'─'*54}")
-    print(f"  {study_id}")
+    print(f"  {study_id}  [Group {group}]")
     print(f"  {'─'*54}")
-    print(f"  Rank correlation (Spearman ρ): {rho:.4f}  (p={p:.2e})")
-    print(f"  Sig p<0.05  — OT (no harm): {(r_hm['Coefficient_P_value']<0.05).sum():>3}  |  Raw+harmonizer: {(r_raw['Coefficient_P_value']<0.05).sum():>3}")
-    print(f"  Sig FDR<0.05— OT (no harm): {(r_hm['FDR']<0.05).sum():>3}  |  Raw+harmonizer: {(r_raw['FDR']<0.05).sum():>3}")
-    print(f"\n  Top 5 — WITHOUT harmonisation (OT hm_ file):")
-    print(r_hm[["Name", "Coefficient_P_value", "FDR"]].head(5).to_string(index=False))
-    print(f"\n  Top 5 — WITH harmonisation (raw → harmonizer.sh):")
-    print(r_raw[["Name", "Coefficient_P_value", "FDR"]].head(5).to_string(index=False))
+    print(f"  Spearman ρ (222 cell types): {rho:.4f}  (p={p:.2e})")
+    print(f"  Sig p<0.05   Path A: {(r_a['Coefficient_P_value']<0.05).sum():>3}  |  Path B: {(r_b['Coefficient_P_value']<0.05).sum():>3}")
+    print(f"  Sig FDR<0.05 Path A: {(r_a['FDR']<0.05).sum():>3}  |  Path B: {(r_b['FDR']<0.05).sum():>3}")
+    print(f"\n  Top 5 — Path A ({label_a}):")
+    print(r_a[["Name", "Coefficient_P_value", "FDR"]].head(5).to_string(index=False))
+    print(f"\n  Top 5 — Path B ({label_b}):")
+    print(r_b[["Name", "Coefficient_P_value", "FDR"]].head(5).to_string(index=False))
 
-    if rho > 0.95:
-        verdict = "✅ CONSISTENT — OT pre-harmonised file is equivalent"
-    elif rho > 0.80:
-        verdict = "⚠️  MOSTLY CONSISTENT — minor differences"
+    if group == "A":
+        # Harmonised studies: expect high ρ (OT file ≈ harmoniser output)
+        if rho > 0.95:
+            verdict = "✅ CONSISTENT — OT pre-harmonised file is equivalent to harmonizer.sh"
+        elif rho > 0.80:
+            verdict = "⚠️  MOSTLY CONSISTENT — minor differences"
+        else:
+            verdict = "❌ DISCORDANT — harmonisation changes results significantly"
     else:
-        verdict = "❌ DISCORDANT — harmonisation changes results significantly"
+        # Non-harmonised studies: does running the harmoniser actually change things?
+        if rho > 0.95:
+            verdict = "✅ CONSISTENT — harmonisation has little effect (raw file is fine)"
+        elif rho > 0.80:
+            verdict = "⚠️  MOSTLY CONSISTENT — minor effect of harmonisation"
+        else:
+            verdict = "⚠️  DISCORDANT — harmonisation matters for un-harmonised studies"
+
     print(f"\n  Verdict: {verdict}")
-    return {"study_id": study_id, "spearman_rho": rho, "p": p,
-            "sig_ot": (r_hm["FDR"]<0.05).sum(), "sig_harmonized": (r_raw["FDR"]<0.05).sum(),
+    return {"study_id": study_id, "group": group, "spearman_rho": rho, "p": p,
+            "sig_a": (r_a["FDR"] < 0.05).sum(), "sig_b": (r_b["FDR"] < 0.05).sum(),
             "verdict": verdict}
 
 
@@ -422,120 +532,158 @@ skipped = []
 for _, row in sample.iterrows():
     study_id = row["studyId"]
     project  = row["projectId"]
-    n        = int(row["nSamples"]) if pd.notna(row["nSamples"]) else 100000
+    group    = row["group"]
+    n        = int(row["nSamples"]) if pd.notna(row["nSamples"]) else 100_000
 
     print(f"\n{'#'*60}")
-    print(f"  {study_id}  |  {row['trait']}")
+    print(f"  {study_id}  |  Group {group}  |  {row['trait']}")
     print(f"  project={project}  N={n:,}  cases={row['nCases']}")
     print(f"{'#'*60}")
-
-    if project == "FINNGEN_R12":
-        print("  FinnGen file is on GCS — requires gsutil + credentials, skipping.")
-        skipped.append({"study_id": study_id, "reason": "FinnGen GCS"})
-        continue
 
     study_dir = os.path.join(OUT_DIR, study_id)
     os.makedirs(study_dir, exist_ok=True)
 
-    print("  Locating raw and harmonised files on EBI FTP ...")
-    raw_url, hm_url = find_urls(study_id)
-    print(f"  Raw file : {raw_url}")
-    print(f"  HM file  : {hm_url}")
+    # ── Obtain files ──────────────────────────────────────────────────────────
+    hm_path  = None
+    raw_path = None
 
-    if not hm_url:
-        print("  No harmonised file found — skipping.")
-        skipped.append({"study_id": study_id, "reason": "No harmonised file"})
-        continue
-    if not raw_url:
-        print("  No raw file found — skipping.")
-        skipped.append({"study_id": study_id, "reason": "No raw file"})
-        continue
+    if group == "A":
+        if project == "FINNGEN_R12":
+            # Use summarystatsLocation from the parquet (GCS path) instead of EBI FTP
+            gcs_path = row.get("summarystatsLocation")
+            if not gcs_path:
+                print("  No summarystatsLocation for this FinnGen study — skipping.")
+                skipped.append({"study_id": study_id, "group": group, "reason": "No GCS path"})
+                continue
+            fname    = os.path.basename(gcs_path)
+            hm_path  = os.path.join(study_dir, fname)
+            raw_path = hm_path   # same file used as Path B input
+            if not download_finngen(gcs_path, hm_path):
+                skipped.append({"study_id": study_id, "group": group, "reason": "FinnGen gsutil failed"})
+                continue
+        else:
+            # GCST Group A: harmonised URL from HM_LOOKUP, raw from one FTP request
+            hm_url = HM_LOOKUP.get(study_id)
+            if not hm_url:
+                print(f"  {study_id} not in harmonised_list.txt — skipping.")
+                skipped.append({"study_id": study_id, "group": group, "reason": "Not in HM list"})
+                continue
+            print(f"  HM URL : {hm_url}")
+            raw_url = find_raw_url(study_id)
+            print(f"  Raw URL: {raw_url}")
+            if not raw_url:
+                skipped.append({"study_id": study_id, "group": group, "reason": "No raw URL on FTP"})
+                continue
+            hm_path  = os.path.join(study_dir, f"{study_id}.h.tsv.gz")
+            raw_path = os.path.join(study_dir, f"{study_id}_raw_original.gz")
+            if not download_file(hm_url, hm_path):
+                skipped.append({"study_id": study_id, "group": group, "reason": "HM download failed"})
+                continue
+            if not download_file(raw_url, raw_path):
+                skipped.append({"study_id": study_id, "group": group, "reason": "Raw download failed"})
+                continue
 
-    raw_path = os.path.join(study_dir, f"{study_id}_raw_original.gz")
-    hm_path  = os.path.join(study_dir, f"{study_id}.h.tsv.gz")
+    else:  # Group B — no harmonised file; only raw
+        raw_url = find_raw_url(study_id)
+        print(f"  Raw URL: {raw_url}")
+        if not raw_url:
+            skipped.append({"study_id": study_id, "group": group, "reason": "No raw URL on FTP"})
+            continue
+        raw_path = os.path.join(study_dir, f"{study_id}_raw_original.gz")
+        if not download_file(raw_url, raw_path):
+            skipped.append({"study_id": study_id, "group": group, "reason": "Raw download failed"})
+            continue
 
-    print("  Downloading OT harmonised file ...")
-    if not download_file(hm_url, hm_path):
-        skipped.append({"study_id": study_id, "reason": "HM download failed"})
-        continue
-
-    print("  Downloading raw file ...")
-    if not download_file(raw_url, raw_path):
-        skipped.append({"study_id": study_id, "reason": "Raw download failed"})
-        continue
-
-    # ── Path A: WITHOUT harmonisation (OT hm_ columns) ──────────────────────
-    print("\n  [Path A] Building sumstats from OT harmonised file (hm_ columns) ...")
-    ss_ot = build_sumstats_ot(hm_path, n)
-    if ss_ot is None or len(ss_ot) < 1000:
-        print(f"  Too few SNPs ({len(ss_ot) if ss_ot is not None else 0}) — skipping.")
-        skipped.append({"study_id": study_id, "reason": "Too few SNPs (OT harmonised)"})
-        continue
-    ss_ot_path = os.path.join(study_dir, f"{study_id}_ot.sumstats.gz")
-    ss_ot.to_csv(ss_ot_path, sep="\t", index=False, compression="gzip")
-    print(f"  Written {len(ss_ot):,} SNPs → {os.path.basename(ss_ot_path)}")
-
-    # ── Path B: WITH harmonisation (raw → harmonizer.sh) ────────────────────
-    print("\n  [Path B] Running raw file through harmonizer.sh pipeline ...")
-    print("  Step 3: Reformatting raw file ...")
+    # ── Reformat raw file (used by Path B for all groups; also Path A for Group B) ──
+    print("\n  Reformatting raw file ...")
     reformatted_path = reformat_gwas(raw_path, study_dir)
     if reformatted_path is None:
-        skipped.append({"study_id": study_id, "reason": "Reformat failed"})
+        skipped.append({"study_id": study_id, "group": group, "reason": "Reformat failed"})
         continue
 
-    print("  Step 5: Running harmonizer.sh ...")
+    # ── Path A ────────────────────────────────────────────────────────────────
+    if group == "A":
+        print("\n  [Path A] Building sumstats from OT/FinnGen harmonised file ...")
+        ss_a = build_sumstats_ot(hm_path, n)
+    else:
+        # Group B: raw file used directly with no harmonisation
+        print("\n  [Path A] Building sumstats from raw file (no harmonisation) ...")
+        ss_a = build_sumstats_raw(reformatted_path, n)
+
+    if ss_a is None or len(ss_a) < 1000:
+        print(f"  Too few SNPs Path A ({len(ss_a) if ss_a is not None else 0}) — skipping.")
+        skipped.append({"study_id": study_id, "group": group, "reason": "Too few SNPs (Path A)"})
+        continue
+    ss_a_path = os.path.join(study_dir, f"{study_id}_path_a.sumstats.gz")
+    ss_a.to_csv(ss_a_path, sep="\t", index=False, compression="gzip")
+    print(f"  Written {len(ss_a):,} SNPs → {os.path.basename(ss_a_path)}")
+
+    # ── Path B: raw → harmonizer.sh (same for both groups) ───────────────────
+    print("\n  [Path B] Running raw file through harmonizer.sh ...")
     harm_out_dir = run_harmonizer(reformatted_path, study_dir)
     if harm_out_dir is None:
-        skipped.append({"study_id": study_id, "reason": "Harmonizer failed"})
+        skipped.append({"study_id": study_id, "group": group, "reason": "Harmonizer failed"})
         continue
 
-    print("  Step 6: Converting harmonizer output to LDSC format ...")
-    ss_harm = harmonized_to_sumstats(harm_out_dir, reformatted_path, n)
-    if ss_harm is None or len(ss_harm) < 1000:
-        print(f"  Too few SNPs ({len(ss_harm) if ss_harm is not None else 0}) — skipping.")
-        skipped.append({"study_id": study_id, "reason": "Too few SNPs (harmonized)"})
+    ss_b = harmonized_to_sumstats(harm_out_dir, reformatted_path, n)
+    if ss_b is None or len(ss_b) < 1000:
+        print(f"  Too few SNPs Path B ({len(ss_b) if ss_b is not None else 0}) — skipping.")
+        skipped.append({"study_id": study_id, "group": group, "reason": "Too few SNPs (Path B)"})
         continue
-    ss_harm_path = os.path.join(study_dir, f"{study_id}_harmonized.sumstats.gz")
-    ss_harm.to_csv(ss_harm_path, sep="\t", index=False, compression="gzip")
-    print(f"  Written {len(ss_harm):,} SNPs → {os.path.basename(ss_harm_path)}")
+    ss_b_path = os.path.join(study_dir, f"{study_id}_path_b.sumstats.gz")
+    ss_b.to_csv(ss_b_path, sep="\t", index=False, compression="gzip")
+    print(f"  Written {len(ss_b):,} SNPs → {os.path.basename(ss_b_path)}")
 
-    shared = set(ss_ot["SNP"]) & set(ss_harm["SNP"])
+    # Z-score sanity check
+    shared = set(ss_a["SNP"]) & set(ss_b["SNP"])
     if len(shared) > 100:
-        z_ot   = ss_ot.set_index("SNP").loc[list(shared), "Z"]
-        z_harm = ss_harm.set_index("SNP").loc[list(shared), "Z"]
-        r, _   = stats.pearsonr(z_ot, z_harm)
+        z_a = ss_a.set_index("SNP").loc[list(shared), "Z"]
+        z_b = ss_b.set_index("SNP").loc[list(shared), "Z"]
+        r, _ = stats.pearsonr(z_a, z_b)
         print(f"\n  Z-score Pearson r (shared SNPs, n={len(shared):,}): {r:.4f}")
     else:
-        print(f"  WARNING: only {len(shared)} shared SNPs between OT and harmonized")
+        print(f"  WARNING: only {len(shared)} shared SNPs between Path A and B")
         r = None
 
-    print("\n  Running LDSC h2-cts (OT harmonised, no harmoniser) ...")
-    res_ot = run_ldsc(ss_ot_path, os.path.join(study_dir, f"{study_id}_ldsc_ot"), python27)
+    # ── LDSC h2-cts ───────────────────────────────────────────────────────────
+    print("\n  Running LDSC h2-cts (Path A) ...")
+    res_a = run_ldsc(ss_a_path, os.path.join(study_dir, f"{study_id}_ldsc_path_a"), python27)
 
-    print("  Running LDSC h2-cts (raw → harmonizer.sh) ...")
-    res_harm = run_ldsc(ss_harm_path, os.path.join(study_dir, f"{study_id}_ldsc_harmonized"), python27)
+    print("  Running LDSC h2-cts (Path B) ...")
+    res_b = run_ldsc(ss_b_path, os.path.join(study_dir, f"{study_id}_ldsc_path_b"), python27)
 
-    if res_ot and res_harm:
-        result = compare_results(study_id, res_ot, res_harm)
+    if res_a and res_b:
+        result = compare_results(study_id, res_a, res_b, group)
         result["z_pearson_r"] = r
         summary.append(result)
     else:
-        skipped.append({"study_id": study_id, "reason": "LDSC failed"})
+        skipped.append({"study_id": study_id, "group": group, "reason": "LDSC failed"})
 
 
+# ── Final summary ─────────────────────────────────────────────────────────
 print(f"\n\n{'='*60}")
 print("  FINAL SUMMARY")
 print(f"{'='*60}")
 
 if summary:
     s = pd.DataFrame(summary)
-    print(s[["study_id", "z_pearson_r", "spearman_rho", "sig_ot", "sig_harmonized", "verdict"]].to_string(index=False))
-    print(f"\n  Studies analysed          : {len(s)}")
-    print(f"  Consistent (ρ>0.95)       : {(s['spearman_rho'] > 0.95).sum()} / {len(s)}")
+    print(s[["study_id", "group", "z_pearson_r", "spearman_rho",
+              "sig_a", "sig_b", "verdict"]].to_string(index=False))
+
+    for grp, label in [
+        ("A", "Group A — pre-harmonised    (expect ρ > 0.95)"),
+        ("B", "Group B — NOT harmonised    (expect ρ < 0.95)"),
+    ]:
+        sub = s[s["group"] == grp]
+        if len(sub):
+            print(f"\n  {label}:")
+            print(f"    Studies analysed      : {len(sub)}")
+            print(f"    Consistent (ρ > 0.95) : {(sub['spearman_rho'] > 0.95).sum()} / {len(sub)}")
+            print(f"    Mean ρ                : {sub['spearman_rho'].mean():.4f}")
 
 if skipped:
     print(f"\n  Skipped ({len(skipped)}):")
     for sk in skipped:
-        print(f"    {sk['study_id']}: {sk['reason']}")
+        print(f"    [Group {sk['group']}] {sk['study_id']}: {sk['reason']}")
 
 print("\nDone.")
