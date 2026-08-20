@@ -33,6 +33,21 @@ PHENO_FILE = BASE_DIR / "data" / "gwas" / "lifespan_female.pheno"
 PHENO_NAME = "S18_1537_F"
 GENE_OUT_PREFIX = MAGMA_DIR / "dgrp_lifespan_female_gene"
 GENE_OUT_FILE = MAGMA_DIR / "dgrp_lifespan_female_gene.genes.out"
+GENE_RAW_FILE = MAGMA_DIR / "dgrp_lifespan_female_gene.genes.raw"
+
+PEAKS_DIR = BASE_DIR / "data" / "peaks"
+GENE_SETS_FILE = MAGMA_DIR / "gene_sets.txt"
+GENESET_OUT_PREFIX = MAGMA_DIR / "dgrp_lifespan_female_geneset"
+GENESET_OUT_FILE = MAGMA_DIR / "dgrp_lifespan_female_geneset.gsa.out"
+
+WINDOW_KB = "5"
+ANNOT_PREFIX_W5 = MAGMA_DIR / "dgrp_lifespan_female_w5"
+ANNOT_FILE_W5 = MAGMA_DIR / "dgrp_lifespan_female_w5.genes.annot"
+GENE_OUT_PREFIX_W5 = MAGMA_DIR / "dgrp_lifespan_female_gene_w5"
+GENE_OUT_FILE_W5 = MAGMA_DIR / "dgrp_lifespan_female_gene_w5.genes.out"
+GENE_RAW_FILE_W5 = MAGMA_DIR / "dgrp_lifespan_female_gene_w5.genes.raw"
+GENESET_OUT_PREFIX_W5 = MAGMA_DIR / "dgrp_lifespan_female_geneset_w5"
+GENESET_OUT_FILE_W5 = MAGMA_DIR / "dgrp_lifespan_female_geneset_w5.gsa.out"
 
 
 def ensure_gtf():
@@ -146,8 +161,86 @@ def run_gene_analysis():
     ], check=True)
 
 
+def build_gene_sets_file():
+    if GENE_SETS_FILE.exists():
+        print(f"Gene sets file already exists: {GENE_SETS_FILE}")
+        return
+
+    MAGMA_DIR.mkdir(parents=True, exist_ok=True)
+    n = 0
+    with open(GENE_SETS_FILE, "w") as out:
+        for bed in sorted(PEAKS_DIR.glob("*.bed")):
+            cell_type = bed.stem
+            genes = []
+            seen = set()
+            with open(bed) as fh:
+                for line in fh:
+                    gene = line.rstrip("\n").split("\t")[3]
+                    if gene not in seen:
+                        seen.add(gene)
+                        genes.append(gene)
+            out.write(cell_type + "\t" + "\t".join(genes) + "\n")
+            n += 1
+
+    print(f"  {n:,} cell-type gene sets written to {GENE_SETS_FILE}")
+
+
 def run_geneset_analysis():
-    raise NotImplementedError
+    if GENESET_OUT_FILE.exists():
+        print(f"Gene-set results already exist: {GENESET_OUT_FILE}")
+        return
+
+    build_gene_sets_file()
+    subprocess.run([
+        str(MAGMA_BIN),
+        "--gene-results", str(GENE_RAW_FILE),
+        "--set-annot", str(GENE_SETS_FILE),
+        "--out", str(GENESET_OUT_PREFIX),
+    ], check=True)
+
+
+def run_annotate_window():
+    if ANNOT_FILE_W5.exists():
+        print(f"Windowed annotation file already exists: {ANNOT_FILE_W5}")
+        return
+
+    subprocess.run([
+        str(MAGMA_BIN),
+        "--annotate", f"window={WINDOW_KB}", "nonhuman",
+        "--snp-loc", str(SNP_LOC_FILE),
+        "--gene-loc", str(GENE_LOC_FILE),
+        "--out", str(ANNOT_PREFIX_W5),
+    ], check=True)
+
+
+def run_gene_analysis_window():
+    if GENE_OUT_FILE_W5.exists():
+        print(f"Windowed gene analysis results already exist: {GENE_OUT_FILE_W5}")
+        return
+
+    prepare_magma_bfile()
+    subprocess.run([
+        str(MAGMA_BIN),
+        "--bfile", str(MAGMA_BFILE),
+        "--pheno", f"file={PHENO_FILE}", f"use={PHENO_NAME}",
+        "--covar", "chrX-use-sex=0",
+        "--gene-annot", str(ANNOT_FILE_W5),
+        "--out", str(GENE_OUT_PREFIX_W5),
+    ], check=True)
+
+
+def run_geneset_analysis_window():
+    if GENESET_OUT_FILE_W5.exists():
+        print(f"Windowed gene-set results already exist: {GENESET_OUT_FILE_W5}")
+        return
+
+    build_gene_sets_file()
+    subprocess.run([
+        str(MAGMA_BIN),
+        "--gene-results", str(GENE_RAW_FILE_W5),
+        "--set-annot", str(GENE_SETS_FILE),
+        "--out", str(GENESET_OUT_PREFIX_W5),
+    ], check=True)
 
 
 if __name__ == "__main__":
@@ -155,3 +248,7 @@ if __name__ == "__main__":
     build_snp_location_file()
     run_annotate()
     run_gene_analysis()
+    run_geneset_analysis()
+    run_annotate_window()
+    run_gene_analysis_window()
+    run_geneset_analysis_window()
