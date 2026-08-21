@@ -189,7 +189,6 @@ def calculate_additive_power(N, maf, effect, sd, alpha):
     return power_upper + power_lower
 
 
-
 def calculate_homozygote_power_table(N, sd):
     rows = []
 
@@ -257,9 +256,26 @@ def calculate_summary(power_df):
     observed_max_maf = power_df["MAF"].max()
 
     for effect in EFFECT_SIZES:
-        subset = power_df[
-            power_df["effect_days"] == effect
-        ].dropna(subset=["power"]).sort_values("MAF")
+        subset = (
+            power_df[
+                power_df["effect_days"] == effect
+            ]
+            .dropna(subset=["power"])
+            .sort_values("MAF")
+        )
+
+        if subset.empty:
+            rows.append(
+                {
+                    "effect_days": effect,
+                    "observed_min_MAF": observed_min_maf,
+                    "observed_max_MAF": observed_max_maf,
+                    "minimum_observed_MAF_for_80pct_power": float("nan"),
+                    "maximum_power": float("nan"),
+                    "MAF_at_maximum_power": float("nan"),
+                }
+            )
+            continue
 
         maximum_power = subset["power"].max()
 
@@ -289,7 +305,6 @@ def calculate_summary(power_df):
         )
 
     return pd.DataFrame(rows)
-  
 
 
 def verify_inputs():
