@@ -4,6 +4,9 @@ import re
 import shutil
 import subprocess
 from pathlib import Path
+import numpy as np
+import pandas as pd
+from scipy.stats import nct, t
 
 BASE_DIR = Path("/mnt/hdd_1/rediet/fly-ldsc")
 FLY_CHROMS = ["2L", "2R", "3L", "3R", "4", "X"]
@@ -242,7 +245,118 @@ def run_geneset_analysis_window():
         "--out", str(GENESET_OUT_PREFIX_W5),
     ], check=True)
 
+POWER_DIR = MAGMA_DIR / "power"
+POWER_FILE = POWER_DIR / "lifespan_power_analysis.tsv"
+ALPHA = 2.28e-8
+EFFECT_SIZES = [2, 5, 7.5, 10]
+MAFS = [0.05, 0.10, 0.20, 0.30, 0.40, 0.50]
 
+
+def calculate_power_two_group(n1, n2, effect_days, sd_pooled, alpha=ALPHA):
+    """
+    Approximate power for detecting a difference between two genotype groups
+    using a two-sided t-test.
+
+    effect_days = difference in mean lifespan between genotype groups
+    sd_pooled   = pooled within-group standard deviation
+    """
+
+    if n1 < 2 or n2 < 2:
+        return np.nan
+
+    d = abs(effect_days) / sd_pooled
+
+    ncp = d / np.sqrt(1 / n1 + 1 / n2)
+    df = n1 + n2 - 2
+    tcrit = t.ppf(1 - alpha / 2, df)
+
+    power = (
+        1 - nct.cdf(tcrit, df, ncp)
+        + nct.cdf(-tcrit, df, ncp)
+    )
+
+    return power
+
+
+def run_power_analysis():
+    """
+    Estimate power for detecting a lifespan effect across
+    different MAFs and effect sizes.
+    """
+
+    if POWER_FILE.exists():
+        print(f"Power results already exist: {POWER_FILE}")
+        return
+
+    POWER_DIR.mkdir(parents=True, exist_ok=True)
+
+    print("\nRunning lifespan power analysis ...")
+
+    pheno = pd.read_csv(
+        PHENO_FILE,
+        sep=r"\s+"
+    )
+
+    print(f"Phenotype columns: {list(pheno.columns)}")
+
+    lifespan = pd.to_numeric(
+        pheno[PHENO_NAME],
+        errors="coerce"
+    ).dropna()
+
+    N = len(lifespan)
+
+    print(f"Number of individuals/lines: {N}")
+    print(f"Lifespan mean: {lifespan.mean():.2f}")
+    print(f"Lifespan SD:   {lifespan.std(ddof=1):.2f}")
+
+
+    sd_pooled = lifespan.std(ddof=1)
+
+    results = []
+
+    for maf in MAFS:
+
+        n_aa = N * maf**2
+        n_AA = N * (1 - maf)**2
+
+        for effect in EFFECT_SIZES:
+
+            power = calculate_power_two_group(
+                n1=n_AA,
+                n2=n_aa,
+                effect_days=effect,
+                sd_pooled=sd_pooled,
+                alpha=ALPHA
+            )
+
+            results.append({
+                "N": N,
+                "MAF": maf,
+                "effect_days": effect,
+                "sd_lifespan": sd_pooled,
+                "n_common_homozygotes": n_AA,
+                "n_minor_homozygotes": n_aa,
+                "alpha": ALPHA,
+                "power": power
+            })
+
+    results_df = pd.DataFrame(results)
+
+    results_df.to_csv(
+        POWER_FILE,
+        sep="\t",
+        index=False
+    )
+
+    print("\nPower analysis:")
+    print(
+        results_df[
+            ["MAF", "effect_days", "power"]
+        ].to_string(index=False)
+    )
+
+    print(f"\nPower results saved to: {POWER_FILE}")
 if __name__ == "__main__":
     build_gene_location_file()
     build_snp_location_file()
@@ -252,3 +366,6 @@ if __name__ == "__main__":
     run_annotate_window()
     run_gene_analysis_window()
     run_geneset_analysis_window()
+
+ 
+    run_power_analysis()
