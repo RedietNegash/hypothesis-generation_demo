@@ -17,8 +17,19 @@ FREQ_PREFIX = BASE_DIR / "data" / "gwas" / "tmp" / "female_lifespan_freq"
 
 PHENO_FILE = BASE_DIR / "data" / "gwas" / "lifespan_female.pheno"
 
-POWER_FILE = BASE_DIR / "data" / "gwas" / "tmp" / "female_lifespan_power.tsv"
-SUMMARY_FILE = BASE_DIR / "data" / "gwas" / "tmp" / "female_lifespan_power_summary.tsv"
+HOMOZYGOTE_POWER_FILE = (
+    BASE_DIR / "data" / "gwas" / "tmp" / "female_lifespan_power_homozygote.tsv"
+)
+HOMOZYGOTE_SUMMARY_FILE = (
+    BASE_DIR / "data" / "gwas" / "tmp" / "female_lifespan_power_homozygote_summary.tsv"
+)
+
+ADDITIVE_POWER_FILE = (
+    BASE_DIR / "data" / "gwas" / "tmp" / "female_lifespan_power_additive.tsv"
+)
+ADDITIVE_SUMMARY_FILE = (
+    BASE_DIR / "data" / "gwas" / "tmp" / "female_lifespan_power_additive_summary.tsv"
+)
 
 ALPHA = 2.28e-8
 POWER_THRESHOLD = 0.80
@@ -90,7 +101,11 @@ def run_plink_frequency():
 
 
 def read_phenotype():
-    pheno = pd.read_csv(PHENO_FILE, sep=r"\s+", engine="python")
+    pheno = pd.read_csv(
+        PHENO_FILE,
+        sep=r"\s+",
+        engine="python",
+    )
 
     values = pd.to_numeric(
         pheno["S18_1537_F"],
@@ -101,7 +116,8 @@ def read_phenotype():
 
 
 def count_samples(path):
-    return sum(1 for _ in open(path))
+    with open(path) as f:
+        return sum(1 for _ in f)
 
 
 def calculate_power(n1, n2, effect, sd, alpha):
@@ -109,7 +125,6 @@ def calculate_power(n1, n2, effect, sd, alpha):
         return float("nan")
 
     d = effect / sd
-
     df = n1 + n2 - 2
 
     ncp = d / math.sqrt((1.0 / n1) + (1.0 / n2))
@@ -131,19 +146,58 @@ def calculate_power(n1, n2, effect, sd, alpha):
         ncp,
     )
 
+    if math.isnan(power_lower):
+        power_lower = 0.0
+
     return power_upper + power_lower
 
 
-def calculate_power_table(N, sd):
+def calculate_additive_power(N, maf, effect, sd, alpha):
+    if N <= 2 or maf <= 0 or maf >= 1:
+        return float("nan")
+
+    genotype_variance = 2.0 * maf * (1.0 - maf)
+
+    ncp = (
+        effect
+        * math.sqrt(N * genotype_variance)
+        / sd
+    )
+
+    df = N - 2
+
+    critical = t.ppf(
+        1.0 - alpha / 2.0,
+        df,
+    )
+
+    power_upper = nct.sf(
+        critical,
+        df,
+        ncp,
+    )
+
+    power_lower = nct.cdf(
+        -critical,
+        df,
+        ncp,
+    )
+
+    if math.isnan(power_lower):
+        power_lower = 0.0
+
+    return power_upper + power_lower
+
+
+
+def calculate_homozygote_power_table(N, sd):
     rows = []
 
     for maf in MAF_VALUES:
-
         n_minor_homozygotes = N * maf**2
         n_common_homozygotes = N * (1.0 - maf)**2
 
         for effect in EFFECT_SIZES:
-
             power = calculate_power(
                 n_common_homozygotes,
                 n_minor_homozygotes,
@@ -168,14 +222,51 @@ def calculate_power_table(N, sd):
     return pd.DataFrame(rows)
 
 
+def calculate_additive_power_table(N, sd, observed_mafs):
+    rows = []
+
+    for maf in observed_mafs:
+        for effect in EFFECT_SIZES:
+            power = calculate_additive_power(
+                N,
+                maf,
+                effect,
+                sd,
+                ALPHA,
+            )
+
+            rows.append(
+                {
+                    "N": N,
+                    "MAF": maf,
+                    "effect_days": effect,
+                    "sd_lifespan": sd,
+                    "genotype_variance": 2.0 * maf * (1.0 - maf),
+                    "alpha": ALPHA,
+                    "power": power,
+                }
+            )
+
+    return pd.DataFrame(rows)
+
+
 def calculate_summary(power_df):
     rows = []
 
-    for effect in EFFECT_SIZES:
+    observed_min_maf = power_df["MAF"].min()
+    observed_max_maf = power_df["MAF"].max()
 
+    for effect in EFFECT_SIZES:
         subset = power_df[
             power_df["effect_days"] == effect
-        ].sort_values("MAF")
+        ].dropna(subset=["power"]).sort_values("MAF")
+
+        maximum_power = subset["power"].max()
+
+        max_power_maf = subset.loc[
+            subset["power"].idxmax(),
+            "MAF",
+        ]
 
         sufficient = subset[
             subset["power"] >= POWER_THRESHOLD
@@ -186,28 +277,26 @@ def calculate_summary(power_df):
         else:
             minimum_maf = float("nan")
 
-        maximum_power = subset["power"].max()
-
-        max_power_maf = subset.loc[
-            subset["power"].idxmax(),
-            "MAF",
-        ]
-
         rows.append(
             {
                 "effect_days": effect,
-                "minimum_MAF_for_80pct_power": minimum_maf,
+                "observed_min_MAF": observed_min_maf,
+                "observed_max_MAF": observed_max_maf,
+                "minimum_observed_MAF_for_80pct_power": minimum_maf,
                 "maximum_power": maximum_power,
                 "MAF_at_maximum_power": max_power_maf,
             }
         )
 
     return pd.DataFrame(rows)
+  
 
 
 def verify_inputs():
     genotype_fam = SUBSET_PREFIX.with_suffix(".fam")
+
     keep_count = count_samples(KEEP_FILE)
+
     genotype_count = count_samples(
         GENOTYPE_PREFIX.with_suffix(".fam")
     )
@@ -219,12 +308,22 @@ def verify_inputs():
     freq = pd.read_csv(
         FREQ_PREFIX.with_suffix(".frq"),
         sep=r"\s+",
+        dtype={"CHR": str},
     )
 
-    valid_maf = freq.loc[
-        freq["MAF"] > 0,
-        "MAF",
+    valid_maf = pd.to_numeric(
+        freq["MAF"],
+        errors="coerce",
+    ).dropna()
+
+    valid_maf = valid_maf[
+        (valid_maf > 0) &
+        (valid_maf < 0.5)
     ]
+
+    observed_mafs = sorted(
+        valid_maf.unique().tolist()
+    )
 
     print("Verification")
     print(f"Genotype samples: {genotype_count}")
@@ -250,40 +349,76 @@ def verify_inputs():
             f"genotype subset count ({subset_count})."
         )
 
-    return phenotype_count, mean_lifespan, sd_lifespan
+    return (
+        phenotype_count,
+        mean_lifespan,
+        sd_lifespan,
+        observed_mafs,
+    )
 
 
 def main():
     run_plink_subset()
     run_plink_frequency()
 
-    N, mean_lifespan, sd_lifespan = verify_inputs()
+    (
+        N,
+        mean_lifespan,
+        sd_lifespan,
+        observed_mafs,
+    ) = verify_inputs()
 
-    power_df = calculate_power_table(
+    homozygote_power_df = calculate_homozygote_power_table(
         N,
         sd_lifespan,
     )
 
-    summary_df = calculate_summary(
-        power_df,
+    homozygote_summary_df = calculate_summary(
+        homozygote_power_df,
     )
 
-    power_df.to_csv(
-        POWER_FILE,
+    additive_power_df = calculate_additive_power_table(
+        N,
+        sd_lifespan,
+        observed_mafs,
+    )
+
+    additive_summary_df = calculate_summary(
+        additive_power_df,
+    )
+
+    homozygote_power_df.to_csv(
+        HOMOZYGOTE_POWER_FILE,
         sep="\t",
         index=False,
         float_format="%.10g",
     )
 
-    summary_df.to_csv(
-        SUMMARY_FILE,
+    homozygote_summary_df.to_csv(
+        HOMOZYGOTE_SUMMARY_FILE,
         sep="\t",
         index=False,
         float_format="%.10g",
     )
 
-    print(f"Power results: {POWER_FILE}")
-    print(f"Power summary: {SUMMARY_FILE}")
+    additive_power_df.to_csv(
+        ADDITIVE_POWER_FILE,
+        sep="\t",
+        index=False,
+        float_format="%.10g",
+    )
+
+    additive_summary_df.to_csv(
+        ADDITIVE_SUMMARY_FILE,
+        sep="\t",
+        index=False,
+        float_format="%.10g",
+    )
+
+    print(f"Homozygote power results: {HOMOZYGOTE_POWER_FILE}")
+    print(f"Homozygote power summary: {HOMOZYGOTE_SUMMARY_FILE}")
+    print(f"Additive power results: {ADDITIVE_POWER_FILE}")
+    print(f"Additive power summary: {ADDITIVE_SUMMARY_FILE}")
 
 
 if __name__ == "__main__":
