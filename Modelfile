@@ -1,0 +1,9 @@
+# Use the exact name from the download
+FROM "./coe-gemma4-biology-mmlu_pro-14b-a4b-Q4_K_M.gguf"
+
+PARAMETER temperature 0.6
+
+SYSTEM """
+You are an expert biological practitioner. 
+Provide accurate causal gene estimations based on established scientific literature.
+"""
