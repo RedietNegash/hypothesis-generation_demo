@@ -1,0 +1,170 @@
+import subprocess
+from pathlib import Path
+
+import numpy as np
+import pandas as pd
+import rpy2.robjects as ro
+from rpy2.robjects import numpy2ri, pandas2ri
+from rpy2.robjects.packages import importr
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+REGIONS_DIR = BASE_DIR / "data" / "highfill_finemap" / "regions"
+LD_REF_BFILE = BASE_DIR / "data" / "highfill_finemap" / "highfill_genotypes"
+WORK_DIR = BASE_DIR / "data" / "highfill_finemap" / "susie"
+OUT_DIR = BASE_DIR / "data" / "highfill_finemap" / "susie_results"
+
+PLINK_BIN = "plink"
+
+COVERAGE = 0.95
+L = 10
+
+susieR = importr("susieR")
+numpy2ri.activate()
+pandas2ri.activate()
+
+
+def region_files():
+    return sorted(REGIONS_DIR.glob("chr*_snps.tsv"))
+
+
+def region_label(region_file: Path) -> str:
+    return region_file.stem.replace("_snps", "")
+
+
+def prepare_region_bfile(region_file: Path, label: str) -> Path:
+    bfile_out = WORK_DIR / label
+    if bfile_out.with_suffix(".bim").exists():
+        return bfile_out
+
+    WORK_DIR.mkdir(parents=True, exist_ok=True)
+    snplist_file = WORK_DIR / f"{label}.snplist"
+    region = pd.read_csv(region_file, sep="\t")
+    snplist_file.write_text("\n".join(region["SNP"]) + "\n")
+
+    subprocess.run([
+        PLINK_BIN,
+        "--bfile", str(LD_REF_BFILE),
+        "--extract", str(snplist_file),
+        "--make-bed",
+        "--out", str(bfile_out),
+    ], check=True, capture_output=True, text=True)
+
+    subprocess.run([
+        PLINK_BIN,
+        "--bfile", str(bfile_out),
+        "--r", "square",
+        "--out", str(bfile_out),
+    ], check=True, capture_output=True, text=True)
+
+    subprocess.run([
+        PLINK_BIN,
+        "--bfile", str(bfile_out),
+        "--freq",
+        "--out", str(bfile_out),
+    ], check=True, capture_output=True, text=True)
+
+    return bfile_out
+
+
+def load_region_data(region_file: Path, bfile: Path):
+    bim = pd.read_csv(
+        bfile.with_suffix(".bim"), sep="\t", header=None,
+        names=["CHR", "SNP", "CM", "POS", "A1", "A2"],
+    )
+    ld = np.loadtxt(bfile.with_suffix(".ld"))
+
+    region = pd.read_csv(region_file, sep="\t").rename(columns={"BETA": "b"}).set_index("SNP")
+    ordered = bim.join(region[["b", "se", "P", "N"]], on="SNP")
+
+    freq = pd.read_csv(bfile.with_suffix(".frq"), sep=r"\s+")[["SNP", "MAF"]]
+    ordered = ordered.merge(freq, on="SNP", how="left")
+
+    # Near-monomorphic SNPs (rare private alleles among these ~800 lines)
+    # have near-zero genotype variance, which can make the GWAS script's
+    # beta/se (b/var(x)) numerically huge even though the SNP carries no
+    # real information -- this breaks SuSiE's internal scaling (it uses
+    # bhat/shat on their original scale, not just z), producing an
+    # "unreasonably large prior variance" error. Drop them before fitting.
+    keep = ordered["b"].notna().to_numpy() & (ordered["MAF"] >= 0.01).to_numpy()
+    ordered = ordered[keep].reset_index(drop=True)
+    ld = ld[np.ix_(keep, keep)]
+
+    # RIL genotyping has ~10% missingness, enough that some SNPs are
+    # effectively monomorphic within a given region's ~800-line subsample
+    # (self-correlation NaN). Those poison every other SNP's row via
+    # cross-terms, so drop them specifically first rather than blanket-
+    # dropping every row touched by any NaN (which would wipe out the
+    # whole region, as it did here on the first pass).
+    monomorphic = np.isnan(np.diag(ld))
+    ordered = ordered[~monomorphic].reset_index(drop=True)
+    ld = ld[np.ix_(~monomorphic, ~monomorphic)]
+
+    keep_nan = ~np.isnan(ld).any(axis=1)
+    ordered = ordered[keep_nan].reset_index(drop=True)
+    ld = ld[np.ix_(keep_nan, keep_nan)]
+
+    return ordered, ld
+
+
+def run_susie_rss(ordered: pd.DataFrame, ld: np.ndarray):
+    bhat = ro.FloatVector(ordered["b"].to_numpy())
+    shat = ro.FloatVector(ordered["se"].to_numpy())
+    n = int(ordered["N"].median())
+    R = ro.r["matrix"](ro.FloatVector(ld.flatten(order="F")), nrow=ld.shape[0])
+
+    # Unlike the DGRP panel, this LD reference is built from discretized,
+    # ~10%-missing RIL genotype calls -- a noisier approximation of the true
+    # in-sample LD, which makes estimate_residual_variance=TRUE numerically
+    # unstable here (negative variance estimate). Fall back to susieR's own
+    # default (FALSE) instead of forcing it.
+    fit = susieR.susie_rss(
+        bhat=bhat, shat=shat, R=R, n=n, L=L,
+        estimate_residual_variance=False, verbose=False,
+    )
+    pip = np.array(fit.rx2("pip"))
+
+    cs_result = susieR.susie_get_cs(fit, coverage=COVERAGE, Xcorr=R)
+    cs_list = cs_result.rx2("cs")
+
+    cs_assignment = np.full(len(ordered), np.nan)
+    if cs_list != ro.NULL:
+        names = [str(n) for n in cs_list.names]
+        for cs_idx, cs_name in enumerate(names, start=1):
+            member_idx = np.array(cs_list.rx2(cs_name)) - 1
+            cs_assignment[member_idx] = cs_idx
+
+    return pip, cs_assignment
+
+
+def finemap_region(region_file: Path) -> None:
+    label = region_label(region_file)
+    out_file = OUT_DIR / f"{label}_susie.tsv"
+    if out_file.exists():
+        print(f"Already fine-mapped: {out_file}")
+        return
+
+    bfile = prepare_region_bfile(region_file, label)
+    ordered, ld = load_region_data(region_file, bfile)
+
+    if len(ordered) < 2:
+        print(f"{label}: too few matched SNPs ({len(ordered)}), skipping")
+        return
+
+    pip, cs = run_susie_rss(ordered, ld)
+    ordered["PIP"] = pip
+    ordered["CS"] = cs
+    ordered = ordered.sort_values("PIP", ascending=False)
+
+    OUT_DIR.mkdir(parents=True, exist_ok=True)
+    ordered.to_csv(out_file, sep="\t", index=False)
+
+    n_cs = int(np.nanmax(cs)) if np.any(~np.isnan(cs)) else 0
+    top = ordered.iloc[0]
+    print(f"{label}: {len(ordered)} SNPs, {n_cs} credible set(s), top PIP {top['SNP']} = {top['PIP']:.3f}")
+    print(f"  Saved: {out_file}")
+
+
+if __name__ == "__main__":
+    for region_file in region_files():
+        finemap_region(region_file)
