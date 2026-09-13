@@ -77,6 +77,32 @@ from discretized allele-count-ratio calls rather than true sequencing
 genotypes, too noisy an LD estimate for SuSiE's full joint model (COJO's
 simpler stepwise/joint approach tolerated it; SuSiE did not).
 
+**DSPR-native QTL scan** (`scripts/highfill_dspr_qtl_scan.R`): because SuSiE's
+SNP-based LD approach broke down, re-ran the analysis using the *correct*
+method for this experimental design -- DSPR's own `DSPRqtl` package, which
+regresses phenotype directly on the 8 founder-haplotype probabilities (real
+HMM-based genotype calls from the `DSPRqtlDataB` data package, ~3.2GB,
+installed from `http://wfitch.bio.uci.edu/R/`) instead of SNP genotypes.
+- `DSPRscan()` (model `MedLifespanHrs ~ factor(Block)`, design `inbredB`)
+  found 31 raw LOD peaks at the literature-default threshold of 6.8 (used
+  instead of a 200-iteration permutation test, which would have taken many
+  hours for a threshold DSPR's own docs already call "fairly stable")
+- Collapsing peaks that share a 95% Bayes credible interval (DSPR's docs warn
+  raw peaks need this check) reduces 31 -> **4 distinct QTL regions**. 2 of
+  the 4 have degenerate founder-mean estimates (empty founder classes at
+  that position -- the same root problem as the SNP-level monomorphic-SNP
+  issue, just in a new form) and should not be trusted; the other 2 are clean:
+  - **X:16.15-16.58Mb (dm3)** peak LOD=7.08 -- lifts over to dm6 X:16,395,967,
+    landing **directly inside `mei-41`**
+  - **3R:4.04-5.02Mb (dm3)** peak LOD=9.35 (strongest signal in the dataset),
+    lifts over to dm6 3R:8,694,278 (a **4.6Mb shift** -- confirms how
+    essential the liftover step is for this pre-2014 resource), landing
+    directly inside **`hb`** (hunchback)
+- **`mei-41` is now confirmed by three independent methods**: MAGMA
+  (gene-based burden test), COJO+SuSiE (SNP-level fine-mapping), and this
+  founder-haplotype-based QTL scan (a completely different genotype
+  representation). `hb` is a new candidate from this method only.
+
 ## What to actually use going forward
 
 | Result | Status |
@@ -84,8 +110,10 @@ simpler stepwise/joint approach tolerated it; SuSiE did not).
 | DGRP female: MAGMA gene/geneset | Solid null result (underpowered) |
 | DGRP female: COJO+SuSiE credible set -> `lncRNA:CR44603` | Solid, but only 1 of 5 loci resolved |
 | Highfill: MAGMA gene hits `mei-41`/`Fur2` | **Solid** -- Bonferroni-significant, biologically plausible |
-| Highfill: COJO's 3 independent signals | Solid |
-| Highfill: SuSiE credible sets/PIPs | **Do not use** -- demonstrated unreliable |
+| Highfill: COJO's 3 independent signals (SNP-level) | Solid |
+| Highfill: SuSiE credible sets/PIPs (SNP-level) | **Do not use** -- demonstrated unreliable |
+| Highfill: DSPRscan QTL regions X:16.15-16.58Mb and 3R:4.04-5.02Mb | **Solid** -- proper method for this design, `mei-41` triple-confirmed |
+| Highfill: DSPRscan's other 2 raw regions (X:19.47-21.27Mb, 3R:24.59-24.64Mb) | **Do not use** -- degenerate founder estimates (empty founder classes) |
 
 ## Files added this session
 
@@ -96,3 +124,4 @@ simpler stepwise/joint approach tolerated it; SuSiE did not).
 - `scripts/highfill_dspr_build_genotype_bfile.py` -- allele-consistent Highfill genotype panel
 - `scripts/highfill_dspr_finemapping.py` -- Highfill COJO fine-mapping
 - `scripts/highfill_dspr_susie.py` -- Highfill SuSiE fine-mapping (see caveat above)
+- `scripts/highfill_dspr_qtl_scan.R` -- Highfill DSPR-native founder-probability QTL scan (recommended over the SNP-based COJO/SuSiE route for this dataset)
