@@ -103,6 +103,28 @@ installed from `http://wfitch.bio.uci.edu/R/`) instead of SNP genotypes.
   founder-haplotype-based QTL scan (a completely different genotype
   representation). `hb` is a new candidate from this method only.
 
+**Variant-level resolution within the QTL intervals**
+(`data/highfill_finemap/highfill_variant_level_finemap.tsv`): the QTL
+credible intervals are wide (430kb / 980kb, containing 69 and 134
+protein-coding genes), so the gene at the LOD peak is a best guess, not a
+resolved answer. Checking whether finer resolution is possible:
+- SNPs inside these intervals are largely *independent* (median pairwise
+  r2 = 0.03-0.04), so they are statistically separable -- the intervals are
+  not one indivisible LD block
+- **X QTL: resolves well.** Three SNPs stand out at p<2e-6, each inside a
+  different gene -- `mei-41` (4.4e-7), `Fur2` (5.1e-7), `mthl1` (1.7e-6) --
+  roughly 30x stronger than the next tier (`Rok`, `SMC3`, `Nup153`, ...).
+  So the X signal narrows from 69 protein-coding genes to **3 candidate
+  genes**. Those three are mutually correlated (r~0.78-0.84) and cannot be
+  separated from each other, but are cleanly distinguished from the other 66.
+- **3R QTL: does not resolve.** No SNP in the interval passes even a
+  region-level Bonferroni threshold (best p=1.7e-3 vs threshold 1.1e-3), and
+  the best SNP sits in `CG45263`, not `hb`. The strongest founder-haplotype
+  signal in the genome (LOD 9.35) is simply **not tagged by any of the 47
+  genotyped SNPs** in that 980kb window (~1 SNP per 21kb). So `hb` has no
+  variant-level support -- it is only "the gene at the LOD peak". Resolving
+  this locus would require denser genotyping, not a better algorithm.
+
 ## What to actually use going forward
 
 | Result | Status |
@@ -114,6 +136,8 @@ installed from `http://wfitch.bio.uci.edu/R/`) instead of SNP genotypes.
 | Highfill: SuSiE credible sets/PIPs (SNP-level) | **Do not use** -- demonstrated unreliable |
 | Highfill: DSPRscan QTL regions X:16.15-16.58Mb and 3R:4.04-5.02Mb | **Solid** -- proper method for this design, `mei-41` triple-confirmed |
 | Highfill: DSPRscan's other 2 raw regions (X:19.47-21.27Mb, 3R:24.59-24.64Mb) | **Do not use** -- degenerate founder estimates (empty founder classes) |
+| Highfill: X QTL narrowed to `mei-41`/`Fur2`/`mthl1` | **Solid** -- 3 of 69 genes, ~30x stronger than next tier |
+| Highfill: `hb` as the 3R candidate gene | **Weak** -- no SNP-level support; only the gene at the LOD peak |
 
 ## Files added this session
 
