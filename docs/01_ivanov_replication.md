@@ -1,155 +1,92 @@
-# 01: Replication of Ivanov et al. (2015), DGRP female lifespan GWAS
+# DGRP Female Lifespan: GWAS Replication and Heritability Partitioning
 
-## What this document is
+Replication of Ivanov et al. (2015) on DGRPool Study 18, extended with a
+gene-level test (MAGMA) and cell-type heritability partitioning (LDSC-SEG).
 
-Three analyses were run on one dataset: a replication of the paper's GWAS, plus
-two analyses the paper does not contain (a gene-level test and a cell-type
-heritability test). This document explains what each one asks, what it returned,
-and what the three together do and do not support.
+Status: results below predate two pipeline corrections (section 7.1, 7.2) and
+require regeneration before publication. See section 8.
 
-**The short version.** The genome-wide scan and the gene-level test both came
-back empty. The cell-type heritability test did not: five fly cell types carry
-significantly more lifespan heritability than the genome average. That
-combination is not a contradiction, and section 5 explains why.
+Related: `02_ivanov_huang_merge.md` covers the cross-study phenotype merge,
+which uses a different sample and phenotype scale.
 
-A separate analysis merges this dataset with a second study's phenotypes. That
-is a different method on a different sample and is documented in
-`02_ivanov_huang_merge.md`. Nothing here uses it.
+## 1. Summary
 
----
+| Analysis | Unit | Tests | Threshold | Significant |
+|---|---|---|---|---|
+| GWAS (plink2) | SNP | ~4.4M | 2.28e-8 | 2 at 5e-8, 0 at paper threshold |
+| MAGMA | gene | 18,903 | 2.65e-6 | 0 |
+| MAGMA gene-set | cell type | 163 | 3.07e-4 | 0 |
+| LDSC-SEG | cell type | 163 | 3.07e-4 | 5 (10 at FDR 5%) |
 
-## 1. The starting point: what the paper established
+SNP-level and gene-level analyses are null. Heritability partitioning is not:
+five cell types carry significantly elevated per-SNP heritability. Section 5
+reconciles these.
 
-Ivanov et al. ran a lifespan GWAS on the DGRP, a panel of inbred *Drosophila*
-lines. Two numbers from that paper are used directly in this work:
+## 2. Data
 
-| Value | Used here as |
+| Field | Value |
 |---|---|
-| Significance threshold 2.28e-8 | the bar a SNP must clear, adopted unchanged |
-| All common variants together explain about 4.7% of lifespan variance | the benchmark the power calculation is measured against |
+| Phenotype | `S18_1537_F`, female lifespan in days, DGRPool Study 18 |
+| Sample | 197 DGRP lines |
+| Phenotype SD | 9.90 days |
+| Genotypes | DGRP2 freeze 2, ~4.4M SNPs post-QC |
+| Arms | 2L, 2R, 3L, 3R, 4, X |
+| Cell-type annotations | 163 AFCA gene sets |
 
-Both are taken from the project's existing code
-(`scripts/lifespan_power_analysis.py`, `scripts/gene_level_ftest_power.py`).
-The threshold implies roughly 2.19 million SNPs tested (0.05 / 2.28e-8), but
-that SNP count is a back-calculation, not something read off the paper.
+DGRP lines are inbred and effectively homozygous. N counts lines, not
+individuals, and is not increasable by rearing more flies. This bounds all
+downstream power (section 6).
 
-**Open item: the paper's own SNP-level result is not recorded anywhere in this
-repository.** Whether the replication below agrees or disagrees with the paper
-cannot be stated until someone checks that. The results are reported here on
-their own terms.
+## 3. Inputs from the paper
 
-That 4.7% figure is the single most important number for interpreting
-everything below. It says lifespan in the DGRP is highly polygenic: the genetic
-signal is spread thinly across many variants, and no individual variant carries
-much of it. A study designed to find individually large effects is therefore
-looking for something the trait does not have.
-
----
-
-## 2. The data, and the constraint that governs everything
-
-| | |
-|---|---|
-| Phenotype | Female lifespan, DGRPool Study 18, trait `S18_1537_F` |
-| Units | Days, untransformed |
-| Sample | **197 DGRP lines** |
-| Phenotype spread | mean lifespan varies with a standard deviation of 9.9 days |
-| Genotypes | DGRP2 freeze 2, about 4.4 million SNPs after QC |
-| Chromosome arms | 2L, 2R, 3L, 3R, 4, X |
-
-The DGRP lines are inbred and effectively homozygous, so one line gives one
-genotype and one phenotype value. **N = 197 counts lines, not flies.** Rearing
-thousands of individual flies does not increase it. This is the binding
-constraint on the whole analysis, and section 6 quantifies exactly how binding.
-
----
-
-## 3. The three analyses, in plain terms
-
-The three tests differ in what they treat as the unit of evidence: one SNP, one
-gene, or one cell type's worth of genome. Reading left to right is reading from
-most specific to most aggregated.
-
-| | Unit tested | Question it answers | Result |
-|---|---|---|---|
-| GWAS | one SNP | Does any single variant shift lifespan on its own? | 2 SNPs at the conventional bar, none convincing |
-| MAGMA | one gene | Do the SNPs in any gene, taken together, track lifespan? | nothing significant, out of 18,903 genes |
-| LDSC-SEG | one cell type | Is heritability concentrated in the genes a given cell type uses? | **5 of 163 cell types significant** |
-
-### 3.1 GWAS: testing one SNP at a time
-
-For every SNP, fit a straight line predicting lifespan from genotype, while
-holding population structure constant:
-
-> lifespan = baseline + (effect of this SNP) + (correction for ancestry) + noise
-
-Each SNP gets a p-value. With millions of SNPs tested, the bar is set at
-2.28e-8 rather than the usual 0.05, because at 0.05 a scan of this size returns
-tens of thousands of false hits by construction.
-
-**Two corrections are built into this step.** Both are described in section 7.
-Ancestry is handled by including principal components as covariates: without
-them, a variant common in one subgroup of lines can look associated with
-lifespan purely because that subgroup happens to be longer-lived.
-
-**Result.** 2 SNPs reach p < 5e-8. Neither survives as a credible causal
-variant in the follow-up fine-mapping (documented separately), and the
-gene-level test below finds nothing corroborating them.
-
-### 3.2 MAGMA: testing one gene at a time
-
-A single SNP rarely carries much signal for a polygenic trait. MAGMA instead
-asks whether the SNPs inside a gene are *collectively* more associated with
-lifespan than chance would produce, yielding one p-value per gene. Testing
-18,903 genes is a far smaller multiple-testing burden than testing 4.4 million
-SNPs, so the bar drops to 0.05 / 18,903 = 2.65e-6.
-
-**Result: nothing is significant.** Not under Bonferroni, not under
-Holm-Bonferroni, and not under a false discovery rate of 5%, 10% or even 20%.
-The strongest gene reaches p = 7.4e-5, well short of 2.65e-6.
-
-The top of the ranking is worth reading, because it shows what a null result
-looks like:
-
-| Gene | SNPs in gene | P |
+| Value | Source | Use |
 |---|---|---|
-| `INE-1{}6211` | 1 | 7.40e-5 |
-| `INE-1{}5276` | 13 | 1.14e-4 |
-| `Tdrd3` | 23 | 1.18e-4 |
-| `Gcat` | 50 | 2.44e-4 |
-| `snoRNA:Me18S-A28a` | 1 | 3.72e-4 |
-| `Strica` | 17 | 4.29e-4 |
+| alpha = 2.28e-8 | `scripts/lifespan_power_analysis.py` | SNP significance threshold, adopted unchanged |
+| R2 = 0.047 for all common variants | `scripts/gene_level_ftest_power.py` | power benchmark |
 
-Two of the top six are single-SNP "genes", and two are INE-1 transposable
-element annotations rather than protein-coding genes. A real biological signal
-does not preferentially land on the smallest and least gene-like features in
-the annotation. This ranking is what random noise sorted by p-value looks like.
+The threshold implies ~2.19M tests (0.05 / 2.28e-8). That count is inferred, not
+sourced.
 
-**Gene sets.** The same machinery was run on 163 cell-type gene sets, asking
-whether the genes a cell type uses are collectively more associated than other
-genes. Nothing significant.
+The paper's SNP-level findings are not recorded in this repository. Concordance
+with the paper is therefore undetermined; results below stand on their own.
 
-### 3.3 LDSC-SEG: testing one cell type at a time
+## 4. Results
 
-This test does not try to name a gene. It asks a statistical question about the
-whole genome at once: **if you take all the genes a given cell type relies on,
-do the SNPs near them account for more than their fair share of lifespan's
-heritability?**
+### 4.1 GWAS
 
-It can detect signal the other two cannot, because it never needs any single
-SNP or gene to be individually significant. Thousands of variants each too weak
-to name, but concentrated in the same set of genes, produce a detectable result
-here and nothing at all in sections 3.1 and 3.2.
+2 SNPs at p < 5e-8, 0 at 2.28e-8. Neither resolves to a credible set in
+downstream fine-mapping, and neither is corroborated by 4.2.
 
-Each cell type gets a coefficient (positive means that cell type's regions carry
-more heritability than average) and a p-value. 163 cell types were tested, so a
-p-value of 0.05 is not evidence: about 8 cell types clear it by chance. The bar
-is Bonferroni, 0.05 / 163 = 3.07e-4, with a false discovery rate reported
-alongside.
+Diagnostics: `results/lifespan_gwas_manhattan_qq.png` (Manhattan, QQ, lambda_GC),
+`results/dgrp_pca_visualization.png` (PC1/PC2, scree).
 
-**Result: 5 cell types pass Bonferroni, 10 pass FDR at 5%.**
+### 4.2 MAGMA gene-level
 
-| Cell type | Coefficient | Std. error | P | q (FDR) | Passes Bonferroni |
+18,903 genes, 1,356,952 of 1,965,595 SNPs mapped (69.0%). Zero significant under
+Bonferroni, Holm-Bonferroni, or BH-FDR at 5%, 10%, 20%. Minimum p = 7.4e-5
+against a 2.65e-6 threshold.
+
+| Gene | NSNPS | ZSTAT | P |
+|---|---|---|---|
+| `INE-1{}6211` | 1 | 3.79 | 7.40e-5 |
+| `INE-1{}5276` | 13 | 3.69 | 1.14e-4 |
+| `Tdrd3` | 23 | 3.68 | 1.18e-4 |
+| `Gcat` | 50 | 3.49 | 2.44e-4 |
+| `snoRNA:Me18S-A28a` | 1 | 3.37 | 3.72e-4 |
+| `Strica` | 17 | 3.33 | 4.29e-4 |
+
+Two of the top six are single-SNP genes and two are INE-1 transposable element
+annotations. The ranking is consistent with noise: real signal does not
+concentrate in the smallest features of the annotation.
+
+Gene-set test: 163 sets, 3,008 unique genes covered, zero significant.
+
+### 4.3 LDSC-SEG
+
+163 cell types, Bonferroni 0.05/163 = 3.07e-4. Five pass Bonferroni, ten pass
+BH-FDR at 5%. All coefficients positive.
+
+| Cell type | Coef | SE | P | q | Bonf |
 |---|---|---|---|---|---|
 | CNS surface-associated glial cell | 2.08e-5 | 5.18e-6 | 2.91e-5 | 0.0028 | yes |
 | Female reproductive system | 2.44e-5 | 6.12e-6 | 3.47e-5 | 0.0028 | yes |
@@ -158,232 +95,173 @@ alongside.
 | Enteroendocrine cell | 1.95e-5 | 5.65e-6 | 2.74e-4 | 0.0089 | yes |
 | Pericerebral adult fat mass | 2.07e-5 | 6.20e-6 | 4.26e-4 | 0.0100 | no |
 | Adult fat body, head | 2.25e-5 | 6.75e-6 | 4.29e-4 | 0.0100 | no |
-| Epidermal cell, antimicrobial response | 2.17e-5 | 6.94e-6 | 8.78e-4 | 0.0179 | no |
+| Epidermal cell, antimicrobial | 2.17e-5 | 6.94e-6 | 8.78e-4 | 0.0179 | no |
 | Epithelial cell body | 1.82e-5 | 6.01e-6 | 1.20e-3 | 0.0206 | no |
 | Oviduct | 1.91e-5 | 6.32e-6 | 1.26e-3 | 0.0206 | no |
 
-Every coefficient is positive: each of these annotations absorbs more
-heritability per SNP than the genome-wide average. The groupings are
-biologically coherent rather than scattered (glia and brain-adjacent fat,
-reproductive tissue, gut), which is what a real signal tends to look like and
-what a random one usually does not.
+Hits cluster into coherent tissue groups (glia and brain-adjacent fat,
+reproductive, gut) rather than distributing arbitrarily across the 163.
 
-Full table with both corrections: `results/lifespan_female_cts_corrected.tsv`.
+Full table with corrections: `results/lifespan_female_cts_corrected.tsv`.
 
----
+## 5. Interpretation
 
-## 4. Two adaptations that make this a fly analysis, not a human one
+LDSC-SEG pools signal across every SNP near every gene in an annotation. MAGMA
+requires one gene to clear 2.65e-6 alone. With common variants explaining 4.7%
+of phenotypic variance in aggregate, the per-gene share is below detection at
+N=197 while the per-annotation share is not. The null gene-level result and the
+positive partitioning result are therefore consistent, not contradictory.
 
-LDSC was built for human data and assumes two reference resources that do not
-exist for *Drosophila*. Both substitutions are worth knowing when reading
-section 3.3.
+Supported: lifespan heritability in the DGRP is non-uniformly distributed and
+concentrates in glial, reproductive, gut and fat annotations.
 
-1. **No baseline model exists for the fly.** In human LDSC, enrichment is
-   measured against a prebuilt baseline that accounts for generic genomic
-   features. Here a baseline was computed from scratch across all DGRP SNPs and
-   used in its place.
-2. **The regression weights reuse that same baseline.** In human LDSC the
-   weights come from a separate curated SNP list; no fly equivalent exists.
-   The consequence is that the standard errors in the table above are
-   **somewhat optimistic**, so the p-values should be read as slightly
-   generous rather than conservative.
+Not supported: any gene-level claim. LDSC-SEG resolves tissue, not genes, and
+the analysis that would resolve genes returned nothing.
 
----
+## 6. Power
 
-## 5. Reading the three results together
+Per-SNP, from `data/gwas/tmp/female_lifespan_power.tsv` (noncentral t,
+alpha = 2.28e-8, SD = 9.90, N = 197):
 
-The apparent contradiction is: heritability is measurably structured by cell
-type, yet not one gene is significant. Both can be true at once, and the reason
-is arithmetic rather than biological.
+| MAF | 5-day effect | 7.5-day | 10-day |
+|---|---|---|---|
+| 0.01 | 1.6e-7 | 5.8e-7 | 2.0e-6 |
+| 0.05 | 3.1e-6 | 3.6e-5 | 3.1e-4 |
+| 0.10 | 2.0e-5 | 4.0e-4 | - |
 
-LDSC-SEG pools a weak signal across every SNP near every gene in an annotation,
-hundreds of genes at a time. MAGMA has to push a single gene past 2.65e-6 on
-its own. For a trait where all common variants together explain only 4.7% of
-variance, the per-gene share is minute, while the pooled share across a whole
-cell type's gene repertoire is not.
+A 10-day effect is one phenotypic SD from a single locus. Power to detect it
+remains below 0.1%.
 
-**What this supports:** lifespan heritability in the DGRP is not uniformly
-spread across the genome. It concentrates in genes used by glial, reproductive,
-gut and fat tissue.
+Per-gene, from `scripts/gene_level_ftest_power.py`: MAGMA's gene test is an
+F-test, so power is analytic. For a gene with k independent components,
+ncp = N * R2 / (1 - R2) under noncentral F(k, N-k-1). The script computes the
+R2 required for 80% power at 2.65e-6 per gene, using observed NPARAM values.
+Compare against R2 = 0.047 for all common variants combined: any gene requiring
+more than that individually is undetectable at this N.
 
-**What this does not support:** any claim about a specific gene. The cell-type
-result names tissues, not genes, and the gene-level analysis that would name
-them returned nothing.
+The null gene-level result is a property of N=197, not of thresholding (the
+Holm and FDR rows in 4.2 establish this) and not of implementation.
 
----
-
-## 6. Why the null results are the expected outcome
-
-This section exists to distinguish "we found nothing" from "this design could
-never have found anything". It is the second.
-
-**Per-SNP power.** Given 197 lines, a phenotype standard deviation of 9.9 days,
-and the paper's 2.28e-8 threshold, the probability of detecting a SNP that truly
-does shift lifespan is:
-
-| SNP frequency | True effect of 5 days | True effect of 10 days |
-|---|---|---|
-| 1% | 0.000016% | 0.0002% |
-| 5% | 0.0003% | 0.03% |
-| 10% | 0.002% | about 0.04% at 7.5 days |
-
-A 10-day effect is a full standard deviation of lifespan from one locus, an
-enormous effect for a polygenic trait. The chance of catching even that is far
-below 1%. Source: `data/gwas/tmp/female_lifespan_power.tsv`.
-
-**Per-gene power.** MAGMA's gene test is an F-test, so power can be computed
-exactly rather than simulated. `scripts/gene_level_ftest_power.py` computes,
-for each real gene, how much of lifespan variance that gene would have to
-explain for an 80% chance of detection at 2.65e-6. The comparison is against
-the paper's 4.7% figure for *all common variants combined*. Any gene requiring
-more than that on its own is undetectable by the paper's own accounting.
-
-**Therefore:** the empty gene-level result is a property of N = 197. It is not
-a thresholding choice, which is exactly what the Holm and FDR rows in section
-3.2 demonstrate, and not a pipeline defect. Only more lines would change it.
-
----
-
-## 7. How each analysis was run
-
-Reference material for reproducing or auditing the numbers above.
+## 7. Methods
 
 ### 7.1 Genotype QC
 
 ```
---keep analysis_lines.keep   # restrict to the 197 phenotyped lines
---maf 0.01                   # drop SNPs with minor allele frequency below 1%
---geno 0.05                  # drop SNPs missing in more than 5% of lines
+plink2 --keep analysis_lines.keep --maf 0.01 --geno 0.05
 ```
 
-`--keep` matters: frequency and missingness must be computed on the same sample
-the GWAS runs on. Without it, a SNP can clear the 1% frequency bar across the
-full panel while being completely invariant among the phenotyped lines, and an
-invariant predictor cannot explain anything but still consumes a test.
+`--keep` restricts QC to the 197 phenotyped lines. Frequency and missingness
+must be computed on the analysis sample; otherwise a SNP can pass 1% MAF
+panel-wide while being monomorphic among phenotyped lines, consuming a test
+without contributing variance.
 
-The paper used a 5% frequency filter. 1% is used here because the cell-type
-analysis in section 3.3 needs SNP density more than it needs per-SNP
-reliability, and because at N = 197 the frequency threshold is not what protects
-the test (section 6 is).
+MAF 0.01 rather than the paper's 0.05: the LDSC annotation step (7.5) requires
+SNP density, and at N=197 the frequency filter is not the binding constraint on
+reliability (section 6 is).
 
 ### 7.2 Population structure
 
-Merge all six arms, LD-prune (`--indep-pairwise 200 50 0.2`), compute 10
-principal components on the pruned SNPs, use **PC1 and PC2** as covariates.
+```
+plink2 --indep-pairwise 200 50 0.2
+plink2 --extract pca_prune.prune.in --pca 10
+```
 
-Pruning is not optional. The DGRP segregates several large cosmopolitan
-inversions, which are long stretches of genome inherited as a block. Computed
-without pruning, the leading components partly describe which inversions a line
-carries rather than its overall ancestry, and correcting for those components
-then removes real signal from inside those regions. Pruning affects only which
-SNPs *define* the components; the GWAS still tests every QC'd SNP.
+PC1 and PC2 enter the association model. LD pruning is required: the DGRP
+segregates large cosmopolitan inversions, and unpruned components partly encode
+inversion karyotype rather than ancestry, so conditioning on them removes real
+signal from those regions. Pruning affects PC definition only; the GWAS tests
+all QC'd SNPs.
 
-Two components are used because the scree plot flattens after PC2 and the
-lines do not form discrete clusters. The check on that judgement is the genomic
-inflation factor, printed by the notebook: a value near 1 means the correction
-was sufficient.
+Two components justified by scree flattening after PC2 and absence of discrete
+clustering. Validated by lambda_GC.
 
-### 7.3 Association testing
+### 7.3 Association
 
 ```
 plink2 --linear hide-covar --covar-col-nums 3-4
 ```
 
-Additive model, run per chromosome arm, results concatenated. Z = BETA / SE,
-then passed through LDSC's `munge_sumstats.py`. `hide-covar` only suppresses
-covariate rows from the output file; the covariates remain in the model.
+Additive model per arm, `lifespan ~ SNP + PC1 + PC2`. Concatenated, Z = BETA/SE,
+A2 derived from REF/ALT, munged via `munge_sumstats.py --signed-sumstats Z,0`.
 
-### 7.4 Gene and gene-set analysis
+### 7.4 MAGMA
 
-MAGMA in raw-genotype mode, `--annotate nonhuman`, **0 kb window** (only SNPs
-inside gene boundaries count). Multiple-testing comparisons across every result
-file: `scripts/magma_threshold_check.py`.
+Raw-genotype mode, `--annotate nonhuman`, 0 kb window. Multiple-testing
+comparison across all result files: `scripts/magma_threshold_check.py`.
 
-### 7.5 Cell-type heritability
+### 7.5 LDSC-SEG
 
-`ldsc.py --h2-cts` over 163 AFCA cell types, LD scores computed with
-`--ld-wind-kb 1000` across all six arms, with the two fly adaptations from
-section 4.
+`ldsc.py --h2-cts` over 163 cell types. LD scores at `--ld-wind-kb 1000` across
+six arms. Two fly-specific substitutions:
 
----
+- No baseline model exists for *Drosophila*. A genome-wide baseline was computed
+  from all DGRP SNPs (`ldsc.py --l2`, no annotation) and passed as
+  `--ref-ld-chr`.
+- `--w-ld-chr` reuses that baseline. Human LDSC draws regression weights from a
+  separate curated SNP list with no fly equivalent. Standard errors in 4.3 are
+  consequently optimistic and the p-values are generous, not conservative.
 
-## 8. Differences from the paper
+## 8. Deviations from the paper
 
-| | Paper | Here | Consequence |
+| Parameter | Paper | Here | Effect |
 |---|---|---|---|
-| Frequency filter | 5% | 1% | more SNPs tested, about 4.4M vs 2.19M |
-| Ancestry covariates | study-specific | PC1 + PC2, LD-pruned | checked via genomic inflation |
-| Wolbachia infection status | accounted for | **not included** | see below |
-| Chromosomal inversions | accounted for | **not included** | see below |
+| MAF filter | 0.05 | 0.01 | ~4.4M vs ~2.19M tests |
+| Ancestry covariates | study-specific | PC1 + PC2, LD-pruned | validated by lambda_GC |
+| Wolbachia status | modelled | not modelled | see below |
+| Inversion status | modelled | not modelled | see below |
 | Gene-level test | not run | MAGMA | extension |
 | Cell-type heritability | not run | LDSC-SEG | extension |
 
-**The Wolbachia and inversion gap is the most substantive difference.**
-*Wolbachia* is a bacterial endosymbiont that infects some DGRP lines and affects
-lifespan directly. Inversions are large genome blocks segregating in the panel.
-Both are standard covariates in DGRP analyses, both affect the phenotype, and
-neither is in this model. LD-pruning the PCA reduces inversion leakage into the
-covariates but does not substitute for modelling inversion status. This is the
-clearest item for a next iteration.
-
----
+Wolbachia is a bacterial endosymbiont segregating across DGRP lines with a
+direct lifespan effect. Inversions are large segregating haplotype blocks. Both
+are standard DGRP covariates and neither is modelled here. LD pruning limits
+inversion leakage into the PCs but does not substitute for modelling karyotype.
+This is the largest outstanding gap.
 
 ## 9. Limitations
 
-1. **The results above predate two pipeline fixes.** QC is now restricted to
-   phenotyped lines (7.1) and the PCA is now LD-pruned (7.2). Both change the
-   SNP set and the covariates, so section 3's numbers need regenerating before
-   being quoted as current. The direction of change is not predictable: neither
-   fix is a strict subset of the old behaviour.
-2. **Wolbachia and inversion covariates are missing** (section 8).
-3. **LDSC-SEG standard errors are optimistic** because weights reuse the
-   reference LD scores (section 4).
-4. **The 0 kb MAGMA window** counts only SNPs inside gene bodies, missing
-   regulatory variants nearby. A 5 kb window was run separately and is
-   discussed in `04_magma_framework.md`.
-5. **Three MAGMA runs exist** (`magma_female_clean`, `clean2`, `clean3`) with
-   differing gene counts. `clean3` is the complete one and the only one cited
-   here. The other two should be deleted or labelled.
-6. **The paper's own SNP-level findings are not recorded in this repository**
-   (section 1), so agreement or disagreement with it cannot yet be stated.
-7. **Intermediate files under `data/magma/`, `data/finemap/` and `data/gwas/`
-   are no longer on disk.** Section 3.1's SNP counts are carried over from
-   `ANALYSIS_PROGRESS.md`. Sections 3.2 and 3.3 were recomputed from the
-   surviving files in `results/`.
+1. Results predate the QC restriction (7.1) and LD-pruned PCA (7.2). Both alter
+   the SNP set and covariates. Section 4 requires regeneration; direction of
+   change is not predictable since neither correction is a subset of prior
+   behaviour.
+2. Wolbachia and inversion covariates absent (section 8).
+3. LDSC-SEG standard errors optimistic (7.5).
+4. 0 kb MAGMA window excludes flanking regulatory variants. A 5 kb window was
+   run separately; see `04_magma_framework.md`.
+5. Three MAGMA runs exist (`magma_female_clean`, `clean2`, `clean3`) with
+   differing gene counts. Only `clean3` is complete and cited. Delete or label
+   the others.
+6. Paper concordance undetermined (section 3).
+7. `data/magma/`, `data/finemap/`, `data/gwas/` intermediates are absent from
+   disk. Section 4.1 counts carry over from `ANALYSIS_PROGRESS.md`; 4.2 and 4.3
+   were recomputed from `results/`.
 
----
-
-## 10. Reproducing
+## 10. Reproduction
 
 ```bash
-# Full pipeline, sections numbered as in the notebook
 jupyter nbconvert --execute notebooks/fly_ldsc_female_colab.ipynb
 
-# Gene and gene-set analysis
 python scripts/run_magma_female_geneset.py              # 0 kb window
 python scripts/run_magma_female_geneset.py --window 5   # 5 kb window
-
-# Multiple-testing comparison across all result files
 python scripts/magma_threshold_check.py
 
-# Power
 python scripts/lifespan_power_analysis.py
 python scripts/gene_level_ftest_power.py
 ```
 
-## 11. Files
+## 11. Artifacts
 
-| File | Contents |
+| Path | Contents |
 |---|---|
-| `results/lifespan_female_CellTypeSpecific.cell_type_results.txt` | raw cell-type output, 163 rows |
-| `results/lifespan_female_cts_corrected.tsv` | the same, plus FDR q-values and both significance flags |
-| `results/magma_female_clean3/dgrp_lifespan_female_gene.genes.out` | 18,903 gene-level results |
-| `results/lifespan_female_cts_enrichment.png` | enrichment chart with the Bonferroni line |
-| `results/lifespan_gwas_manhattan_qq.png` | Manhattan and QQ plots, with genomic inflation |
-| `results/dgrp_pca_visualization.png` | PC1 vs PC2 scatter and scree plot |
+| `results/lifespan_female_CellTypeSpecific.cell_type_results.txt` | raw h2-cts output, 163 rows |
+| `results/lifespan_female_cts_corrected.tsv` | as above plus q-values and significance flags |
+| `results/magma_female_clean3/dgrp_lifespan_female_gene.genes.out` | 18,903 gene results |
+| `results/lifespan_female_cts_enrichment.png` | enrichment chart, Bonferroni line |
+| `results/lifespan_gwas_manhattan_qq.png` | Manhattan, QQ, lambda_GC |
+| `results/dgrp_pca_visualization.png` | PC1/PC2 scatter, scree |
 | `data/gwas/tmp/female_lifespan_power.tsv` | per-SNP power grid |
 
-**Implementation:** `notebooks/fly_ldsc_female_colab.ipynb` (end to end),
+Implementation: `notebooks/fly_ldsc_female_colab.ipynb`,
 `scripts/run_magma_female_geneset.py`, `scripts/magma_threshold_check.py`,
 `scripts/gene_level_ftest_power.py`, `scripts/lifespan_power_analysis.py`,
 `scripts/lifespan_genotype_power.py`.
