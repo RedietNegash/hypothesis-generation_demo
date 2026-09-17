@@ -830,8 +830,9 @@ def __(subprocess, os, python27_path, FLY_CHROMS, DGRP_PREFIX):
     os.makedirs("data/ldscores/baseline", exist_ok=True)
 
     for _ch in FLY_CHROMS:
-        _out = f"data/ldscores/baseline/baseline.{_ch}.l2.ldscore.gz"
-        if os.path.exists(_out):
+        _outs = [f"data/ldscores/baseline/baseline.{_ch}.l2{_e}"
+                 for _e in (".ldscore.gz", ".M", ".M_5_50")]
+        if all(os.path.exists(_o) for _o in _outs):
             print(f"  chr{_ch} baseline exists, skipping")
             continue
         print(f"  Computing baseline chr{_ch}...", end=" ", flush=True)
@@ -893,7 +894,10 @@ def __(mo):
 
 @app.cell
 def __(CTS_FILE, SUMSTATS_FILE, RESULTS_PREFIX, os, subprocess, python27_path):
-    _baseline_exists = os.path.exists("data/ldscores/baseline/baseline.2L.l2.ldscore.gz")
+    _baseline_exists = all(
+        os.path.exists(f"data/ldscores/baseline/baseline.{_c}.l2.M_5_50")
+        for _c in FLY_CHROMS
+    )
 
     if SUMSTATS_FILE is None or not os.path.exists(SUMSTATS_FILE):
         print(f"Skipping — sumstats not found: {SUMSTATS_FILE}")
