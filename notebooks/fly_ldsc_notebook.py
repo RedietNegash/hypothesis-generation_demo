@@ -222,7 +222,10 @@ def __(os, re):
         _raw  = os.path.splitext(_f)[0]
         _safe = _sanitize(_raw)
         if _safe in _seen:
-            _safe += "_2"
+            _n = 2
+            while f"{_safe}_{_n}" in _seen:
+                _n += 1
+            _safe = f"{_safe}_{_n}"
         _seen[_safe] = _raw
         cell_type_beds[_safe] = os.path.join("data/peaks", _f)
 
@@ -252,6 +255,7 @@ def __(subprocess, os, all_cell_types, cell_type_beds, python27_path, ldsc27_pat
     os.makedirs("data/annotations", exist_ok=True)
     _env = os.environ.copy()
     _env["PATH"] = f"{ldsc27_path}/bin:" + _env.get("PATH", "")
+    _failures = []
 
     for _ct in all_cell_types:
         _all_exist = all(
@@ -278,12 +282,18 @@ def __(subprocess, os, all_cell_types, cell_type_beds, python27_path, ldsc27_pat
                 capture_output=True, text=True, env=_env,
             )
             if _r.returncode != 0:
+                _failures.append((_ct, _ch))
                 print(f"  ERROR chr{_ch}: {_r.stderr[:200]}")
             else:
                 print(f"  chr{_ch}", end=" ", flush=True)
         print(f"\n  {_ct} done")
 
-    print("\nAll annotations generated")
+    if _failures:
+        print(f"\n{len(_failures)} annotation(s) FAILED:")
+        for _ct, _ch in _failures:
+            print(f"  {_ct} chr{_ch}")
+    else:
+        print("\nAll annotations generated")
     return
 
 
