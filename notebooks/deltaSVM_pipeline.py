@@ -29,10 +29,12 @@ def __(mo):
 def __():
     import subprocess
     result = subprocess.run(["bash", "-c", """
+set -euo pipefail
 BASE_DIR="/mnt/hdd_1/rediet/deltaSVM"
 mkdir -p $BASE_DIR/scripts
 
 if [ ! -f "$BASE_DIR/scripts/gkmpredict" ]; then
+    rm -rf /tmp/lsgkm
     git clone https://github.com/Dongwon-Lee/lsgkm.git /tmp/lsgkm
     cd /tmp/lsgkm/src && make
     cp /tmp/lsgkm/bin/gkmpredict $BASE_DIR/scripts/
@@ -186,6 +188,7 @@ def __(mo):
 def __(subprocess):
     CHR_SETUP = "chr1"
     result_setup = subprocess.run(["bash", "-c", f"""
+set -euo pipefail
 BASE_DIR="/mnt/hdd_1/rediet/deltaSVM"
 CHR={CHR_SETUP}
 
@@ -222,6 +225,7 @@ def __(mo):
 @app.cell
 def __(subprocess):
     result_parallel = subprocess.run(["bash", "-c", """
+set -euo pipefail
 CHROMS="chr1 chr2 chr3 chr4 chr5 chr6 chr7 chr8 chr9 chr10 chr11 chr12 chr13 chr14 chr15 chr16 chr17 chr18 chr19 chr20 chr21 chr22"
 BASE_DIR="/mnt/hdd_1/rediet/deltaSVM"
 
@@ -262,7 +266,7 @@ def __(mo):
 @app.cell
 def __(subprocess):
     result_run = subprocess.run(["bash", "-c", """
-set -e
+set -euo pipefail
 rm -rf data tmp out log
 mkdir data tmp out log
 python scripts/generate_allelic_seqs.py -f resources/hs38/hs38.fa -s input_snp.tsv -o data/selex_allelic_oligos 2>log/selex_allelic_oligos.log
@@ -293,6 +297,7 @@ def __(mo):
 @app.cell
 def __(subprocess):
     result_gkm = subprocess.run(["bash", "-c", """
+set -euo pipefail
 BASE_DIR="/mnt/hdd_1/rediet/deltaSVM"
 
 run_gkm_for_chr() {
@@ -342,6 +347,7 @@ def __(mo):
 def __(subprocess):
     CHR_RESTART = "chr1"
     result_restart = subprocess.run(["bash", "-c", f"""
+set -euo pipefail
 CHR={CHR_RESTART}
 cd /mnt/hdd_1/rediet/deltaSVM/runs/$CHR
 
@@ -392,6 +398,7 @@ def __(mo):
 def __(subprocess):
     CHROMS_RUN = "chr1 chr2 chr3"
     result_pipeline = subprocess.run(["bash", "-c", f"""
+set -euo pipefail
 cd /mnt/hdd_1/rediet/deltaSVM
 for CHR in {CHROMS_RUN}; do
     echo "=== Starting $CHR ==="
@@ -414,6 +421,7 @@ def __(mo):
 @app.cell
 def __(subprocess):
     result_progress = subprocess.run(["bash", "-c", """
+set -u
 for CHR in chr1 chr2 chr3 chr4 chr5 chr6 chr7 chr8 chr9 chr10 chr11 chr12 chr13 chr14 chr15 chr16 chr17 chr18 chr19 chr20 chr21 chr22; do
     COUNT=$(ls /mnt/hdd_1/rediet/deltaSVM/runs/$CHR/tmp/*.merge.gkm.tsv 2>/dev/null | wc -l)
     if [ -f /mnt/hdd_1/rediet/deltaSVM/runs/$CHR/out/${CHR}_deltasvm.parquet ]; then PARQUET="done"; else PARQUET="not done"; fi
