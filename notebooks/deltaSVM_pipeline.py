@@ -224,17 +224,17 @@ CHROMS="chr1 chr2 chr3 chr4 chr5 chr6 chr7 chr8 chr9 chr10 chr11 chr12 chr13 chr
 BASE_DIR="/mnt/hdd_1/rediet/deltaSVM"
 
 for CHROM in $CHROMS; do
+    SNP_FILE="$BASE_DIR/snp_batches/${CHROM}_ot.tsv"
+    if [ ! -s "$SNP_FILE" ]; then
+        echo "Skipping $CHROM: $SNP_FILE missing or empty"
+        continue
+    fi
     WORK_DIR="$BASE_DIR/runs/$CHROM"
     mkdir -p "$WORK_DIR"
     cp -r "$BASE_DIR/scripts" "$WORK_DIR/"
     cp -r "$BASE_DIR/resources" "$WORK_DIR/"
     cp -r "$BASE_DIR/gkmsvm_models" "$WORK_DIR/"
     cp "$BASE_DIR/run.sh" "$WORK_DIR/"
-    SNP_FILE="$BASE_DIR/snp_batches/${CHROM}_ot.tsv"
-    if [ ! -s "$SNP_FILE" ]; then
-        echo "Skipping $CHROM: $SNP_FILE missing or empty"
-        continue
-    fi
     cp "$SNP_FILE" "$WORK_DIR/input_snp.tsv"
     echo "Starting $CHROM ($(wc -l < $SNP_FILE) OT-filtered SNPs)..."
     cd "$WORK_DIR"
