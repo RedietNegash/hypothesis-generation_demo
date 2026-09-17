@@ -938,7 +938,8 @@ def __(mo):
     for longevity heritability. Each cell type's coefficient represents the contribution
     of its open-chromatin regions to SNP heritability beyond the genome-wide average.
 
-    Threshold: p < 0.05 (one-sided) highlighted; all cell types shown for context.
+    Significance: Bonferroni across all tested cell types (highlighted), with
+    Benjamini-Hochberg q-values reported alongside. All cell types shown for context.
     """)
     return
 
@@ -957,16 +958,30 @@ def __(RESULTS_PREFIX, pd, np):
         print("Run the LDSC h2-cts section first.")
     else:
         _df = pd.read_csv(_RESULTS_FILE, sep="\t")
-        _df = _df.sort_values("Coefficient_P_value")
+        _df = _df.sort_values("Coefficient_P_value").reset_index(drop=True)
         _df["logp"] = -np.log10(_df["Coefficient_P_value"])
-        _df["sig"] = _df["Coefficient_P_value"] < 0.05
+
+        # Every cell type in the .cts file is tested in one h2-cts run, so
+        # nominal p < 0.05 is not a significance claim.
+        _n = len(_df)
+        _bonf = 0.05 / _n
+        _pv = _df["Coefficient_P_value"].values
+        _q, _prev = np.empty(_n), 1.0
+        for _rank, _idx in enumerate(np.argsort(_pv)[::-1], start=1):
+            _prev = min(_prev, _pv[_idx] * _n / (_n - _rank + 1))
+            _q[_idx] = _prev
+        _df["q_value"] = _q
+        _df["sig"] = _df["Coefficient_P_value"] < _bonf   # Bonferroni
+        _df["sig_fdr05"] = _df["q_value"] < 0.05
 
         _top = _df.head(20).iloc[::-1]  # top 20, reversed for horizontal bar plot
 
         _fig, _ax = _plt.subplots(figsize=(9, max(4, len(_top) * 0.4)))
         _colors = ["#C0392B" if s else "#7FB3D3" for s in _top["sig"]]
         _ax.barh(_top["Name"], _top["logp"], color=_colors, height=0.7)
-        _ax.axvline(-np.log10(0.05), color="black", linestyle="--", lw=0.8, label="p=0.05")
+        _ax.axvline(-np.log10(_bonf), color="#C0392B", linestyle="--", lw=0.9,
+                    label=f"Bonferroni (p={_bonf:.2e})")
+        _ax.axvline(-np.log10(0.05), color="black", linestyle=":", lw=0.8, label="nominal p=0.05")
         _ax.set_xlabel("-log10(p-value)")
         _ax.set_title("Cell-Type Heritability Enrichment — Longevity (DGRP2)")
         _ax.legend(fontsize=8)
@@ -977,9 +992,13 @@ def __(RESULTS_PREFIX, pd, np):
         _plt.show()
         print(f"Saved: {_out}")
 
-        print(f"\nSignificant cell types (p < 0.05): {_df['sig'].sum()}")
-        print(_df[_df["sig"]][["Name", "Coefficient", "Coefficient_std_error", "Coefficient_P_value"]]
-              .to_string(index=False))
+        print(f"\nCell types tested            : {_n}")
+        print(f"Bonferroni threshold         : {_bonf:.3e}")
+        print(f"Significant at Bonferroni    : {int(_df['sig'].sum())}")
+        print(f"Significant at BH-FDR < 0.05 : {int(_df['sig_fdr05'].sum())}")
+        print(f"Nominal p < 0.05 (NOT sig)   : {int((_df['Coefficient_P_value'] < 0.05).sum())}")
+        print(_df[_df["sig"]][["Name", "Coefficient", "Coefficient_std_error",
+                               "Coefficient_P_value", "q_value"]].to_string(index=False))
         print(f"\nTop 10 cell types:")
         print(_df[["Name", "Coefficient", "Coefficient_P_value"]].head(10).to_string(index=False))
 
