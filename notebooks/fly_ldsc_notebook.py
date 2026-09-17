@@ -414,10 +414,19 @@ def __(mo):
 
 
 @app.cell
-def __(BASE_DIR, FLY_CHROMS, subprocess):
+def __(BASE_DIR, FLY_CHROMS, subprocess, pd):
     _QC_DIR  = BASE_DIR / "data" / "gwas" / "tmp" / "qc"
     _REF_DIR = BASE_DIR / "data" / "reference"
     _QC_DIR.mkdir(parents=True, exist_ok=True)
+
+    # Restrict QC to the phenotyped lines: MAF and missingness must be computed
+    # on the same sample the GWAS runs on, or a SNP can clear 1% MAF panel-wide
+    # while being monomorphic among the lines actually analysed.
+    _KEEP = BASE_DIR / "data" / "gwas" / "tmp" / "analysis_lines.keep"
+    pd.read_csv(
+        BASE_DIR / "data" / "gwas" / "lifespan_both_sex.pheno", sep="\t"
+    )[["FID", "IID"]].to_csv(_KEEP, sep="\t", header=False, index=False)
+    print(f"QC sample: {sum(1 for _ in open(_KEEP)):,} phenotyped lines")
 
     print("Running per-chromosome QC (MAF >= 0.01, SNP missingness <= 0.05)...")
     for _chrom in FLY_CHROMS:
@@ -428,7 +437,7 @@ def __(BASE_DIR, FLY_CHROMS, subprocess):
         _result = subprocess.run([
             "plink2",
             "--bfile",         str(_REF_DIR / f"DGRP.{_chrom}"),
-
+            "--keep",          str(_KEEP),
             "--maf",           "0.01",
             "--geno",          "0.05",
             "--allow-extra-chr",
@@ -488,11 +497,26 @@ def __(BASE_DIR, FLY_CHROMS, subprocess):
         if _r.returncode != 0:
             print(f"Merge ERROR:\n{_r.stderr[-400:]}")
         else:
+            # LD-prune first: the DGRP's cosmopolitan inversions are long
+            # high-LD blocks that otherwise dominate the leading PCs, so
+            # unpruned PCs partly describe karyotype rather than ancestry.
+            print("LD-pruning before PCA (200 kb window, r2 < 0.2)...")
+            _PRUNE = BASE_DIR / "data" / "gwas" / "tmp" / "pca_prune"
+            subprocess.run([
+                "plink2",
+                "--bfile",         str(_MERGED),
+                "--allow-extra-chr",
+                "--indep-pairwise", "200", "50", "0.2",
+                "--out",           str(_PRUNE),
+            ], capture_output=True, text=True)
+            print(f"  {sum(1 for _ in open(f'{_PRUNE}.prune.in')):,} SNPs retained for PCA")
+
             print("Computing 10 PCs...")
             _r2 = subprocess.run([
                 "plink2",
                 "--bfile",       str(_MERGED),
                 "--allow-extra-chr",
+                "--extract",     f"{_PRUNE}.prune.in",
                 "--pca",         "10",
                 "--out",         str(_PCA_OUT),
             ], capture_output=True, text=True)
