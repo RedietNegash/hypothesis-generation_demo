@@ -1,4 +1,4 @@
-# 01 — Replication of Ivanov et al. (2015): DGRP female lifespan GWAS
+# 01: Replication of Ivanov et al. (2015): DGRP female lifespan GWAS
 
 **Scope.** A single-dataset replication of the longevity GWAS described in
 *Longevity GWAS Using the Drosophila Genetic Reference Panel*, followed by two
@@ -28,7 +28,7 @@ different phenotype scale and sample size** and is documented separately in
 | Phenotype SD | 9.90 days |
 
 The DGRP lines are inbred and effectively homozygous, so each line contributes
-one genotype and one phenotype mean. `N` is a count of **lines**, not flies —
+one genotype and one phenotype mean. `N` is a count of **lines**, not flies:
 this is what makes the panel small and is the single dominant constraint on
 everything below.
 
@@ -50,7 +50,7 @@ monomorphic predictor contributes nothing but still consumes a test.
 
 Rationale for MAF 1% rather than the more common 5%: at N=197 a 5% MAF
 threshold still leaves only ~10 minor-allele lines, so the threshold is not
-what protects the test — the effect-size requirement is (§5). Keeping 1%
+what protects the test: the effect-size requirement is (§5). Keeping 1%
 preserves rare-variant coverage for the LDSC annotation step, which needs SNP
 density more than it needs per-SNP reliability. **This is a deviation from the
 paper**, which used a 5% cut-off on ~2.19M SNPs.
@@ -71,7 +71,7 @@ removes real signal from inside those regions.
 Justification for stopping at two PCs: the scree plot
 (`results/dgrp_pca_visualization.png`) shows variance explained flattening
 after PC2, and the PC1/PC2 scatter shows the DGRP lines distributed uniformly
-rather than in discrete clusters — this panel has no strong stratification to
+rather than in discrete clusters: this panel has no strong stratification to
 remove. The empirical check is the genomic inflation factor (§3.1), which is
 what would expose insufficient correction.
 
@@ -108,8 +108,8 @@ identical terms rather than on whichever cut-off happens to flatter this run.
 MAGMA in raw-genotype mode: `--annotate nonhuman` with a **0 kb window**,
 gene-based test on the QC'd PLINK fileset, then a competitive gene-set test
 over 163 AFCA cell-type gene sets. Multiple testing handled in
-`scripts/magma_threshold_check.py`: Bonferroni, Holm–Bonferroni (FWER), and
-Benjamini–Hochberg at q = 0.05, 0.10 and 0.20.
+`scripts/magma_threshold_check.py`: Bonferroni, Holm-Bonferroni (FWER), and
+Benjamini-Hochberg at q = 0.05, 0.10 and 0.20.
 
 ### 2.6 Cell-type heritability (extension, not in the paper)
 LDSC-SEG (`ldsc.py --h2-cts`) over the same 163 cell types. Two fly-specific
@@ -137,7 +137,7 @@ with **BH-FDR** reported alongside. Corrected table:
 - ~4.4M SNPs tested after QC; **2 SNPs** reach p < 5e-8.
 - The gene-level analysis (§3.2) finds nothing, and no SNP-level signal
   survives into a credible set except the one described in the fine-mapping
-  document — so the replication outcome is a **negative result that matches
+  document, so the replication outcome is a **negative result that matches
   the paper's own negative result**, not a contradiction of it.
 - λ_GC and the Manhattan/QQ plots are produced in the notebook
   (`results/lifespan_gwas_manhattan_qq.png`); λ near 1 is what confirms the
@@ -152,7 +152,7 @@ Run: `results/magma_female_clean3/` (0 kb window).
 | SNPs mapped to genes | 1,356,952 of 1,965,595 in the fileset (69.0%) |
 | Bonferroni threshold | 0.05 / 18,903 = 2.65e-6 |
 | Genes passing Bonferroni | **0** |
-| Genes passing Holm–Bonferroni | **0** |
+| Genes passing Holm-Bonferroni | **0** |
 | Genes passing BH-FDR at 5 / 10 / 20% | **0 / 0 / 0** |
 | Smallest gene p-value | 7.40e-5 (`INE-1{}6211`) |
 
@@ -168,7 +168,7 @@ Top genes by p-value (nominal only, none significant):
 | `Strica` | 2 | 17 | 3.33 | 4.29e-4 |
 
 Two of the top six are single-SNP genes (`NSNPS = 1`) and two are INE-1
-transposable-element annotations — both patterns are what a null distribution
+transposable-element annotations: both patterns are what a null distribution
 produces, not evidence.
 
 **Gene sets:** 163 sets read, 3,008 unique genes covered. **0 sets significant
@@ -180,16 +180,16 @@ above the mean before fitting, as logged.
 
 | Cell type | Coefficient | SE | P | q | Bonferroni |
 |---|---|---|---|---|---|
-| CNS surface-associated glial cell | 2.08e-5 | 5.18e-6 | 2.91e-5 | 0.0028 | ✓ |
-| Female reproductive system | 2.44e-5 | 6.12e-6 | 3.47e-5 | 0.0028 | ✓ |
-| Polar follicle cell | 1.87e-5 | 5.19e-6 | 1.59e-4 | 0.0087 | ✓ |
-| Adult hindgut | 1.82e-5 | 5.26e-6 | 2.71e-4 | 0.0089 | ✓ |
-| Enteroendocrine cell | 1.95e-5 | 5.65e-6 | 2.74e-4 | 0.0089 | ✓ |
-| Pericerebral adult fat mass | 2.07e-5 | 6.20e-6 | 4.26e-4 | 0.0100 | — |
-| Adult fat body (head) | 2.25e-5 | 6.75e-6 | 4.29e-4 | 0.0100 | — |
-| Epidermal cell, antimicrobial response | 2.17e-5 | 6.94e-6 | 8.78e-4 | 0.0179 | — |
-| Epithelial cell body | 1.82e-5 | 6.01e-6 | 1.20e-3 | 0.0206 | — |
-| Oviduct | 1.91e-5 | 6.32e-6 | 1.26e-3 | 0.0206 | — |
+| CNS surface-associated glial cell | 2.08e-5 | 5.18e-6 | 2.91e-5 | 0.0028 | yes |
+| Female reproductive system | 2.44e-5 | 6.12e-6 | 3.47e-5 | 0.0028 | yes |
+| Polar follicle cell | 1.87e-5 | 5.19e-6 | 1.59e-4 | 0.0087 | yes |
+| Adult hindgut | 1.82e-5 | 5.26e-6 | 2.71e-4 | 0.0089 | yes |
+| Enteroendocrine cell | 1.95e-5 | 5.65e-6 | 2.74e-4 | 0.0089 | yes |
+| Pericerebral adult fat mass | 2.07e-5 | 6.20e-6 | 4.26e-4 | 0.0100 | no |
+| Adult fat body (head) | 2.25e-5 | 6.75e-6 | 4.29e-4 | 0.0100 | no |
+| Epidermal cell, antimicrobial response | 2.17e-5 | 6.94e-6 | 8.78e-4 | 0.0179 | no |
+| Epithelial cell body | 1.82e-5 | 6.01e-6 | 1.20e-3 | 0.0206 | no |
+| Oviduct | 1.91e-5 | 6.32e-6 | 1.26e-3 | 0.0206 | no |
 
 All coefficients are positive, i.e. each of these annotations absorbs more
 per-SNP heritability than the genome-wide average.
@@ -209,11 +209,11 @@ argument is §5.
 | MAF filter | 5% | 1% | preserves SNP density for LDSC annotations; does not change power at this N |
 | SNPs tested | ~2.19M | ~4.4M | consequence of the MAF filter |
 | Covariates | study-specific | PC1 + PC2 | scree/scatter show no further structure |
-| Gene-level test | — | MAGMA | extension |
-| Cell-type heritability | — | LDSC-SEG | extension |
+| Gene-level test | not run | MAGMA | extension |
+| Cell-type heritability | not run | LDSC-SEG | extension |
 | Wolbachia / inversion covariates | accounted for | **not included** | known gap, see §6 |
 
-## 5. Power — why the negative results are expected
+## 5. Power: why the negative results are expected
 
 Two independent calculations, neither of which needs a simulation.
 
@@ -241,7 +241,7 @@ to be detectable is, by the paper's own accounting, undetectable here.
 
 **Conclusion: the null gene-level result is a property of N=197, not of the
 pipeline or the choice of multiple-testing correction.** No threshold rescues
-it — that is exactly what §3.2's Holm and BH rows demonstrate.
+it: that is exactly what §3.2's Holm and BH rows demonstrate.
 
 ## 6. Known limitations
 
@@ -259,7 +259,7 @@ it — that is exactly what §3.2's Holm and BH rows demonstrate.
    restricted to the phenotyped lines (§2.1) and PCA is now LD-pruned (§2.2);
    both change the SNP set and the covariates, so every number in §3 needs
    regenerating before it is quoted as current. The direction of change is not
-   predictable in advance — neither fix is a strict subset of the old
+   predictable in advance: neither fix is a strict subset of the old
    behaviour.
 6. **Intermediate files under `data/magma/`, `data/finemap/` and
    `data/gwas/` are no longer on disk.** GWAS-level counts in §3.1 are carried
