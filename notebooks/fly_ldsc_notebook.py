@@ -405,7 +405,8 @@ def __(mo):
 
     Filter DGRP2 genotypes per chromosome arm before running GWAS.
 
-    - `--maf 0.01` — remove SNPs with minor allele frequency < 1% (too rare to test reliably with n=132)
+    - `--maf 0.01` — remove SNPs with minor allele frequency < 1% (too rare to
+      test reliably at this panel size; the exact line count is printed below)
     - `--geno 0.05` — remove SNPs missing in more than 5% of lines (low-quality genotyping)
 
     Cleaned files saved to `data/gwas/tmp/qc/<chrom>.bed/bim/fam`
@@ -600,12 +601,13 @@ def __(BASE_DIR, FLY_CHROMS, subprocess, pd, glob, python27_path, Path):
             _merged = _merged.rename(columns={"#CHROM": "CHR", "ID": "SNP", "OBS_CT": "N"})
             _merged["Z"] = _merged["BETA"] / _merged["SE"]
 
-            _bim = pd.concat([
-                pd.read_csv(_f, sep="\t", header=None,
-                            names=["CHR", "SNP", "CM", "BP", "A1", "A2"])
-                for _f in sorted(_glob.glob(str(_REF_DIR / "DGRP.*.bim")))
-            ]).drop_duplicates("SNP")
-            _merged = _merged.merge(_bim[["SNP", "A2"]], on="SNP", how="left")
+            # A2 is the allele plink2 did NOT test. Taking it from the .bim by
+            # SNP ID is wrong whenever the tested A1 is the .bim's A2 -- both
+            # columns then hold the same allele. REF/ALT are in the GWAS output.
+            _merged["A2"] = _merged["REF"].where(
+                _merged["A1"] != _merged["REF"], _merged["ALT"]
+            )
+            assert (_merged["A1"] != _merged["A2"]).all(), "A1 and A2 identical"
 
             _out_df = _merged[["SNP", "A1", "A2", "Z", "N", "P"]].dropna()
             _out_df.to_csv(_MERGED_Z, sep="\t", index=False)
