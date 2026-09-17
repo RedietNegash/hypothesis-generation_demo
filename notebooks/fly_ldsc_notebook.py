@@ -893,7 +893,7 @@ def __(mo):
 
 
 @app.cell
-def __(CTS_FILE, SUMSTATS_FILE, RESULTS_PREFIX, os, subprocess, python27_path):
+def __(CTS_FILE, SUMSTATS_FILE, RESULTS_PREFIX, os, subprocess, python27_path, FLY_CHROMS):
     _baseline_exists = all(
         os.path.exists(f"data/ldscores/baseline/baseline.{_c}.l2.M_5_50")
         for _c in FLY_CHROMS
