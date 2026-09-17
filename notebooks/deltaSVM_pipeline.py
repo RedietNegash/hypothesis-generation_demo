@@ -74,6 +74,8 @@ def __():
     output_snp = "input_snp_common.tsv"
     output_rsid_map = "rsid_map.tsv"
 
+    AUTOSOMES = {str(i) for i in range(1, 23)}
+
     count = 0
     written = 0
 
@@ -93,7 +95,7 @@ def __():
             count += 1
             if "VC=SNV" not in info:
                 continue
-            if chrom not in [str(i) for i in range(1, 23)] + ["X", "Y"]:
+            if chrom not in AUTOSOMES:
                 continue
             if len(ref) != 1 or len(alt) != 1:
                 continue
