@@ -118,8 +118,12 @@ def __(mo):
 
 @app.cell
 def __():
+    import os
     import pandas as pd
     import glob
+
+    SNP_DIR = '/mnt/hdd_1/rediet/deltaSVM/snp_batches'
+    CHROMS = [f'chr{i}' for i in range(1, 23)]
 
     print("Loading OpenTargets variants...")
     files = glob.glob('/mnt/hdd_1/rediet/opentargets_variants/variant/part-*.parquet')
@@ -132,21 +136,42 @@ def __():
 
     print(f"\nTotal OT variants: {len(ot_variants):,}")
 
-    CHROMS = [f'chr{i}' for i in range(1, 23)]
-    for CHR in CHROMS:
-        snp_file = f'/mnt/hdd_1/rediet/deltaSVM/snp_batches/{CHR}.tsv'
-        out_file = f'/mnt/hdd_1/rediet/deltaSVM/snp_batches/{CHR}_ot.tsv'
+    def filter_chrom_snps(chrom):
+        """Filter one chromosome's SNP batch against the OpenTargets variant set."""
+        snp_file = f'{SNP_DIR}/{chrom}.tsv'
+        out_file = f'{SNP_DIR}/{chrom}_ot.tsv'
+
+        if not os.path.exists(snp_file):
+            print(f"{chrom}: SKIPPED, missing {snp_file}")
+            return 0, 0
 
         with open(snp_file) as _f:
-            snps = [line.strip() for line in _f]
+            snps = [line.strip() for line in _f if line.strip()]
 
         filtered = [s for s in snps if s in ot_variants]
 
         with open(out_file, 'w') as _f:
-            _f.write('\n'.join(filtered))
+            for snp in filtered:
+                _f.write(snp + '\n')
 
-        print(f"{CHR}: {len(snps):,} → {len(filtered):,} SNPs after filtering")
-    return CHROMS, glob, ot_variants, pd
+        kept = 100 * len(filtered) / len(snps) if snps else 0.0
+        print(f"{chrom}: {len(snps):,} -> {len(filtered):,} SNPs after filtering ({kept:.1f}% kept)")
+        return len(snps), len(filtered)
+
+    total_in = 0
+    total_out = 0
+    for CHR in CHROMS:
+        n_in, n_out = filter_chrom_snps(CHR)
+        total_in += n_in
+        total_out += n_out
+
+    missing = [c for c in CHROMS if not os.path.exists(f'{SNP_DIR}/{c}_ot.tsv')]
+    print(f"\nAll chromosomes filtered: {total_in:,} -> {total_out:,} SNPs")
+    if missing:
+        print(f"WARNING: no OT-filtered SNP batch for: {', '.join(missing)}")
+    else:
+        print("Every chromosome has an OT-filtered SNP batch.")
+    return CHROMS, SNP_DIR, filter_chrom_snps, glob, os, ot_variants, pd
 
 
 @app.cell
