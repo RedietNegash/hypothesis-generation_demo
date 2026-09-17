@@ -28,7 +28,24 @@ def __(mo):
 @app.cell
 def __():
     import subprocess
-    result = subprocess.run(["bash", "-c", """
+
+
+    def run_bash(script, label="step"):
+        """Run a bash script, echo its output, and surface a non-zero exit."""
+        proc = subprocess.run(["bash", "-c", script], capture_output=True, text=True)
+        if proc.stdout:
+            print(proc.stdout, end="")
+        if proc.stderr:
+            print(proc.stderr, end="")
+        if proc.returncode != 0:
+            print(f"\n!! {label} FAILED with exit code {proc.returncode}")
+        return proc
+    return run_bash, subprocess
+
+
+@app.cell
+def __(run_bash):
+    result = run_bash("""
 set -euo pipefail
 BASE_DIR="/mnt/hdd_1/rediet/deltaSVM"
 mkdir -p $BASE_DIR/scripts
@@ -56,10 +73,8 @@ echo "  - resources/thresholds.pbs.tsv"
 echo "  - resources/thresholds.obs.tsv"
 echo "  - gkmsvm_models/*.model.txt"
 echo "  - snp_batches/chrN.tsv"
-    """], capture_output=True, text=True)
-    print(result.stdout)
-    print(result.stderr)
-    return result, subprocess
+    """, label="section 0 environment setup")
+    return result,
 
 
 @app.cell
@@ -185,9 +200,9 @@ def __(mo):
 
 
 @app.cell
-def __(subprocess):
+def __(run_bash):
     CHR_SETUP = "chr1"
-    result_setup = subprocess.run(["bash", "-c", f"""
+    result_setup = run_bash(f"""
 set -euo pipefail
 BASE_DIR="/mnt/hdd_1/rediet/deltaSVM"
 CHR={CHR_SETUP}
@@ -210,9 +225,7 @@ cd $BASE_DIR/runs/$CHR
 python scripts/generate_allelic_seqs.py -f resources/hs38/hs38.fa -s input_snp.tsv -o data/selex_allelic_oligos
 scripts/deltasvm_subset_multi data/selex_allelic_oligos.ref.fa data/selex_allelic_oligos.alt.fa resources/models.weights.txt out/pbs.pred.tsv resources/thresholds.pbs.tsv
 echo "$CHR setup done!"
-    """], capture_output=True, text=True)
-    print(result_setup.stdout)
-    print(result_setup.stderr)
+    """, label="section 3 chromosome setup")
     return CHR_SETUP, result_setup
 
 
@@ -223,8 +236,8 @@ def __(mo):
 
 
 @app.cell
-def __(subprocess):
-    result_parallel = subprocess.run(["bash", "-c", """
+def __(run_bash):
+    result_parallel = run_bash("""
 set -euo pipefail
 CHROMS="chr1 chr2 chr3 chr4 chr5 chr6 chr7 chr8 chr9 chr10 chr11 chr12 chr13 chr14 chr15 chr16 chr17 chr18 chr19 chr20 chr21 chr22"
 BASE_DIR="/mnt/hdd_1/rediet/deltaSVM"
@@ -251,9 +264,7 @@ done
 echo "All chromosomes started in parallel!"
 wait
 echo "All done!"
-    """], capture_output=True, text=True)
-    print(result_parallel.stdout)
-    print(result_parallel.stderr)
+    """, label="section 4 parallel run")
     return result_parallel,
 
 
@@ -264,8 +275,8 @@ def __(mo):
 
 
 @app.cell
-def __(subprocess):
-    result_run = subprocess.run(["bash", "-c", """
+def __(run_bash):
+    result_run = run_bash("""
 set -euo pipefail
 rm -rf data tmp out log
 mkdir data tmp out log
@@ -282,9 +293,7 @@ done
 python scripts/obs_pred.py -s resources/thresholds.obs.tsv -o out/obs.pred.tsv
 sort -k1,1 -k2,2 -o out/obs.pred.tsv out/obs.pred.tsv
 paste out/obs.pred.tsv out/pbs.pred.tsv | cut -f1-5,7,9 | sort -k7,7 -k5,5r | sed '1i snp\ttf\tallele1_bind\tallele2_bind\tseq_binding\tdeltaSVM_score\tpreferred_allele' >out/summary.pred.tsv
-    """], capture_output=True, text=True)
-    print(result_run.stdout)
-    print(result_run.stderr)
+    """, label="section 5 single chromosome run")
     return result_run,
 
 
@@ -295,8 +304,8 @@ def __(mo):
 
 
 @app.cell
-def __(subprocess):
-    result_gkm = subprocess.run(["bash", "-c", """
+def __(run_bash):
+    result_gkm = run_bash("""
 set -euo pipefail
 BASE_DIR="/mnt/hdd_1/rediet/deltaSVM"
 
@@ -331,9 +340,7 @@ for CHR in chr15 chr16 chr17 chr18 chr19 chr20; do
 done
 wait
 echo "All chromosomes done!"
-    """], capture_output=True, text=True)
-    print(result_gkm.stdout)
-    print(result_gkm.stderr)
+    """, label="section 6 gkmpredict sweep")
     return result_gkm,
 
 
@@ -344,9 +351,9 @@ def __(mo):
 
 
 @app.cell
-def __(subprocess):
+def __(run_bash):
     CHR_RESTART = "chr1"
-    result_restart = subprocess.run(["bash", "-c", f"""
+    result_restart = run_bash(f"""
 set -euo pipefail
 CHR={CHR_RESTART}
 cd /mnt/hdd_1/rediet/deltaSVM/runs/$CHR
@@ -382,9 +389,7 @@ df.to_parquet('out/{CHR_RESTART}_deltasvm.parquet', index=False)
 print('{CHR_RESTART} parquet done! rows:', len(df))
 "
 echo "=== $CHR FULLY DONE ==="
-    """], capture_output=True, text=True)
-    print(result_restart.stdout)
-    print(result_restart.stderr)
+    """, label="section 7 restart")
     return CHR_RESTART, result_restart
 
 
@@ -395,9 +400,9 @@ def __(mo):
 
 
 @app.cell
-def __(subprocess):
+def __(run_bash):
     CHROMS_RUN = "chr1 chr2 chr3"
-    result_pipeline = subprocess.run(["bash", "-c", f"""
+    result_pipeline = run_bash(f"""
 set -euo pipefail
 cd /mnt/hdd_1/rediet/deltaSVM
 for CHR in {CHROMS_RUN}; do
@@ -406,9 +411,7 @@ for CHR in {CHROMS_RUN}; do
     echo "=== $CHR FULLY DONE ==="
 done
 echo "ALL DONE!"
-    """], capture_output=True, text=True)
-    print(result_pipeline.stdout)
-    print(result_pipeline.stderr)
+    """, label="section 8 orchestration")
     return CHROMS_RUN, result_pipeline
 
 
@@ -419,8 +422,8 @@ def __(mo):
 
 
 @app.cell
-def __(subprocess):
-    result_progress = subprocess.run(["bash", "-c", """
+def __(run_bash):
+    result_progress = run_bash("""
 set -u
 for CHR in chr1 chr2 chr3 chr4 chr5 chr6 chr7 chr8 chr9 chr10 chr11 chr12 chr13 chr14 chr15 chr16 chr17 chr18 chr19 chr20 chr21 chr22; do
     COUNT=$(ls /mnt/hdd_1/rediet/deltaSVM/runs/$CHR/tmp/*.merge.gkm.tsv 2>/dev/null | wc -l)
@@ -430,9 +433,7 @@ for CHR in chr1 chr2 chr3 chr4 chr5 chr6 chr7 chr8 chr9 chr10 chr11 chr12 chr13 
     if [ "$USED" -ne "$OT" ]; then FILTER="NOT OT-filtered ($USED vs $OT)"; else FILTER="OT-filtered ($USED SNPs)"; fi
     echo "$CHR: $COUNT/94 TFs | $PARQUET | $FILTER"
 done
-    """], capture_output=True, text=True)
-    print(result_progress.stdout)
-    print(result_progress.stderr)
+    """, label="section 9 progress check")
     return result_progress,
 
 
