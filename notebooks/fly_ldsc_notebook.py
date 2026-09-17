@@ -311,8 +311,10 @@ def __(subprocess, os, all_cell_types, python27_path, concurrent, multiprocessin
         ct, ch = args
         _dir = f"data/ldscores/{ct}"
         os.makedirs(_dir, exist_ok=True)
-        _out = f"{_dir}/{ct}.{ch}.l2.ldscore.gz"
-        if os.path.exists(_out):
+        # ldsc.py --l2 writes three files; a run killed between them leaves a
+        # usable-looking .ldscore.gz that h2-cts later rejects.
+        _outs = [f"{_dir}/{ct}.{ch}.l2{_e}" for _e in (".ldscore.gz", ".M", ".M_5_50")]
+        if all(os.path.exists(_o) for _o in _outs):
             return f"[{ct}] chr{ch} exists"
         try:
             subprocess.run(
@@ -325,11 +327,12 @@ def __(subprocess, os, all_cell_types, python27_path, concurrent, multiprocessin
                     "--thin-annot",
                     "--out",         f"{_dir}/{ct}.{ch}",
                 ],
-                check=True, capture_output=True,
+                check=True, capture_output=True, text=True,
             )
             return f"[{ct}] chr{ch} done"
         except subprocess.CalledProcessError as e:
-            return f"ERROR [{ct}] chr{ch}: {e.stderr[:200] if e.stderr else ''}"
+            _msg = (e.stderr or "").strip().splitlines()
+            return f"ERROR [{ct}] chr{ch}: {_msg[-1] if _msg else 'no stderr'}"
 
     _tasks = [(ct, ch) for ct in all_cell_types for ch in FLY_CHROMS]
     _max_workers = min(multiprocessing.cpu_count() - 1, 8)
