@@ -187,12 +187,19 @@ def __(subprocess):
 BASE_DIR="/mnt/hdd_1/rediet/deltaSVM"
 CHR={CHR_SETUP}
 
-echo "Setting up $CHR..."
+SNP_FILE="$BASE_DIR/snp_batches/${{CHR}}_ot.tsv"
+
+if [ ! -s "$SNP_FILE" ]; then
+    echo "ERROR: $SNP_FILE missing or empty - run section 2 (OpenTargets filtering) first"
+    exit 1
+fi
+
+echo "Setting up $CHR with $(wc -l < $SNP_FILE) OT-filtered SNPs..."
 mkdir -p $BASE_DIR/runs/$CHR/{{data,tmp,out,log}}
 cp -r $BASE_DIR/scripts $BASE_DIR/runs/$CHR/
 cp -r $BASE_DIR/resources $BASE_DIR/runs/$CHR/
 cp -r $BASE_DIR/gkmsvm_models $BASE_DIR/runs/$CHR/
-cp $BASE_DIR/snp_batches/$CHR.tsv $BASE_DIR/runs/$CHR/input_snp.tsv
+cp "$SNP_FILE" $BASE_DIR/runs/$CHR/input_snp.tsv
 
 cd $BASE_DIR/runs/$CHR
 python scripts/generate_allelic_seqs.py -f resources/hs38/hs38.fa -s input_snp.tsv -o data/selex_allelic_oligos
