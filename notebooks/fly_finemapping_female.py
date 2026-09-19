@@ -312,11 +312,28 @@ def extract_regions(gwas: pd.DataFrame, signals: pd.DataFrame) -> None:
         print(f"{snp}: {len(region):,} {snp_label} within +/-{WINDOW_BP:,} bp -> {out_file}")
 
 
-if __name__ == "__main__":
+def main() -> None:
+    print("\n[1/7] Loading chromosome-level GWAS results")
     gwas = merge_gwas_sumstats()
-    sig = filter_significant_snps(gwas)
-    write_cojo_input(sig)
+
+    print("\n[2/7] Filtering COJO-eligible SNPs")
+    significant_snps = filter_significant_snps(gwas)
+
+    print("\n[3/7] Writing GCTA-COJO summary statistics")
+    write_cojo_input(significant_snps)
+
+    print("\n[4/7] Preparing the PLINK LD reference")
     prepare_cojo_bfile()
+
+    print("\n[5/7] Selecting independent signals with GCTA-COJO")
     run_cojo()
+
+    print("\n[6/7] Loading independent COJO signals")
     signals = load_cojo_signals()
+
+    print("\n[7/7] Extracting fine-mapping regions")
     extract_regions(gwas, signals)
+
+
+if __name__ == "__main__":
+    main()
