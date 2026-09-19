@@ -77,23 +77,32 @@ def merge_gwas_sumstats() -> pd.DataFrame:
 
 
 def filter_significant_snps(gwas: pd.DataFrame) -> pd.DataFrame:
-    if SIG_SNP_FILE.exists():
-        print(f"Significant SNPs already extracted: {SIG_SNP_FILE}")
-        return pd.read_csv(SIG_SNP_FILE, sep="\t")
-
     maf = np.minimum(gwas["freq"], 1 - gwas["freq"])
-    sig = gwas[
-        (maf > MIN_MAF) & (gwas["N"] >= MIN_N) & (gwas["p"] <= SIG_P_THRESHOLD)
-    ].sort_values("p").copy()
+    valid = (
+        gwas[["SNP", "A1", "A2"]].notna().all(axis=1)
+        & gwas["freq"].between(0, 1)
+        & gwas["p"].between(0, 1)
+        & (gwas["se"] > 0)
+        & (gwas["N"] >= MIN_N)
+    )
+    eligible = gwas.loc[valid & (maf >= MIN_MAF)].copy()
+    significant = eligible.loc[eligible["p"] <= SIG_P_THRESHOLD].sort_values("p")
+
+    if significant.empty:
+        raise ValueError(
+            f"No SNPs passed MAF >= {MIN_MAF:g}, N >= {MIN_N}, "
+            f"and P <= {SIG_P_THRESHOLD:g}"
+        )
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
-    sig.to_csv(SIG_SNP_FILE, sep="\t", index=False)
+    significant.to_csv(SIG_SNP_FILE, sep="\t", index=False)
 
-    n_gw = int((gwas["p"] <= 5e-8).sum())
-    print(f"SNPs at p <= 5e-8 (standard genome-wide)      : {n_gw}")
-    print(f"SNPs at p <= {SIG_P_THRESHOLD:g} (suggestive, used here) : {len(sig)}")
-    print(f"Saved: {SIG_SNP_FILE}")
-    return sig
+    genome_wide_count = int((eligible["p"] <= 5e-8).sum())
+    print(f"Eligible SNPs after MAF and sample-size filters: {len(eligible):,}")
+    print(f"SNPs at P <= 5e-8: {genome_wide_count:,}")
+    print(f"SNPs at P <= {SIG_P_THRESHOLD:g}: {len(significant):,}")
+    print(f"Saved significant SNPs: {SIG_SNP_FILE}")
+    return significant
 
 
 def write_cojo_input(sig: pd.DataFrame) -> None:
