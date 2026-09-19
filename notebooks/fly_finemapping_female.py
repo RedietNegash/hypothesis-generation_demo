@@ -43,6 +43,7 @@ GWAS_COLUMN_MAP = {
 }
 GWAS_COLUMNS = ["CHR", "POS", "SNP", "A1", "A2", "freq", "b", "se", "p", "N"]
 NUMERIC_COLUMNS = ["POS", "freq", "b", "se", "p", "N"]
+COJO_COLUMNS = ["SNP", "A1", "A2", "freq", "b", "se", "p", "N"]
 
 
 def merge_gwas_sumstats() -> pd.DataFrame:
@@ -105,11 +106,23 @@ def filter_significant_snps(gwas: pd.DataFrame) -> pd.DataFrame:
     return significant
 
 
-def write_cojo_input(sig: pd.DataFrame) -> None:
-    cojo = sig[["SNP", "A1", "A2", "freq", "b", "se", "p", "N"]].copy()
-    cojo["N"] = cojo["N"].astype(int)
+def write_cojo_input(significant_snps: pd.DataFrame) -> None:
+    duplicate_snps = significant_snps.loc[
+        significant_snps["SNP"].duplicated(keep=False), "SNP"
+    ].unique()
+    if len(duplicate_snps):
+        duplicate_list = ", ".join(map(str, duplicate_snps[:5]))
+        raise ValueError(f"COJO input contains duplicate SNP IDs: {duplicate_list}")
+
+    cojo = significant_snps[COJO_COLUMNS].copy()
+    rounded_sample_size = np.rint(cojo["N"])
+    if not np.allclose(cojo["N"], rounded_sample_size):
+        raise ValueError("COJO sample sizes must be whole numbers")
+
+    cojo["N"] = rounded_sample_size.astype(int)
+    COJO_INPUT_FILE.parent.mkdir(parents=True, exist_ok=True)
     cojo.to_csv(COJO_INPUT_FILE, sep=" ", index=False)
-    print(f"COJO input written: {COJO_INPUT_FILE} ({len(cojo)} SNPs)")
+    print(f"Saved COJO input: {COJO_INPUT_FILE} ({len(cojo):,} SNPs)")
 
 
 def prepare_cojo_bfile() -> None:
