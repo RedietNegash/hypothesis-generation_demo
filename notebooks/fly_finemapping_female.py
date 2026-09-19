@@ -31,28 +31,49 @@ MIN_N = 100
 
 GCTA_BIN = shutil.which("gcta64") or "/home/icog-bioai2/bin/gcta64"
 
+GWAS_COLUMN_MAP = {
+    "#CHROM": "CHR",
+    "ID": "SNP",
+    "A1_FREQ": "freq",
+    "BETA": "b",
+    "SE": "se",
+    "P": "p",
+    "OBS_CT": "N",
+    "OMITTED": "A2",
+}
+GWAS_COLUMNS = ["CHR", "POS", "SNP", "A1", "A2", "freq", "b", "se", "p", "N"]
+NUMERIC_COLUMNS = ["POS", "freq", "b", "se", "p", "N"]
+
 
 def merge_gwas_sumstats() -> pd.DataFrame:
     frames = []
     for chrom in FLY_CHROMS:
-        f = GLM_DIR / f"lifespan_{chrom}.{PHENO_NAME}.glm.linear"
-        if not f.exists():
-            raise FileNotFoundError(f"Missing female GWAS output for {chrom}: {f}")
-        frames.append(pd.read_csv(f, sep="\t"))
-    df = pd.concat(frames, ignore_index=True)
+        input_file = GLM_DIR / f"lifespan_{chrom}.{PHENO_NAME}.glm.linear"
+        if not input_file.is_file():
+            raise FileNotFoundError(f"Missing female GWAS output for {chrom}: {input_file}")
 
-    df = df.rename(columns={
-        "#CHROM": "CHR", "ID": "SNP", "A1_FREQ": "freq",
-        "BETA": "b", "SE": "se", "P": "p", "OBS_CT": "N", "OMITTED": "A2",
-    })
-    df = df[["CHR", "POS", "SNP", "A1", "A2", "freq", "b", "se", "p", "N"]].copy()
+        chromosome_gwas = pd.read_csv(input_file, sep="\t", low_memory=False)
+        required_columns = set(GWAS_COLUMN_MAP) | {"POS", "A1"}
+        missing_columns = sorted(required_columns - set(chromosome_gwas.columns))
+        if missing_columns:
+            raise ValueError(f"{input_file} is missing columns: {', '.join(missing_columns)}")
 
-    for col in ["freq", "b", "se", "p", "N"]:
-        df[col] = pd.to_numeric(df[col], errors="coerce")
-    df = df.dropna(subset=["freq", "b", "se", "p", "N"])
+        chromosome_gwas = chromosome_gwas.rename(columns=GWAS_COLUMN_MAP)
+        frames.append(chromosome_gwas[GWAS_COLUMNS])
 
-    print(f"Merged female GWAS: {len(df):,} SNPs across {len(FLY_CHROMS)} chromosomes")
-    return df
+    gwas = pd.concat(frames, ignore_index=True)
+    for column in NUMERIC_COLUMNS:
+        gwas[column] = pd.to_numeric(gwas[column], errors="coerce")
+
+    row_count = len(gwas)
+    gwas = gwas.dropna(subset=NUMERIC_COLUMNS).copy()
+    gwas["CHR"] = gwas["CHR"].astype(str)
+    dropped_count = row_count - len(gwas)
+
+    print(f"Merged female GWAS: {len(gwas):,} SNPs across {len(FLY_CHROMS)} chromosomes")
+    if dropped_count:
+        print(f"Dropped {dropped_count:,} rows with missing or invalid numeric values")
+    return gwas
 
 
 def filter_significant_snps(gwas: pd.DataFrame) -> pd.DataFrame:
