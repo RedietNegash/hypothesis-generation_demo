@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import argparse
 import shlex
 import shutil
 import subprocess
@@ -180,20 +181,18 @@ def prepare_cojo_bfile() -> None:
     print(f"Prepared COJO LD reference: {LD_REF_BFILE} ({variant_count:,} SNPs)")
 
 
-def run_cojo() -> None:
+def run_cojo(gcta_bin: str = GCTA_BIN, force: bool = False) -> None:
     jma_file = COJO_OUT_PREFIX.with_suffix(".jma.cojo")
-    if jma_file.is_file():
+    if jma_file.is_file() and not force:
         print(f"Using existing COJO result: {jma_file}")
         return
 
-    gcta_executable = shutil.which(GCTA_BIN)
+    gcta_command = str(Path(gcta_bin).expanduser())
+    gcta_executable = shutil.which(gcta_command)
     if gcta_executable is None:
-        gcta_path = Path(GCTA_BIN).expanduser()
-        if not gcta_path.is_file():
-            raise FileNotFoundError(
-                f"Could not find GCTA executable {GCTA_BIN!r}; add gcta64 to PATH"
-            )
-        gcta_executable = str(gcta_path.resolve())
+        raise FileNotFoundError(
+            f"Could not execute {gcta_bin!r}; add gcta64 to PATH or pass --gcta-bin"
+        )
 
     required_inputs = [
         COJO_INPUT_FILE,
@@ -312,7 +311,26 @@ def extract_regions(gwas: pd.DataFrame, signals: pd.DataFrame) -> None:
         print(f"{snp}: {len(region):,} {snp_label} within +/-{WINDOW_BP:,} bp -> {out_file}")
 
 
-def main() -> None:
+def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description="Select independent female lifespan GWAS signals for fine-mapping."
+    )
+    parser.add_argument(
+        "--gcta-bin",
+        default=GCTA_BIN,
+        help="GCTA executable name or path (default: gcta64)",
+    )
+    parser.add_argument(
+        "--force",
+        action="store_true",
+        help="Run GCTA-COJO even when its result file already exists",
+    )
+    return parser.parse_args(argv)
+
+
+def main(argv: list[str] | None = None) -> None:
+    args = parse_args(argv)
+
     print("\n[1/7] Loading chromosome-level GWAS results")
     gwas = merge_gwas_sumstats()
 
@@ -326,7 +344,7 @@ def main() -> None:
     prepare_cojo_bfile()
 
     print("\n[5/7] Selecting independent signals with GCTA-COJO")
-    run_cojo()
+    run_cojo(gcta_bin=args.gcta_bin, force=args.force)
 
     print("\n[6/7] Loading independent COJO signals")
     signals = load_cojo_signals()
