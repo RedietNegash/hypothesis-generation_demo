@@ -435,18 +435,18 @@ def __(mo):
 
 
 @app.cell
-def __(run_bash):
+def __(RESTART_CHR, run_bash):
     CHROMS_RUN = "chr1 chr2 chr3"
-    result_pipeline = run_bash(f"""
-set -euo pipefail
-cd /mnt/hdd_1/rediet/deltaSVM
-for CHR in {CHROMS_RUN}; do
-    echo "=== Starting $CHR ==="
-    bash /mnt/hdd_1/rediet/deltaSVM/restart_chr.sh $CHR
-    echo "=== $CHR FULLY DONE ==="
-done
-echo "ALL DONE!"
-    """, label="section 8 orchestration")
+    result_pipeline = run_bash(
+        'set -euo pipefail\n'
+        'BASE_DIR="/mnt/hdd_1/rediet/deltaSVM"\n'
+        f'for CHR in {CHROMS_RUN}; do\n'
+        '    echo "=== Starting $CHR ==="\n'
+        '    ( ' + RESTART_CHR + ' )\n'
+        'done\n'
+        'echo "ALL DONE!"\n',
+        label="section 8 orchestration",
+    )
     return CHROMS_RUN, result_pipeline
 
 
