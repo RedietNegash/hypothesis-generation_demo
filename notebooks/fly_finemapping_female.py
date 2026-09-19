@@ -6,8 +6,8 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-BASE_DIR = Path("/mnt/hdd_1/rediet/fly-ldsc")
-FLY_CHROMS = ["2L", "2R", "3L", "3R", "4", "X"]
+BASE_DIR = Path(__file__).resolve().parents[1]
+FLY_CHROMS = ("2L", "2R", "3L", "3R", "4", "X")
 
 PHENO_NAME = "S18_1537_F"
 GLM_DIR = BASE_DIR / "data" / "gwas" / "tmp"
@@ -20,7 +20,7 @@ COJO_INPUT_FILE = OUT_DIR / "female_cojo_input.txt"
 COJO_OUT_PREFIX = OUT_DIR / "cojo" / "female_lifespan_cojo"
 REGIONS_DIR = OUT_DIR / "regions"
 
-CHROM_MAP = {"2L": "1", "2R": "2", "3L": "3", "3R": "4", "4": "5", "23": "23"}
+CHROM_MAP = {"2L": "1", "2R": "2", "3L": "3", "3R": "4", "4": "5", "X": "23", "23": "23"}
 LD_REF_BFILE = OUT_DIR / "bfile" / "merged_qc_numeric"
 
 WINDOW_BP = 100_000
