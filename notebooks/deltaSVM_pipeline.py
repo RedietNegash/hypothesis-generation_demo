@@ -276,8 +276,24 @@ def __(mo):
 
 @app.cell
 def __(run_bash):
-    result_run = run_bash("""
-set -euo pipefail
+    CHR_RUN = "chr1"
+    # The bash body stays a plain string: it contains ${tf}/${model}, which an
+    # f-string would try to interpolate. Only the $CHR line is built in Python.
+    result_run = run_bash(
+        "set -euo pipefail\n"
+        'BASE_DIR="/mnt/hdd_1/rediet/deltaSVM"\n'
+        f"CHR={CHR_RUN}\n"
+        + """RUN_DIR="$BASE_DIR/runs/$CHR"
+
+# This section wipes data/ tmp/ out/ log/, so refuse to touch anything that
+# is not a prepared run directory rather than trusting the current CWD.
+if [ ! -f "$RUN_DIR/input_snp.tsv" ]; then
+    echo "ERROR: $RUN_DIR is not a prepared run directory (no input_snp.tsv) - run section 3 first"
+    exit 1
+fi
+cd "$RUN_DIR"
+echo "Running $CHR in $RUN_DIR"
+
 rm -rf data tmp out log
 mkdir data tmp out log
 python scripts/generate_allelic_seqs.py -f resources/hs38/hs38.fa -s input_snp.tsv -o data/selex_allelic_oligos 2>log/selex_allelic_oligos.log
@@ -293,8 +309,8 @@ done
 python scripts/obs_pred.py -s resources/thresholds.obs.tsv -o out/obs.pred.tsv
 sort -k1,1 -k2,2 -o out/obs.pred.tsv out/obs.pred.tsv
 paste out/obs.pred.tsv out/pbs.pred.tsv | cut -f1-5,7,9 | sort -k7,7 -k5,5r | sed '1i snp\ttf\tallele1_bind\tallele2_bind\tseq_binding\tdeltaSVM_score\tpreferred_allele' >out/summary.pred.tsv
-    """, label="section 5 single chromosome run")
-    return result_run,
+""", label="section 5 single chromosome run")
+    return CHR_RUN, result_run
 
 
 @app.cell
