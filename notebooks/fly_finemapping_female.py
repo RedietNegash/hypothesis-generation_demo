@@ -126,25 +126,54 @@ def write_cojo_input(significant_snps: pd.DataFrame) -> None:
 
 
 def prepare_cojo_bfile() -> None:
-    bim_out = LD_REF_BFILE.with_suffix(".bim")
-    if bim_out.exists():
-        print(f"COJO bfile already prepared: {LD_REF_BFILE}")
-        return
+    source_files = [MERGED_QC_SOURCE.with_suffix(ext) for ext in (".bed", ".bim", ".fam")]
+    missing_files = [path for path in source_files if not path.is_file()]
+    if missing_files:
+        missing_list = "\n".join(f"  {path}" for path in missing_files)
+        raise FileNotFoundError(f"Missing PLINK LD-reference files:\n{missing_list}")
 
     LD_REF_BFILE.parent.mkdir(parents=True, exist_ok=True)
-    for ext in [".bed", ".fam"]:
-        dst = LD_REF_BFILE.with_suffix(ext)
-        if not dst.exists():
-            dst.symlink_to(MERGED_QC_SOURCE.with_suffix(ext).resolve())
+    for extension in (".bed", ".fam"):
+        source = MERGED_QC_SOURCE.with_suffix(extension).resolve()
+        destination = LD_REF_BFILE.with_suffix(extension)
+        if destination.is_symlink() and destination.resolve() != source:
+            destination.unlink()
+        elif destination.exists() and not destination.is_symlink():
+            raise FileExistsError(f"Refusing to replace existing file: {destination}")
+        if not destination.exists():
+            destination.symlink_to(source)
 
-    n = 0
-    with open(MERGED_QC_SOURCE.with_suffix(".bim")) as fh, open(bim_out, "w") as out:
-        for line in fh:
-            chrom, snp, cm, pos, a1, a2 = line.rstrip("\n").split("\t")
-            out.write(f"{CHROM_MAP[chrom]}\t{snp}\t{cm}\t{pos}\t{a1}\t{a2}\n")
-            n += 1
+    source_bim = MERGED_QC_SOURCE.with_suffix(".bim")
+    target_bim = LD_REF_BFILE.with_suffix(".bim")
+    temporary_bim = target_bim.with_suffix(".bim.tmp")
+    variant_count = 0
 
-    print(f"  {n:,} SNPs remapped into {bim_out}")
+    try:
+        with source_bim.open(encoding="utf-8") as input_file, temporary_bim.open(
+            "w", encoding="utf-8"
+        ) as output_file:
+            for line_number, line in enumerate(input_file, start=1):
+                fields = line.split()
+                if len(fields) != 6:
+                    raise ValueError(
+                        f"Malformed BIM row {line_number} in {source_bim}: "
+                        f"expected 6 fields, found {len(fields)}"
+                    )
+
+                chrom, snp, cm, pos, allele_1, allele_2 = fields
+                if chrom not in CHROM_MAP:
+                    raise ValueError(f"Unsupported chromosome {chrom!r} in {source_bim}")
+
+                output_file.write(
+                    f"{CHROM_MAP[chrom]}\t{snp}\t{cm}\t{pos}\t{allele_1}\t{allele_2}\n"
+                )
+                variant_count += 1
+
+        temporary_bim.replace(target_bim)
+    finally:
+        temporary_bim.unlink(missing_ok=True)
+
+    print(f"Prepared COJO LD reference: {LD_REF_BFILE} ({variant_count:,} SNPs)")
 
 
 def run_cojo() -> None:
