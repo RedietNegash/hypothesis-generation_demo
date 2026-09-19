@@ -22,6 +22,7 @@ COJO_OUT_PREFIX = OUT_DIR / "cojo" / "female_lifespan_cojo"
 REGIONS_DIR = OUT_DIR / "regions"
 
 CHROM_MAP = {"2L": "1", "2R": "2", "3L": "3", "3R": "4", "4": "5", "X": "23", "23": "23"}
+COJO_CHROM_MAP = {1: "2L", 2: "2R", 3: "3L", 4: "3R", 5: "4", 23: "X"}
 LD_REF_BFILE = OUT_DIR / "bfile" / "merged_qc_numeric"
 
 WINDOW_BP = 100_000
@@ -46,7 +47,7 @@ GWAS_COLUMNS = ["CHR", "POS", "SNP", "A1", "A2", "freq", "b", "se", "p", "N"]
 NUMERIC_COLUMNS = ["POS", "freq", "b", "se", "p", "N"]
 COJO_COLUMNS = ["SNP", "A1", "A2", "freq", "b", "se", "p", "N"]
 COJO_RESULT_COLUMNS = ["Chr", "SNP", "bp", "b", "p", "bJ", "pJ"]
-COJO_RESULT_NUMERIC_COLUMNS = ["bp", "b", "p", "bJ", "pJ"]
+COJO_RESULT_NUMERIC_COLUMNS = ["Chr", "bp", "b", "p", "bJ", "pJ"]
 
 
 def merge_gwas_sumstats() -> pd.DataFrame:
@@ -252,6 +253,15 @@ def load_cojo_signals() -> pd.DataFrame:
         raise ValueError(f"COJO result contains invalid base-pair positions: {jma_file}")
     signals["bp"] = rounded_positions.astype(int)
 
+    rounded_chromosomes = np.rint(signals["Chr"])
+    if not np.allclose(signals["Chr"], rounded_chromosomes):
+        raise ValueError(f"COJO result contains invalid chromosome values: {jma_file}")
+    signals["Chr"] = rounded_chromosomes.astype(int)
+    unsupported_chromosomes = sorted(set(signals["Chr"]) - set(COJO_CHROM_MAP))
+    if unsupported_chromosomes:
+        chromosome_list = ", ".join(map(str, unsupported_chromosomes))
+        raise ValueError(f"COJO result contains unsupported chromosomes: {chromosome_list}")
+
     duplicate_snps = signals.loc[signals["SNP"].duplicated(keep=False), "SNP"].unique()
     if len(duplicate_snps):
         duplicate_list = ", ".join(map(str, duplicate_snps[:5]))
@@ -265,17 +275,41 @@ def load_cojo_signals() -> pd.DataFrame:
 
 def extract_regions(gwas: pd.DataFrame, signals: pd.DataFrame) -> None:
     REGIONS_DIR.mkdir(parents=True, exist_ok=True)
-    chrom_from_snp = signals["SNP"].str.split("_").str[0]
+    loci = []
+    coordinates = set()
 
-    for chrom, pos, snp in zip(chrom_from_snp, signals["bp"], signals["SNP"]):
-        region = gwas[
+    for signal in signals.itertuples(index=False):
+        chrom = COJO_CHROM_MAP[signal.Chr]
+        pos = int(signal.bp)
+        coordinate = (chrom, pos)
+        if coordinate in coordinates:
+            raise ValueError(f"COJO result contains duplicate locus coordinate: {chrom}:{pos}")
+        coordinates.add(coordinate)
+
+        region = gwas.loc[
             (gwas["CHR"] == chrom)
-            & (gwas["POS"] >= pos - WINDOW_BP)
-            & (gwas["POS"] <= pos + WINDOW_BP)
-        ]
+            & gwas["POS"].between(max(1, pos - WINDOW_BP), pos + WINDOW_BP)
+        ].sort_values(["POS", "SNP"])
+        if region.empty:
+            raise ValueError(f"No GWAS SNPs found within {WINDOW_BP:,} bp of {chrom}:{pos}")
+
         out_file = REGIONS_DIR / f"chr{chrom}_pos{pos}_snps.tsv"
-        region.to_csv(out_file, sep="\t", index=False)
-        print(f"  {snp}: {len(region)} SNPs in +/-{WINDOW_BP // 1000}kb window -> {out_file}")
+        loci.append((signal.SNP, chrom, pos, region, out_file))
+
+    expected_files = {locus[4] for locus in loci}
+    for stale_file in set(REGIONS_DIR.glob("chr*_pos*_snps.tsv")) - expected_files:
+        stale_file.unlink()
+        print(f"Removed stale region: {stale_file}")
+
+    for snp, chrom, pos, region, out_file in loci:
+        temporary_file = out_file.with_suffix(".tsv.tmp")
+        try:
+            region.to_csv(temporary_file, sep="\t", index=False)
+            temporary_file.replace(out_file)
+        finally:
+            temporary_file.unlink(missing_ok=True)
+        snp_label = "SNP" if len(region) == 1 else "SNPs"
+        print(f"{snp}: {len(region):,} {snp_label} within +/-{WINDOW_BP:,} bp -> {out_file}")
 
 
 if __name__ == "__main__":
