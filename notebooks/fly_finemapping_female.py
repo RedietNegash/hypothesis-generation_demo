@@ -220,6 +220,8 @@ def run_cojo(gcta_bin: str = GCTA_BIN, force: bool = False) -> None:
         "--out",
         str(COJO_OUT_PREFIX),
     ]
+    if force:
+        jma_file.unlink(missing_ok=True)
     print(f"Running: {shlex.join(command)}")
     subprocess.run(command, check=True)
 

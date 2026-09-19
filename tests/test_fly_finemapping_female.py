@@ -170,11 +170,13 @@ class PipelineOutputTests(unittest.TestCase):
             self.ld_target.with_suffix(extension).write_text("input\n", encoding="utf-8")
 
         result_file = self.cojo_prefix.with_suffix(".jma.cojo")
+        result_file.parent.mkdir(parents=True)
+        result_file.write_text("stale result\n", encoding="utf-8")
 
         def create_result(command, check):
             self.assertTrue(check)
-            result_file.parent.mkdir(parents=True, exist_ok=True)
-            result_file.write_text("result\n", encoding="utf-8")
+            self.assertFalse(result_file.exists())
+            result_file.write_text("fresh result\n", encoding="utf-8")
 
         with mock.patch.object(finemap.shutil, "which", return_value="/opt/gcta64"), mock.patch.object(
             finemap.subprocess, "run", side_effect=create_result
@@ -183,6 +185,7 @@ class PipelineOutputTests(unittest.TestCase):
             finemap.run_cojo(gcta_bin="/opt/gcta64")
 
         self.assertEqual(run_mock.call_count, 1)
+        self.assertEqual(result_file.read_text(encoding="utf-8"), "fresh result\n")
         command = run_mock.call_args.args[0]
         self.assertEqual(command[0], "/opt/gcta64")
         self.assertEqual(command[command.index("--bfile") + 1], str(self.ld_target))
