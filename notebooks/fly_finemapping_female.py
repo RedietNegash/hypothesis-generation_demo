@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import shlex
 import shutil
 import subprocess
 from pathlib import Path
@@ -29,7 +30,7 @@ SIG_P_THRESHOLD = 1e-5
 MIN_MAF = 0.05
 MIN_N = 100
 
-GCTA_BIN = shutil.which("gcta64") or "/home/icog-bioai2/bin/gcta64"
+GCTA_BIN = "gcta64"
 
 GWAS_COLUMN_MAP = {
     "#CHROM": "CHR",
@@ -178,21 +179,51 @@ def prepare_cojo_bfile() -> None:
 
 def run_cojo() -> None:
     jma_file = COJO_OUT_PREFIX.with_suffix(".jma.cojo")
-    if jma_file.exists():
-        print(f"COJO already run: {jma_file}")
+    if jma_file.is_file():
+        print(f"Using existing COJO result: {jma_file}")
         return
 
+    gcta_executable = shutil.which(GCTA_BIN)
+    if gcta_executable is None:
+        gcta_path = Path(GCTA_BIN).expanduser()
+        if not gcta_path.is_file():
+            raise FileNotFoundError(
+                f"Could not find GCTA executable {GCTA_BIN!r}; add gcta64 to PATH"
+            )
+        gcta_executable = str(gcta_path.resolve())
+
+    required_inputs = [
+        COJO_INPUT_FILE,
+        LD_REF_BFILE.with_suffix(".bed"),
+        LD_REF_BFILE.with_suffix(".bim"),
+        LD_REF_BFILE.with_suffix(".fam"),
+    ]
+    missing_inputs = [path for path in required_inputs if not path.is_file()]
+    if missing_inputs:
+        missing_list = "\n".join(f"  {path}" for path in missing_inputs)
+        raise FileNotFoundError(f"Missing COJO input files:\n{missing_list}")
+
     COJO_OUT_PREFIX.parent.mkdir(parents=True, exist_ok=True)
-    subprocess.run([
-        GCTA_BIN,
-        "--bfile", str(LD_REF_BFILE),
-        "--maf", str(MIN_MAF),
-        "--cojo-file", str(COJO_INPUT_FILE),
+    command = [
+        gcta_executable,
+        "--bfile",
+        str(LD_REF_BFILE),
+        "--maf",
+        str(MIN_MAF),
+        "--cojo-file",
+        str(COJO_INPUT_FILE),
         "--cojo-slct",
-        "--cojo-p", str(SIG_P_THRESHOLD),
-        "--out", str(COJO_OUT_PREFIX),
-    ], check=True)
-    print(f"COJO finished: {jma_file}")
+        "--cojo-p",
+        str(SIG_P_THRESHOLD),
+        "--out",
+        str(COJO_OUT_PREFIX),
+    ]
+    print(f"Running: {shlex.join(command)}")
+    subprocess.run(command, check=True)
+
+    if not jma_file.is_file():
+        raise RuntimeError(f"GCTA finished without creating the expected result: {jma_file}")
+    print(f"Saved COJO result: {jma_file}")
 
 
 def load_cojo_signals() -> pd.DataFrame:
