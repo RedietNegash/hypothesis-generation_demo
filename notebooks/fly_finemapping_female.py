@@ -45,6 +45,8 @@ GWAS_COLUMN_MAP = {
 GWAS_COLUMNS = ["CHR", "POS", "SNP", "A1", "A2", "freq", "b", "se", "p", "N"]
 NUMERIC_COLUMNS = ["POS", "freq", "b", "se", "p", "N"]
 COJO_COLUMNS = ["SNP", "A1", "A2", "freq", "b", "se", "p", "N"]
+COJO_RESULT_COLUMNS = ["Chr", "SNP", "bp", "b", "p", "bJ", "pJ"]
+COJO_RESULT_NUMERIC_COLUMNS = ["bp", "b", "p", "bJ", "pJ"]
 
 
 def merge_gwas_sumstats() -> pd.DataFrame:
@@ -228,9 +230,36 @@ def run_cojo() -> None:
 
 def load_cojo_signals() -> pd.DataFrame:
     jma_file = COJO_OUT_PREFIX.with_suffix(".jma.cojo")
-    signals = pd.read_csv(jma_file, sep=r"\s+").sort_values("pJ").reset_index(drop=True)
+    if not jma_file.is_file():
+        raise FileNotFoundError(f"Missing COJO result: {jma_file}")
+
+    signals = pd.read_csv(jma_file, sep=r"\s+")
+    missing_columns = sorted(set(COJO_RESULT_COLUMNS) - set(signals.columns))
+    if missing_columns:
+        raise ValueError(f"{jma_file} is missing columns: {', '.join(missing_columns)}")
+    if signals.empty:
+        raise ValueError(f"COJO selected no independent signals in {jma_file}")
+
+    for column in COJO_RESULT_NUMERIC_COLUMNS:
+        signals[column] = pd.to_numeric(signals[column], errors="coerce")
+    if signals[COJO_RESULT_NUMERIC_COLUMNS].isna().any(axis=None):
+        raise ValueError(f"COJO result contains missing or invalid numeric values: {jma_file}")
+    if not signals["p"].between(0, 1).all() or not signals["pJ"].between(0, 1).all():
+        raise ValueError(f"COJO result contains P-values outside [0, 1]: {jma_file}")
+
+    rounded_positions = np.rint(signals["bp"])
+    if not np.allclose(signals["bp"], rounded_positions) or (rounded_positions < 1).any():
+        raise ValueError(f"COJO result contains invalid base-pair positions: {jma_file}")
+    signals["bp"] = rounded_positions.astype(int)
+
+    duplicate_snps = signals.loc[signals["SNP"].duplicated(keep=False), "SNP"].unique()
+    if len(duplicate_snps):
+        duplicate_list = ", ".join(map(str, duplicate_snps[:5]))
+        raise ValueError(f"COJO result contains duplicate SNP IDs: {duplicate_list}")
+
+    signals = signals.sort_values("pJ").reset_index(drop=True)
     print(f"\n{len(signals)} independent signal(s) selected by COJO:")
-    print(signals[["Chr", "SNP", "bp", "b", "p", "bJ", "pJ"]].to_string(index=False))
+    print(signals[COJO_RESULT_COLUMNS].to_string(index=False))
     return signals
 
 
