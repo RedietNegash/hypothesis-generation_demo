@@ -120,5 +120,120 @@ class InputPreparationTests(unittest.TestCase):
             finemap.write_cojo_input(duplicates)
 
 
+class PipelineOutputTests(unittest.TestCase):
+    def setUp(self):
+        self.temporary_directory = tempfile.TemporaryDirectory()
+        self.root = Path(self.temporary_directory.name)
+        self.ld_source = self.root / "source" / "merged_qc"
+        self.ld_target = self.root / "output" / "bfile" / "merged_qc_numeric"
+        self.cojo_input = self.root / "output" / "cojo_input.txt"
+        self.cojo_prefix = self.root / "output" / "cojo" / "female_lifespan_cojo"
+        self.regions_dir = self.root / "output" / "regions"
+        self.ld_source.parent.mkdir()
+        self.path_patch = mock.patch.multiple(
+            finemap,
+            MERGED_QC_SOURCE=self.ld_source,
+            LD_REF_BFILE=self.ld_target,
+            COJO_INPUT_FILE=self.cojo_input,
+            COJO_OUT_PREFIX=self.cojo_prefix,
+            REGIONS_DIR=self.regions_dir,
+        )
+        self.path_patch.start()
+
+    def tearDown(self):
+        self.path_patch.stop()
+        self.temporary_directory.cleanup()
+
+    def create_ld_reference(self):
+        self.ld_source.with_suffix(".bed").write_bytes(b"bed")
+        self.ld_source.with_suffix(".fam").write_text("sample\n", encoding="utf-8")
+        self.ld_source.with_suffix(".bim").write_text(
+            "2L rs1 0 100 A G\nX rs2 0 200 C T\n", encoding="utf-8"
+        )
+
+    def test_prepare_cojo_bfile_validates_and_remaps_chromosomes(self):
+        self.create_ld_reference()
+
+        finemap.prepare_cojo_bfile()
+
+        self.assertTrue(self.ld_target.with_suffix(".bed").is_symlink())
+        self.assertTrue(self.ld_target.with_suffix(".fam").is_symlink())
+        remapped_rows = self.ld_target.with_suffix(".bim").read_text(encoding="utf-8").splitlines()
+        self.assertEqual(remapped_rows[0].split("\t")[0], "1")
+        self.assertEqual(remapped_rows[1].split("\t")[0], "23")
+
+    def test_run_cojo_builds_expected_command_and_reuses_result(self):
+        self.cojo_input.parent.mkdir(parents=True)
+        self.cojo_input.write_text("input\n", encoding="utf-8")
+        self.ld_target.parent.mkdir(parents=True)
+        for extension in (".bed", ".bim", ".fam"):
+            self.ld_target.with_suffix(extension).write_text("input\n", encoding="utf-8")
+
+        result_file = self.cojo_prefix.with_suffix(".jma.cojo")
+
+        def create_result(command, check):
+            self.assertTrue(check)
+            result_file.parent.mkdir(parents=True, exist_ok=True)
+            result_file.write_text("result\n", encoding="utf-8")
+
+        with mock.patch.object(finemap.shutil, "which", return_value="/opt/gcta64"), mock.patch.object(
+            finemap.subprocess, "run", side_effect=create_result
+        ) as run_mock:
+            finemap.run_cojo(gcta_bin="/opt/gcta64", force=True)
+            finemap.run_cojo(gcta_bin="/opt/gcta64")
+
+        self.assertEqual(run_mock.call_count, 1)
+        command = run_mock.call_args.args[0]
+        self.assertEqual(command[0], "/opt/gcta64")
+        self.assertEqual(command[command.index("--bfile") + 1], str(self.ld_target))
+        self.assertEqual(command[command.index("--cojo-file") + 1], str(self.cojo_input))
+        self.assertEqual(command[command.index("--cojo-p") + 1], str(finemap.SIG_P_THRESHOLD))
+
+    def test_load_cojo_signals_validates_and_sorts_results(self):
+        result_file = self.cojo_prefix.with_suffix(".jma.cojo")
+        result_file.parent.mkdir(parents=True)
+        result_file.write_text(
+            "Chr SNP bp b p bJ pJ\n"
+            "23 rsX 900 0.2 1e-5 0.1 2e-5\n"
+            "1 rs2L 100 0.3 1e-6 0.2 1e-6\n",
+            encoding="utf-8",
+        )
+
+        signals = finemap.load_cojo_signals()
+
+        self.assertEqual(signals["SNP"].tolist(), ["rs2L", "rsX"])
+        self.assertEqual(signals["Chr"].tolist(), [1, 23])
+        self.assertEqual(signals["bp"].tolist(), [100, 900])
+
+        result_file.write_text(
+            "Chr SNP bp b p bJ pJ\n6 invalid 100 0.3 1e-6 0.2 1e-6\n",
+            encoding="utf-8",
+        )
+        with self.assertRaisesRegex(ValueError, "unsupported chromosomes: 6"):
+            finemap.load_cojo_signals()
+
+    def test_extract_regions_sorts_outputs_and_removes_stale_files(self):
+        self.regions_dir.mkdir(parents=True)
+        stale_file = self.regions_dir / "chr3L_pos1_snps.tsv"
+        stale_file.write_text("stale\n", encoding="utf-8")
+        gwas = pd.DataFrame(
+            {
+                "CHR": ["2L", "2L", "X"],
+                "POS": [150, 50, 900],
+                "SNP": ["2L_150", "2L_50", "X_900"],
+            }
+        )
+        signals = pd.DataFrame(
+            {"Chr": [1, 23], "SNP": ["lead_2L", "lead_X"], "bp": [100, 900]}
+        )
+
+        finemap.extract_regions(gwas, signals)
+
+        first_region = pd.read_csv(self.regions_dir / "chr2L_pos100_snps.tsv", sep="\t")
+        self.assertEqual(first_region["SNP"].tolist(), ["2L_50", "2L_150"])
+        self.assertTrue((self.regions_dir / "chrX_pos900_snps.tsv").is_file())
+        self.assertFalse(stale_file.exists())
+
+
 if __name__ == "__main__":
     unittest.main()
