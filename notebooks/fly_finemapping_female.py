@@ -31,6 +31,8 @@ SIG_SNP_FILE = OUT_DIR / "female_significant_snps.tsv"
 COJO_INPUT_FILE = OUT_DIR / "female_cojo_input.txt"
 COJO_OUT_PREFIX = OUT_DIR / "cojo" / "female_lifespan_cojo"
 REGIONS_DIR = OUT_DIR / "regions"
+SUSIE_WORK_DIR = OUT_DIR / "susie"
+SUSIE_RESULTS_DIR = OUT_DIR / "susie_results"
 
 CHROM_MAP = {"2L": "1", "2R": "2", "3L": "3", "3R": "4", "4": "5", "X": "23", "23": "23"}
 COJO_CHROM_MAP = {1: "2L", 2: "2R", 3: "3L", 4: "3R", 5: "4", 23: "X"}
@@ -41,8 +43,11 @@ WINDOW_BP = 100_000
 SIG_P_THRESHOLD = 1e-5
 MIN_MAF = 0.05
 MIN_N = 100
+SUSIE_COVERAGE = 0.95
+SUSIE_MAX_EFFECTS = 10
 
 GCTA_BIN = "gcta64"
+PLINK_BIN = "plink"
 
 GWAS_COLUMN_MAP = {
     "#CHROM": "CHR",
