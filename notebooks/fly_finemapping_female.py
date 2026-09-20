@@ -1,4 +1,9 @@
 #!/usr/bin/env python3
+
+# %% [markdown]
+# # Female Lifespan Fine-Mapping Pipeline
+
+# %%
 import argparse
 import shlex
 import shutil
@@ -8,6 +13,11 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
+
+# %% [markdown]
+# ## Shared Configuration
+
+# %%
 BASE_DIR = Path(__file__).resolve().parents[1]
 FLY_CHROMS = ("2L", "2R", "3L", "3R", "4", "X")
 
@@ -51,6 +61,10 @@ COJO_RESULT_COLUMNS = ["Chr", "SNP", "bp", "b", "p", "bJ", "pJ"]
 COJO_RESULT_NUMERIC_COLUMNS = ["Chr", "bp", "b", "p", "bJ", "pJ"]
 
 
+# %% [markdown]
+# ## Stage 1 — GCTA-COJO Signal Selection
+
+# %%
 def merge_gwas_sumstats() -> pd.DataFrame:
     frames = []
     for chrom in FLY_CHROMS:
@@ -310,9 +324,13 @@ def extract_regions(gwas: pd.DataFrame, signals: pd.DataFrame) -> None:
         finally:
             temporary_file.unlink(missing_ok=True)
         snp_label = "SNP" if len(region) == 1 else "SNPs"
-        print(f"{snp}: {len(region):,} {snp_label} within +/-{WINDOW_BP:,} bp -> {out_file}")
+    print(f"{snp}: {len(region):,} {snp_label} within +/-{WINDOW_BP:,} bp -> {out_file}")
 
 
+# %% [markdown]
+# ## Pipeline Command-Line Interface
+
+# %%
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Select independent female lifespan GWAS signals for fine-mapping."
