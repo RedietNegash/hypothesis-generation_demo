@@ -2,7 +2,7 @@
 
 The pipeline currently has three stages:
 
-1. `fly_finemapping_female.py` selects independent GWAS signals with GCTA-COJO and extracts their loci.
+1. `drosophila_female_lifespan_finemapping_pipeline.py` selects independent GWAS signals with GCTA-COJO and extracts their loci.
 2. `fly_finemapping_susie_female.py` fine-maps each locus with SuSiE-RSS.
 3. `fly_finemapping_gene_mapping_female.py` maps selected variants to genes.
 
@@ -53,20 +53,20 @@ gcta64 --version
 From the repository root, run:
 
 ```bash
-python notebooks/fly_finemapping_female.py
+python notebooks/drosophila_female_lifespan_finemapping_pipeline.py
 ```
 
 For a GCTA executable outside `PATH`, run:
 
 ```bash
-python notebooks/fly_finemapping_female.py \
+python notebooks/drosophila_female_lifespan_finemapping_pipeline.py \
   --gcta-bin /absolute/path/to/gcta64
 ```
 
 An existing COJO result is reused by default. Use `--force` after changing inputs or analysis settings:
 
 ```bash
-python notebooks/fly_finemapping_female.py \
+python notebooks/drosophila_female_lifespan_finemapping_pipeline.py \
   --gcta-bin /absolute/path/to/gcta64 \
   --force
 ```
@@ -102,5 +102,5 @@ The `.bed` and `.fam` files under `bfile` are symbolic links to the QC-filtered 
 Run the stage 1 test suite from the repository root:
 
 ```bash
-python -m unittest tests/test_fly_finemapping_female.py -v
+python -m unittest tests/test_drosophila_female_lifespan_finemapping_pipeline.py -v
 ```

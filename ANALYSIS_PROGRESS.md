@@ -176,7 +176,7 @@ wrong answers:
 
 | Script | Purpose |
 |---|---|
-| `notebooks/fly_finemapping_female.py` | DGRP female: COJO fine-mapping |
+| `notebooks/drosophila_female_lifespan_finemapping_pipeline.py` | DGRP female: COJO fine-mapping |
 | `notebooks/fly_finemapping_susie_female.py` | DGRP female: SuSiE credible sets |
 | `notebooks/fly_finemapping_gene_mapping_female.py` | DGRP female: credible set -> gene |
 | `scripts/highfill_dspr_magma_gene.py` | Highfill: MAGMA gene + gene-set |

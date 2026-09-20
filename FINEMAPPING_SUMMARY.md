@@ -15,7 +15,7 @@ selection -> SuSiE fine-mapping -> nearest-gene mapping of credible sets.
   `sdk` (sidekick) -- consistent with the fine-mapped locus below
 - Conclusion: this dataset (N=197) is underpowered at the gene level
 
-**COJO + SuSiE fine-mapping** (`notebooks/fly_finemapping_female.py`,
+**COJO + SuSiE fine-mapping** (`notebooks/drosophila_female_lifespan_finemapping_pipeline.py`,
 `notebooks/fly_finemapping_susie_female.py`):
 - 5 independent signals selected by COJO (suggestive p<1e-5, since
   genome-wide 5e-8 leaves only 2 SNPs)
@@ -141,7 +141,7 @@ resolved answer. Checking whether finer resolution is possible:
 
 ## Files added this session
 
-- `notebooks/fly_finemapping_female.py` -- DGRP female COJO fine-mapping
+- `notebooks/drosophila_female_lifespan_finemapping_pipeline.py` -- DGRP female COJO fine-mapping
 - `notebooks/fly_finemapping_susie_female.py` -- DGRP female SuSiE fine-mapping
 - `notebooks/fly_finemapping_gene_mapping_female.py` -- DGRP credible-set -> gene mapping
 - `scripts/highfill_dspr_magma_gene.py` -- Highfill MAGMA gene + gene-set analysis

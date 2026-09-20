@@ -7,8 +7,14 @@ from unittest import mock
 import pandas as pd
 
 
-MODULE_PATH = Path(__file__).resolve().parents[1] / "notebooks" / "fly_finemapping_female.py"
-MODULE_SPEC = importlib.util.spec_from_file_location("fly_finemapping_female", MODULE_PATH)
+MODULE_PATH = (
+    Path(__file__).resolve().parents[1]
+    / "notebooks"
+    / "drosophila_female_lifespan_finemapping_pipeline.py"
+)
+MODULE_SPEC = importlib.util.spec_from_file_location(
+    "drosophila_female_lifespan_finemapping_pipeline", MODULE_PATH
+)
 finemap = importlib.util.module_from_spec(MODULE_SPEC)
 MODULE_SPEC.loader.exec_module(finemap)
 
