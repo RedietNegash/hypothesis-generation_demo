@@ -237,6 +237,25 @@ class PipelineOutputTests(unittest.TestCase):
         self.assertTrue((self.regions_dir / "chrX_pos900_snps.tsv").is_file())
         self.assertFalse(stale_file.exists())
 
+    def test_find_region_files_validates_and_orders_stage_two_inputs(self):
+        self.regions_dir.mkdir(parents=True)
+        with self.assertRaisesRegex(FileNotFoundError, "No fine-mapping region files"):
+            finemap.find_region_files()
+
+        second = self.regions_dir / "chrX_pos900_snps.tsv"
+        first = self.regions_dir / "chr2L_pos100_snps.tsv"
+        second.write_text("SNP\nX_900\n", encoding="utf-8")
+        first.write_text("SNP\n2L_100\n", encoding="utf-8")
+        (self.regions_dir / "unrelated.tsv").write_text("ignored\n", encoding="utf-8")
+
+        region_files = finemap.find_region_files()
+
+        self.assertEqual(region_files, [first, second])
+        self.assertEqual(
+            [finemap.region_label(path) for path in region_files],
+            ["chr2L_pos100", "chrX_pos900"],
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

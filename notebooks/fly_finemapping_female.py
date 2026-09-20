@@ -333,6 +333,26 @@ def extract_regions(gwas: pd.DataFrame, signals: pd.DataFrame) -> None:
 
 
 # %% [markdown]
+# ## Stage 2 — SuSiE-RSS Fine-Mapping
+
+# %%
+def find_region_files() -> list[Path]:
+    region_files = sorted(
+        path for path in REGIONS_DIR.glob("chr*_pos*_snps.tsv") if path.is_file()
+    )
+    if not region_files:
+        raise FileNotFoundError(f"No fine-mapping region files found in {REGIONS_DIR}")
+    return region_files
+
+
+def region_label(region_file: Path) -> str:
+    suffix = "_snps"
+    if not region_file.stem.endswith(suffix):
+        raise ValueError(f"Invalid fine-mapping region filename: {region_file.name}")
+    return region_file.stem.removesuffix(suffix)
+
+
+# %% [markdown]
 # ## Pipeline Command-Line Interface
 
 # %%
