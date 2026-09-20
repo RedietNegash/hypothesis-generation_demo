@@ -262,6 +262,29 @@ class PipelineOutputTests(unittest.TestCase):
             ["chr2L_pos100", "chrX_pos900"],
         )
 
+    def test_load_region_summary_validates_susie_statistics(self):
+        region_file = self.root / "region.tsv"
+        region = pd.DataFrame(
+            {
+                "SNP": ["2L_100", "2L_200"],
+                "b": [0.1, -0.2],
+                "se": [0.01, 0.02],
+                "p": [1e-6, 2e-5],
+                "N": [100.0, 101.0],
+            }
+        )
+        region.to_csv(region_file, sep="\t", index=False)
+
+        loaded = finemap.load_region_summary(region_file)
+
+        self.assertEqual(loaded["SNP"].tolist(), ["2L_100", "2L_200"])
+        self.assertEqual(loaded["N"].tolist(), [100, 101])
+
+        duplicated = pd.concat([region, region.iloc[[0]]], ignore_index=True)
+        duplicated.to_csv(region_file, sep="\t", index=False)
+        with self.assertRaisesRegex(ValueError, "duplicate SNP IDs"):
+            finemap.load_region_summary(region_file)
+
 
 if __name__ == "__main__":
     unittest.main()
