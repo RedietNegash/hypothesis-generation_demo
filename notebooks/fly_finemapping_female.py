@@ -329,7 +329,7 @@ def extract_regions(gwas: pd.DataFrame, signals: pd.DataFrame) -> None:
         finally:
             temporary_file.unlink(missing_ok=True)
         snp_label = "SNP" if len(region) == 1 else "SNPs"
-    print(f"{snp}: {len(region):,} {snp_label} within +/-{WINDOW_BP:,} bp -> {out_file}")
+        print(f"{snp}: {len(region):,} {snp_label} within +/-{WINDOW_BP:,} bp -> {out_file}")
 
 
 # %% [markdown]
