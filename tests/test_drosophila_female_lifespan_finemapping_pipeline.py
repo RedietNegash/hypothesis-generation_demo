@@ -307,6 +307,48 @@ class PipelineOutputTests(unittest.TestCase):
             ["2L_50", "2L_100", "2L_150"],
         )
 
+    def test_extract_region_bfile_runs_plink_and_reuses_complete_output(self):
+        region_file = self.root / "chr2L_pos100_snps.tsv"
+        pd.DataFrame(
+            {
+                "SNP": ["2L_50", "2L_100"],
+                "b": [0.1, 0.2],
+                "se": [0.01, 0.02],
+                "p": [1e-4, 1e-6],
+                "N": [100, 101],
+            }
+        ).to_csv(region_file, sep="\t", index=False)
+        self.ld_target.parent.mkdir(parents=True)
+        for extension in (".bed", ".bim", ".fam"):
+            self.ld_target.with_suffix(extension).write_text("reference\n", encoding="utf-8")
+
+        output_prefix = self.susie_work_dir / "chr2L_pos100"
+
+        def create_bfile(command, check):
+            self.assertTrue(check)
+            output_prefix.with_suffix(".bed").write_bytes(b"bed")
+            output_prefix.with_suffix(".bim").write_text(
+                "1 2L_50 0 50 A G\n1 2L_100 0 100 C T\n", encoding="utf-8"
+            )
+            output_prefix.with_suffix(".fam").write_text("sample\n", encoding="utf-8")
+
+        with mock.patch.object(finemap.shutil, "which", return_value="/opt/plink"), mock.patch.object(
+            finemap.subprocess, "run", side_effect=create_bfile
+        ) as run_mock:
+            result = finemap.extract_region_bfile(region_file, plink_bin="/opt/plink")
+            cached_result = finemap.extract_region_bfile(region_file, plink_bin="/opt/plink")
+
+        self.assertEqual(result, output_prefix)
+        self.assertEqual(cached_result, output_prefix)
+        self.assertEqual(run_mock.call_count, 1)
+        command = run_mock.call_args.args[0]
+        self.assertEqual(command[0], "/opt/plink")
+        self.assertEqual(command[command.index("--bfile") + 1], str(self.ld_target))
+        self.assertEqual(
+            command[command.index("--extract") + 1],
+            str(self.susie_work_dir / "chr2L_pos100.snplist"),
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
