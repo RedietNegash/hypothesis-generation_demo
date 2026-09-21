@@ -137,6 +137,7 @@ class PipelineOutputTests(unittest.TestCase):
         self.cojo_prefix = self.root / "output" / "cojo" / "female_lifespan_cojo"
         self.regions_dir = self.root / "output" / "regions"
         self.susie_work_dir = self.root / "output" / "susie"
+        self.susie_results_dir = self.root / "output" / "susie_results"
         self.ld_source.parent.mkdir()
         self.path_patch = mock.patch.multiple(
             finemap,
@@ -146,6 +147,7 @@ class PipelineOutputTests(unittest.TestCase):
             COJO_OUT_PREFIX=self.cojo_prefix,
             REGIONS_DIR=self.regions_dir,
             SUSIE_WORK_DIR=self.susie_work_dir,
+            SUSIE_RESULTS_DIR=self.susie_results_dir,
         )
         self.path_patch.start()
 
@@ -468,6 +470,46 @@ class PipelineOutputTests(unittest.TestCase):
             coverage=finemap.SUSIE_COVERAGE,
             Xcorr="R_MATRIX",
         )
+
+    def test_finemap_region_writes_sorted_results_and_reuses_output(self):
+        region_file = self.root / "chr2L_pos100_snps.tsv"
+        region_file.touch()
+        bfile_prefix = self.susie_work_dir / "chr2L_pos100"
+        ld_file = bfile_prefix.with_suffix(".ld")
+        aligned = pd.DataFrame(
+            {
+                "SNP": ["2L_50", "2L_100", "2L_150"],
+                "b": [0.1, 0.2, -0.1],
+                "se": [0.01, 0.02, 0.03],
+                "N": [100, 101, 102],
+            }
+        )
+        ld = np.eye(3)
+
+        with mock.patch.object(
+            finemap, "extract_region_bfile", return_value=bfile_prefix
+        ) as extract_mock, mock.patch.object(
+            finemap, "compute_region_ld", return_value=ld_file
+        ) as ld_mock, mock.patch.object(
+            finemap, "load_aligned_region_data", return_value=(aligned, ld)
+        ) as load_mock, mock.patch.object(
+            finemap,
+            "run_susie_rss",
+            return_value=(np.array([0.1, 0.8, 0.1]), np.array([np.nan, 1.0, np.nan])),
+        ) as susie_mock:
+            output_file = finemap.finemap_region(region_file, plink_bin="/opt/plink")
+            cached_file = finemap.finemap_region(region_file, plink_bin="/opt/plink")
+
+        self.assertEqual(output_file, self.susie_results_dir / "chr2L_pos100_susie.tsv")
+        self.assertEqual(cached_file, output_file)
+        saved = pd.read_csv(output_file, sep="\t")
+        self.assertEqual(saved["SNP"].tolist(), ["2L_100", "2L_150", "2L_50"])
+        self.assertEqual(saved["PIP"].tolist(), [0.8, 0.1, 0.1])
+        self.assertEqual(saved.loc[0, "CS"], 1.0)
+        extract_mock.assert_called_once_with(region_file, plink_bin="/opt/plink", force=False)
+        ld_mock.assert_called_once_with(bfile_prefix, plink_bin="/opt/plink", force=False)
+        load_mock.assert_called_once_with(region_file, bfile_prefix, ld_file)
+        susie_mock.assert_called_once()
 
 
 if __name__ == "__main__":
