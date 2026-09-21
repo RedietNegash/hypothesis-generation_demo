@@ -269,6 +269,8 @@ class PipelineOutputTests(unittest.TestCase):
         region = pd.DataFrame(
             {
                 "SNP": ["2L_100", "2L_200"],
+                "A1": ["A", "C"],
+                "A2": ["G", "T"],
                 "b": [0.1, -0.2],
                 "se": [0.01, 0.02],
                 "p": [1e-6, 2e-5],
@@ -287,11 +289,19 @@ class PipelineOutputTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "duplicate SNP IDs"):
             finemap.load_region_summary(region_file)
 
+        invalid_alleles = region.copy()
+        invalid_alleles.loc[0, "A2"] = invalid_alleles.loc[0, "A1"]
+        invalid_alleles.to_csv(region_file, sep="\t", index=False)
+        with self.assertRaisesRegex(ValueError, "identical A1 and A2 alleles"):
+            finemap.load_region_summary(region_file)
+
     def test_write_region_snplist_preserves_validated_snp_order(self):
         region_file = self.root / "chr2L_pos100_snps.tsv"
         pd.DataFrame(
             {
                 "SNP": ["2L_50", "2L_100", "2L_150"],
+                "A1": ["A", "C", "G"],
+                "A2": ["G", "T", "A"],
                 "b": [0.1, 0.2, 0.3],
                 "se": [0.01, 0.02, 0.03],
                 "p": [1e-4, 1e-6, 1e-5],
@@ -312,6 +322,8 @@ class PipelineOutputTests(unittest.TestCase):
         pd.DataFrame(
             {
                 "SNP": ["2L_50", "2L_100"],
+                "A1": ["A", "C"],
+                "A2": ["G", "T"],
                 "b": [0.1, 0.2],
                 "se": [0.01, 0.02],
                 "p": [1e-4, 1e-6],
