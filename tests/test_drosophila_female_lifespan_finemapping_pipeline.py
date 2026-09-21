@@ -583,6 +583,33 @@ class PipelineOutputTests(unittest.TestCase):
         stage_mocks["run_cojo"].assert_called_once_with(gcta_bin="/opt/gcta64", force=True)
         stage_mocks["extract_regions"].assert_called_once_with(gwas, signals)
 
+    def test_main_dispatches_selected_pipeline_stages(self):
+        with mock.patch.object(finemap, "run_cojo_stage") as cojo_mock, mock.patch.object(
+            finemap, "run_susie_finemapping"
+        ) as susie_mock:
+            finemap.main(
+                [
+                    "--stage",
+                    "all",
+                    "--gcta-bin",
+                    "/opt/gcta64",
+                    "--plink-bin",
+                    "/opt/plink",
+                    "--force",
+                ]
+            )
+
+        cojo_mock.assert_called_once_with(gcta_bin="/opt/gcta64", force=True)
+        susie_mock.assert_called_once_with(plink_bin="/opt/plink", force=True)
+
+        with mock.patch.object(finemap, "run_cojo_stage") as cojo_mock, mock.patch.object(
+            finemap, "run_susie_finemapping"
+        ) as susie_mock:
+            finemap.main(["--stage", "susie"])
+
+        cojo_mock.assert_not_called()
+        susie_mock.assert_called_once_with(plink_bin=finemap.PLINK_BIN, force=False)
+
 
 if __name__ == "__main__":
     unittest.main()
