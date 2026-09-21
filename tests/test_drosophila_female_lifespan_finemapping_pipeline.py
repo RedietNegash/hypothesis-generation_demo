@@ -135,6 +135,7 @@ class PipelineOutputTests(unittest.TestCase):
         self.cojo_input = self.root / "output" / "cojo_input.txt"
         self.cojo_prefix = self.root / "output" / "cojo" / "female_lifespan_cojo"
         self.regions_dir = self.root / "output" / "regions"
+        self.susie_work_dir = self.root / "output" / "susie"
         self.ld_source.parent.mkdir()
         self.path_patch = mock.patch.multiple(
             finemap,
@@ -143,6 +144,7 @@ class PipelineOutputTests(unittest.TestCase):
             COJO_INPUT_FILE=self.cojo_input,
             COJO_OUT_PREFIX=self.cojo_prefix,
             REGIONS_DIR=self.regions_dir,
+            SUSIE_WORK_DIR=self.susie_work_dir,
         )
         self.path_patch.start()
 
@@ -284,6 +286,26 @@ class PipelineOutputTests(unittest.TestCase):
         duplicated.to_csv(region_file, sep="\t", index=False)
         with self.assertRaisesRegex(ValueError, "duplicate SNP IDs"):
             finemap.load_region_summary(region_file)
+
+    def test_write_region_snplist_preserves_validated_snp_order(self):
+        region_file = self.root / "chr2L_pos100_snps.tsv"
+        pd.DataFrame(
+            {
+                "SNP": ["2L_50", "2L_100", "2L_150"],
+                "b": [0.1, 0.2, 0.3],
+                "se": [0.01, 0.02, 0.03],
+                "p": [1e-4, 1e-6, 1e-5],
+                "N": [100, 101, 102],
+            }
+        ).to_csv(region_file, sep="\t", index=False)
+
+        snplist_file = finemap.write_region_snplist(region_file)
+
+        self.assertEqual(snplist_file, self.susie_work_dir / "chr2L_pos100.snplist")
+        self.assertEqual(
+            snplist_file.read_text(encoding="utf-8").splitlines(),
+            ["2L_50", "2L_100", "2L_150"],
+        )
 
 
 if __name__ == "__main__":
