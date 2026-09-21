@@ -4,6 +4,7 @@ import unittest
 from pathlib import Path
 from unittest import mock
 
+import numpy as np
 import pandas as pd
 
 
@@ -385,6 +386,40 @@ class PipelineOutputTests(unittest.TestCase):
         self.assertEqual(command[0], "/opt/plink")
         self.assertEqual(command[command.index("--bfile") + 1], str(bfile_prefix))
         self.assertEqual(command[command.index("--r") + 1], "square")
+
+    def test_load_aligned_region_data_orders_variants_and_flips_swapped_effects(self):
+        region_file = self.root / "chr2L_pos100_snps.tsv"
+        pd.DataFrame(
+            {
+                "SNP": ["2L_50", "2L_100"],
+                "A1": ["A", "T"],
+                "A2": ["G", "C"],
+                "b": [0.1, 0.2],
+                "se": [0.01, 0.02],
+                "p": [1e-4, 1e-6],
+                "N": [100, 101],
+            }
+        ).to_csv(region_file, sep="\t", index=False)
+        bfile_prefix = self.susie_work_dir / "chr2L_pos100"
+        bfile_prefix.parent.mkdir(parents=True)
+        bfile_prefix.with_suffix(".bim").write_text(
+            "1 2L_100 0 100 C T\n1 2L_50 0 50 A G\n", encoding="utf-8"
+        )
+        ld_file = bfile_prefix.with_suffix(".ld")
+        ld_file.write_text("1.0 0.25\n0.25 1.0\n", encoding="utf-8")
+
+        aligned, ld = finemap.load_aligned_region_data(region_file, bfile_prefix, ld_file)
+
+        self.assertEqual(aligned["SNP"].tolist(), ["2L_100", "2L_50"])
+        self.assertEqual(aligned["A1"].tolist(), ["C", "A"])
+        self.assertEqual(aligned["b"].tolist(), [-0.2, 0.1])
+        self.assertTrue(np.array_equal(ld, np.array([[1.0, 0.25], [0.25, 1.0]])))
+
+        incompatible = pd.read_csv(region_file, sep="\t")
+        incompatible.loc[0, ["A1", "A2"]] = ["C", "G"]
+        incompatible.to_csv(region_file, sep="\t", index=False)
+        with self.assertRaisesRegex(ValueError, "alleles are incompatible"):
+            finemap.load_aligned_region_data(region_file, bfile_prefix, ld_file)
 
 
 if __name__ == "__main__":
