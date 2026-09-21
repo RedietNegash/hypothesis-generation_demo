@@ -511,6 +511,39 @@ class PipelineOutputTests(unittest.TestCase):
         load_mock.assert_called_once_with(region_file, bfile_prefix, ld_file)
         susie_mock.assert_called_once()
 
+    def test_run_susie_finemapping_reuses_runtime_and_removes_stale_results(self):
+        region_files = [
+            self.regions_dir / "chr2L_pos100_snps.tsv",
+            self.regions_dir / "chrX_pos900_snps.tsv",
+        ]
+        output_files = [
+            self.susie_results_dir / "chr2L_pos100_susie.tsv",
+            self.susie_results_dir / "chrX_pos900_susie.tsv",
+        ]
+        self.susie_results_dir.mkdir(parents=True)
+        stale_file = self.susie_results_dir / "chr3L_pos1_susie.tsv"
+        stale_file.write_text("stale\n", encoding="utf-8")
+        runtime = object()
+
+        with mock.patch.object(
+            finemap, "find_region_files", return_value=region_files
+        ), mock.patch.object(
+            finemap, "load_susie_runtime", return_value=runtime
+        ) as runtime_mock, mock.patch.object(
+            finemap, "finemap_region", side_effect=output_files
+        ) as finemap_mock:
+            results = finemap.run_susie_finemapping(plink_bin="/opt/plink")
+
+        self.assertEqual(results, output_files)
+        runtime_mock.assert_called_once_with()
+        self.assertEqual(finemap_mock.call_count, 2)
+        for call, region_file in zip(finemap_mock.call_args_list, region_files):
+            self.assertEqual(call.args[0], region_file)
+            self.assertEqual(call.kwargs["plink_bin"], "/opt/plink")
+            self.assertFalse(call.kwargs["force"])
+            self.assertIs(call.kwargs["runtime"], runtime)
+        self.assertFalse(stale_file.exists())
+
 
 if __name__ == "__main__":
     unittest.main()
