@@ -544,6 +544,45 @@ class PipelineOutputTests(unittest.TestCase):
             self.assertIs(call.kwargs["runtime"], runtime)
         self.assertFalse(stale_file.exists())
 
+    def test_run_cojo_stage_preserves_stage_one_execution_order(self):
+        gwas = pd.DataFrame({"SNP": ["2L_100"]})
+        significant_snps = pd.DataFrame({"SNP": ["2L_100"]})
+        signals = pd.DataFrame({"SNP": ["2L_100"]})
+        events = []
+
+        with mock.patch.multiple(
+            finemap,
+            merge_gwas_sumstats=mock.DEFAULT,
+            filter_significant_snps=mock.DEFAULT,
+            write_cojo_input=mock.DEFAULT,
+            prepare_cojo_bfile=mock.DEFAULT,
+            run_cojo=mock.DEFAULT,
+            load_cojo_signals=mock.DEFAULT,
+            extract_regions=mock.DEFAULT,
+        ) as stage_mocks:
+            stage_mocks["merge_gwas_sumstats"].side_effect = lambda: events.append("merge") or gwas
+            stage_mocks["filter_significant_snps"].side_effect = (
+                lambda frame: events.append("filter") or significant_snps
+            )
+            stage_mocks["write_cojo_input"].side_effect = lambda frame: events.append("write")
+            stage_mocks["prepare_cojo_bfile"].side_effect = lambda: events.append("reference")
+            stage_mocks["run_cojo"].side_effect = lambda **kwargs: events.append("cojo")
+            stage_mocks["load_cojo_signals"].side_effect = lambda: events.append("load") or signals
+            stage_mocks["extract_regions"].side_effect = lambda frame, selected: events.append(
+                "regions"
+            )
+
+            finemap.run_cojo_stage(gcta_bin="/opt/gcta64", force=True)
+
+        self.assertEqual(
+            events,
+            ["merge", "filter", "write", "reference", "cojo", "load", "regions"],
+        )
+        stage_mocks["filter_significant_snps"].assert_called_once_with(gwas)
+        stage_mocks["write_cojo_input"].assert_called_once_with(significant_snps)
+        stage_mocks["run_cojo"].assert_called_once_with(gcta_bin="/opt/gcta64", force=True)
+        stage_mocks["extract_regions"].assert_called_once_with(gwas, signals)
+
 
 if __name__ == "__main__":
     unittest.main()
