@@ -61,7 +61,10 @@ class InputPreparationTests(unittest.TestCase):
                 invalid_row = self.gwas_row(chrom, 200, "2L_200")
                 invalid_row["SE"] = "invalid"
                 rows.append(invalid_row)
-            input_file = self.gwas_dir / f"lifespan_{chrom}.{finemap.PHENO_NAME}.glm.linear"
+            input_file = (
+                self.gwas_dir
+                / f"lifespan_female_{chrom}.{finemap.PHENO_NAME}.glm.linear"
+            )
             pd.DataFrame(rows).to_csv(input_file, sep="\t", index=False)
 
         result = finemap.merge_gwas_sumstats()
@@ -72,7 +75,7 @@ class InputPreparationTests(unittest.TestCase):
         self.assertFalse(result[finemap.NUMERIC_COLUMNS].isna().any(axis=None))
 
     def test_merge_gwas_sumstats_rejects_missing_columns(self):
-        input_file = self.gwas_dir / f"lifespan_2L.{finemap.PHENO_NAME}.glm.linear"
+        input_file = self.gwas_dir / f"lifespan_female_2L.{finemap.PHENO_NAME}.glm.linear"
         pd.DataFrame([self.gwas_row("2L", 100, "2L_100")]).drop(columns="SE").to_csv(
             input_file, sep="\t", index=False
         )
