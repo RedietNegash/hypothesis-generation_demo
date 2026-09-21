@@ -4,6 +4,14 @@ set -euo pipefail
 OUTDIR="data/reference"
 TMP="data/reference/tmp"
 CHROMS=(2L 2R 3L 3R 4 X)
+declare -A SOURCE_CHROMS=(
+    [2L]=chr2L
+    [2R]=chr2R
+    [3L]=chr3L
+    [3R]=chr3R
+    [4]=4
+    [X]=23
+)
 
 BASE_URL="https://zenodo.org/records/837947/files"
 STEM="dgrp2_dm6_dbSNP.vcf"
@@ -27,18 +35,22 @@ awk '{print $1}' "$TMP/${STEM}.bim" | sort -u
 echo ""
 for CHROM in "${CHROMS[@]}"; do
     OUT="$OUTDIR/DGRP.$CHROM"
+    SOURCE_CHROM="${SOURCE_CHROMS[$CHROM]}"
     if [[ -f "${OUT}.bed" && -f "${OUT}.bim" && -f "${OUT}.fam" ]]; then
         echo "chr$CHROM: plink files already exist, skipping"
         continue
     fi
-    echo "chr$CHROM: extracting ..."
+    echo "chr$CHROM: extracting source chromosome $SOURCE_CHROM ..."
     plink --bfile "$TMP/$STEM" \
-          --chr "$CHROM" \
+          --chr "$SOURCE_CHROM" \
           --allow-extra-chr \
           --keep-allele-order \
           --make-bed \
           --out "$OUT" \
           --silent
+    awk -v chrom="$CHROM" 'BEGIN {OFS="\t"} {$1=chrom; print}' \
+        "${OUT}.bim" > "${OUT}.bim.tmp"
+    mv "${OUT}.bim.tmp" "${OUT}.bim"
     N=$(wc -l < "${OUT}.bim")
     echo "  -> ${N} SNPs written"
 done
