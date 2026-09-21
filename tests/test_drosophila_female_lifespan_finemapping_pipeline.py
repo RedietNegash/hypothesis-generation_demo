@@ -349,6 +349,31 @@ class PipelineOutputTests(unittest.TestCase):
             str(self.susie_work_dir / "chr2L_pos100.snplist"),
         )
 
+    def test_compute_region_ld_runs_plink_and_reuses_nonempty_matrix(self):
+        bfile_prefix = self.susie_work_dir / "chr2L_pos100"
+        bfile_prefix.parent.mkdir(parents=True)
+        for extension in (".bed", ".bim", ".fam"):
+            bfile_prefix.with_suffix(extension).write_text("genotype\n", encoding="utf-8")
+        ld_file = bfile_prefix.with_suffix(".ld")
+
+        def create_ld(command, check):
+            self.assertTrue(check)
+            ld_file.write_text("1.0 0.5\n0.5 1.0\n", encoding="utf-8")
+
+        with mock.patch.object(finemap.shutil, "which", return_value="/opt/plink"), mock.patch.object(
+            finemap.subprocess, "run", side_effect=create_ld
+        ) as run_mock:
+            result = finemap.compute_region_ld(bfile_prefix, plink_bin="/opt/plink")
+            cached_result = finemap.compute_region_ld(bfile_prefix, plink_bin="/opt/plink")
+
+        self.assertEqual(result, ld_file)
+        self.assertEqual(cached_result, ld_file)
+        self.assertEqual(run_mock.call_count, 1)
+        command = run_mock.call_args.args[0]
+        self.assertEqual(command[0], "/opt/plink")
+        self.assertEqual(command[command.index("--bfile") + 1], str(bfile_prefix))
+        self.assertEqual(command[command.index("--r") + 1], "square")
+
 
 if __name__ == "__main__":
     unittest.main()
