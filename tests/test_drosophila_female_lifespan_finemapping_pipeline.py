@@ -421,6 +421,54 @@ class PipelineOutputTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "alleles are incompatible"):
             finemap.load_aligned_region_data(region_file, bfile_prefix, ld_file)
 
+    def test_run_susie_rss_returns_valid_pips_and_credible_sets(self):
+        aligned = pd.DataFrame(
+            {
+                "b": [0.1, 0.2, -0.1],
+                "se": [0.01, 0.02, 0.03],
+                "N": [100, 102, 104],
+            }
+        )
+        ld = np.array(
+            [
+                [1.0, 0.2, 0.1],
+                [0.2, 1.0, 0.3],
+                [0.1, 0.3, 1.0],
+            ]
+        )
+        fake_ro = mock.MagicMock()
+        fake_ro.NULL = object()
+        fake_ro.FloatVector.side_effect = lambda values: list(values)
+        fake_ro.r = {"matrix": mock.MagicMock(return_value="R_MATRIX")}
+
+        fit = mock.MagicMock()
+        fit.rx2.return_value = [0.8, 0.15, 0.05]
+        cs_list = mock.MagicMock()
+        cs_list.names = ["L1"]
+        cs_list.rx2.return_value = [1, 2]
+        cs_result = mock.MagicMock()
+        cs_result.rx2.return_value = cs_list
+        fake_susie = mock.MagicMock()
+        fake_susie.susie_rss.return_value = fit
+        fake_susie.susie_get_cs.return_value = cs_result
+
+        pip, credible_sets = finemap.run_susie_rss(
+            aligned, ld, runtime=(fake_ro, fake_susie)
+        )
+
+        self.assertTrue(np.array_equal(pip, np.array([0.8, 0.15, 0.05])))
+        self.assertTrue(np.allclose(credible_sets[:2], [1.0, 1.0]))
+        self.assertTrue(np.isnan(credible_sets[2]))
+        call_kwargs = fake_susie.susie_rss.call_args.kwargs
+        self.assertEqual(call_kwargs["n"], 102)
+        self.assertEqual(call_kwargs["L"], finemap.SUSIE_MAX_EFFECTS)
+        self.assertEqual(call_kwargs["R"], "R_MATRIX")
+        fake_susie.susie_get_cs.assert_called_once_with(
+            fit,
+            coverage=finemap.SUSIE_COVERAGE,
+            Xcorr="R_MATRIX",
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
