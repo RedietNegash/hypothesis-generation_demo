@@ -1,4 +1,7 @@
+import hashlib
+import io
 import importlib.util
+import tarfile
 import tempfile
 import unittest
 from pathlib import Path
@@ -18,6 +21,78 @@ MODULE_SPEC = importlib.util.spec_from_file_location(
 )
 finemap = importlib.util.module_from_spec(MODULE_SPEC)
 MODULE_SPEC.loader.exec_module(finemap)
+
+
+class GctaSetupTests(unittest.TestCase):
+    def setUp(self):
+        self.temporary_directory = tempfile.TemporaryDirectory()
+        self.root = Path(self.temporary_directory.name)
+        self.destination = self.root / "tools" / "gcta" / "1.94.1" / "gcta64"
+
+    def tearDown(self):
+        self.temporary_directory.cleanup()
+
+    def create_package(self) -> Path:
+        archive = self.root / "gcta.tar.bz2"
+        executable = b"\x7fELFtest-gcta"
+        with tarfile.open(archive, mode="w:bz2") as package:
+            member = tarfile.TarInfo(finemap.GCTA_ARCHIVE_MEMBER)
+            member.size = len(executable)
+            package.addfile(member, io.BytesIO(executable))
+        return archive
+
+    def test_install_gcta_verifies_and_extracts_project_local_binary(self):
+        archive = self.create_package()
+        expected_digest = hashlib.sha256(archive.read_bytes()).hexdigest()
+
+        def copy_package(url, filename):
+            self.assertEqual(url, finemap.GCTA_PACKAGE_URL)
+            Path(filename).write_bytes(archive.read_bytes())
+
+        with (
+            mock.patch.object(finemap.platform, "system", return_value="Linux"),
+            mock.patch.object(finemap.platform, "machine", return_value="x86_64"),
+            mock.patch.object(
+                finemap.urllib.request, "urlretrieve", side_effect=copy_package
+            ),
+            mock.patch.object(finemap, "GCTA_PACKAGE_SHA256", expected_digest),
+        ):
+            installed = finemap.install_gcta(self.destination)
+
+        self.assertEqual(installed, self.destination.resolve())
+        self.assertEqual(installed.read_bytes(), b"\x7fELFtest-gcta")
+        self.assertTrue(installed.stat().st_mode & 0o111)
+
+    def test_resolve_gcta_binary_prefers_path_executable(self):
+        with (
+            mock.patch.object(
+                finemap.shutil, "which", return_value="/usr/bin/gcta64"
+            ),
+            mock.patch.object(finemap, "install_gcta") as install_mock,
+        ):
+            executable = finemap.resolve_gcta_binary()
+
+        self.assertEqual(executable, "/usr/bin/gcta64")
+        install_mock.assert_not_called()
+
+    def test_resolve_gcta_binary_installs_missing_default(self):
+        with (
+            mock.patch.object(finemap.shutil, "which", return_value=None),
+            mock.patch.object(
+                finemap, "install_gcta", return_value=self.destination
+            ) as install_mock,
+        ):
+            executable = finemap.resolve_gcta_binary()
+
+        self.assertEqual(executable, str(self.destination))
+        install_mock.assert_called_once_with()
+
+    def test_resolve_gcta_binary_rejects_missing_override(self):
+        with (
+            mock.patch.object(finemap.shutil, "which", return_value=None),
+            self.assertRaisesRegex(FileNotFoundError, "requested GCTA binary"),
+        ):
+            finemap.resolve_gcta_binary("/missing/gcta64")
 
 
 class InputPreparationTests(unittest.TestCase):
