@@ -11,17 +11,15 @@ def __():
     import urllib.request
     import os
     import re
-    import requests
-    import time
     import subprocess
     import pandas as pd
     import numpy as np
     from pathlib import Path
     import json
     import glob
+    import concurrent.futures
     import multiprocessing
-    from concurrent.futures import ThreadPoolExecutor, as_completed
-    return mo, urllib, os, re, requests, time, subprocess, pd, np, Path, json, glob, multiprocessing, ThreadPoolExecutor, as_completed
+    return mo, urllib, os, re, subprocess, pd, np, Path, json, glob, concurrent, multiprocessing
 
 
 @app.cell
@@ -795,109 +793,6 @@ def __(RESULTS_PREFIX, pd, os):
         print(f"Saved to  : {RESULTS_PREFIX}_ranked.csv")
 
     return (ranked,)
-
-
-@app.cell(hide_code=True)
-def _(mo):
-    mo.md(r"""
-    jhj
-    """)
-    return
-
-
-@app.cell
-def _(os, requests, time, ThreadPoolExecutor, as_completed):
-    PROJECT_ID = "86upf"
-    TARGET_PATH = ["LDSC_hg38", "summary_statistics", "AlkesGroup"]
-    DOWNLOAD_DIR = "data/gwas"
-    SPECIFIC_FILES = ["PASS_ADHD_Demontis2018.sumstats.gz"]
-
-    def get_osf_files(url):
-        items = []
-        while url:
-            response = requests.get(url).json()
-            items.extend(response['data'])
-            url = response['links'].get('next')
-        return items
-
-    def download_file(url, filename, retries=3):
-        path = os.path.join(DOWNLOAD_DIR, filename)
-        tmp_path = path + ".tmp"
-
-        if os.path.exists(path):
-            print(f"Skipping {filename}, already exists.")
-            return filename, True
-
-        for attempt in range(retries):
-            try:
-                response = requests.get(url, stream=True, timeout=60)
-                response.raise_for_status()
-                total_size = int(response.headers.get('content-length', 0))
-                downloaded = 0
-
-                with open(tmp_path, "wb") as f:
-                    for chunk in response.iter_content(chunk_size=4 * 1024 * 1024):
-                        if chunk:
-                            f.write(chunk)
-                            downloaded += len(chunk)
-
-                if total_size and downloaded != total_size:
-                    raise ValueError(f"Size mismatch: got {downloaded}, expected {total_size}")
-
-                os.rename(tmp_path, path)
-                print(f"Downloaded {filename} ({downloaded / 1e6:.1f} MB)")
-                return filename, True
-
-            except Exception as e:
-                print(f"Attempt {attempt+1}/{retries} failed for {filename}: {e}")
-                if os.path.exists(tmp_path):
-                    os.remove(tmp_path)
-                if attempt < retries - 1:
-                    time.sleep(2 ** attempt)
-
-        return filename, False
-
-    def run_dataset_download():
-        if not SPECIFIC_FILES:
-            print("ERROR: SPECIFIC_FILES list is empty.")
-            return
-
-        os.makedirs(DOWNLOAD_DIR, exist_ok=True)
-
-        print(f"Connecting to OSF Project: {PROJECT_ID}...")
-        api_url = f"https://api.osf.io/v2/nodes/{PROJECT_ID}/files/osfstorage/"
-        current_items = get_osf_files(api_url)
-
-        for folder_name in TARGET_PATH:
-            for item in current_items:
-                if item['attributes']['kind'] == 'folder' and item['attributes']['name'] == folder_name:
-                    api_url = item['relationships']['files']['links']['related']['href']
-                    current_items = get_osf_files(api_url)
-                    break
-
-        url_map = {
-            item['attributes']['name']: item['links']['download']
-            for item in current_items
-            if item['attributes']['kind'] == 'file' and item['attributes']['name'] in SPECIFIC_FILES
-        }
-
-        missing = set(SPECIFIC_FILES) - set(url_map.keys())
-        if missing:
-            print(f"WARNING: files not found on server: {missing}")
-
-        with ThreadPoolExecutor(max_workers=3) as executor:
-            futures = {
-                executor.submit(download_file, url, name): name
-                for name, url in url_map.items()
-            }
-            for future in as_completed(futures):
-                name, success = future.result()
-                if not success:
-                    print(f"FAILED: {name}")
-
-    run_dataset_download()
-    return
-
 
 
 if __name__ == "__main__":
