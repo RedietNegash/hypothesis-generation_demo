@@ -589,6 +589,37 @@ class PipelineOutputTests(unittest.TestCase):
         load_mock.assert_called_once_with(region_file, bfile_prefix, ld_file)
         susie_mock.assert_called_once()
 
+    def test_summarize_susie_results_reports_sets_variants_and_pips(self):
+        self.susie_results_dir.mkdir(parents=True)
+        first = self.susie_results_dir / "chr2L_pos100_susie.tsv"
+        second = self.susie_results_dir / "chrX_pos900_susie.tsv"
+        pd.DataFrame(
+            {
+                "SNP": ["2L_100", "2L_101", "2L_200"],
+                "PIP": [0.8, 0.15, 0.05],
+                "CS": [1, 1, pd.NA],
+            }
+        ).to_csv(first, sep="\t", index=False)
+        pd.DataFrame(
+            {
+                "SNP": ["X_900"],
+                "PIP": [0.4],
+                "CS": [pd.NA],
+            }
+        ).to_csv(second, sep="\t", index=False)
+
+        with mock.patch("builtins.print") as print_mock:
+            finemap.summarize_susie_results([first, second])
+
+        messages = [call.args[0] for call in print_mock.call_args_list]
+        self.assertIn("chr2L_pos100: 1 credible set(s)", messages)
+        self.assertIn("  CS 1: 2L_100, PIP = 0.800000", messages)
+        self.assertIn("  CS 1: 2L_101, PIP = 0.150000", messages)
+        self.assertFalse(any("2L_200" in message for message in messages))
+        self.assertIn("chrX_pos900: 0 credible set(s)", messages)
+        self.assertIn("Total credible sets: 1", messages)
+        self.assertIn("Total credible-set variants: 2", messages)
+
     def test_run_susie_finemapping_reuses_runtime_and_removes_stale_results(self):
         region_files = [
             self.regions_dir / "chr2L_pos100_snps.tsv",
@@ -609,11 +640,14 @@ class PipelineOutputTests(unittest.TestCase):
             finemap, "load_susie_runtime", return_value=runtime
         ) as runtime_mock, mock.patch.object(
             finemap, "finemap_region", side_effect=output_files
-        ) as finemap_mock:
+        ) as finemap_mock, mock.patch.object(
+            finemap, "summarize_susie_results"
+        ) as summary_mock:
             results = finemap.run_susie_finemapping(plink_bin="/opt/plink")
 
         self.assertEqual(results, output_files)
         runtime_mock.assert_called_once_with()
+        summary_mock.assert_called_once_with(output_files)
         self.assertEqual(finemap_mock.call_count, 2)
         for call, region_file in zip(finemap_mock.call_args_list, region_files):
             self.assertEqual(call.args[0], region_file)
