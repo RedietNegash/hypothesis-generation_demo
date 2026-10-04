@@ -1,4 +1,6 @@
 import argparse
+import hashlib
+import json
 from pathlib import Path
 import shutil
 import subprocess
@@ -16,6 +18,72 @@ DEFAULT_LIFTOVER_CHAIN = REPO_DIR / "data" / "dm3ToDm6.over.chain.gz"
 DEFAULT_OUTPUT_DIR = REPO_DIR / "data" / "highfill_finemap"
 DEFAULT_GCTA = REPO_DIR / "tools" / "gcta" / "1.94.1" / "gcta64"
 CHROMOSOMES = {"2L": "1", "2R": "2", "3L": "3", "3R": "4", "4": "5", "X": "23"}
+
+QTL_R_CODE = r"""
+args <- commandArgs(trailingOnly = TRUE)
+phenotype_file <- args[1]
+scan_file <- args[2]
+peaks_file <- args[3]
+raw_file <- args[4]
+threshold <- as.numeric(args[5])
+reuse_scan <- args[6] == "TRUE"
+suppressPackageStartupMessages(library(DSPRqtl))
+suppressPackageStartupMessages(library(DSPRqtlDataB))
+phenotype <- read.table(phenotype_file, header = TRUE, sep = "\t")
+required <- c("patRIL", "Block", "MedLifespanHrs")
+if (!all(required %in% names(phenotype))) stop("Prepared phenotype columns are missing")
+phenotype$patRIL <- suppressWarnings(as.numeric(phenotype$patRIL))
+if (anyNA(phenotype$patRIL) || any(phenotype$patRIL <= 0)) {
+  stop("DSPRqtl requires positive numeric patRIL identifiers")
+}
+if (anyDuplicated(phenotype$patRIL)) stop("Duplicate patRIL identifiers")
+if (reuse_scan) {
+  scan.results <- readRDS(scan_file)
+} else {
+  scan.results <- DSPRscan(
+    MedLifespanHrs ~ factor(Block), design = "inbredB",
+    phenotype.dat = phenotype, id.col = "patRIL"
+  )
+  temporary_scan <- paste0(scan_file, ".tmp")
+  saveRDS(scan.results, temporary_scan)
+  if (!file.rename(temporary_scan, scan_file)) stop("Could not save DSPR scan")
+}
+peaks <- DSPRpeaks(
+  scan.results, method = "both", threshold = threshold,
+  LODdrop = 2, BCIprob = 0.95
+)
+saveRDS(peaks, peaks_file)
+empty <- data.frame(
+  chrom = character(), peak_dm3 = integer(), lod = double(),
+  bci_start_dm3 = integer(), bci_end_dm3 = integer(),
+  percent_variance = double(), entropy = double(),
+  all_founders_observed = logical()
+)
+if (length(peaks) == 0) {
+  raw_peaks <- empty
+} else {
+  rows <- lapply(peaks, function(item) {
+    interval <- item$CI$BCI
+    founder_counts <- item$founderNs[paste0("B", 1:8)]
+    founder_ok <- length(founder_counts) == 8 &&
+      all(is.finite(founder_counts)) && all(founder_counts > 0) &&
+      all(is.finite(as.matrix(item$geno.means)))
+    data.frame(
+      chrom = as.character(item$peak[["chr"]]),
+      peak_dm3 = as.integer(item$peak[["Ppos"]]),
+      lod = as.numeric(item$peak[["LOD"]]),
+      bci_start_dm3 = as.integer(interval[1, "Ppos"]),
+      bci_end_dm3 = as.integer(interval[2, "Ppos"]),
+      percent_variance = as.numeric(item$perct.var),
+      entropy = as.numeric(item$entropy),
+      all_founders_observed = founder_ok
+    )
+  })
+  raw_peaks <- do.call(rbind, rows)
+}
+write.table(raw_peaks, raw_file, sep = "\t", quote = FALSE, row.names = FALSE)
+cat(sprintf("Found %d raw DSPR peaks at LOD threshold %.2f\n", nrow(raw_peaks), threshold))
+"""
 
 
 def prepare_phenotype(source_file: Path, output_dir: Path) -> Path:
@@ -378,12 +446,116 @@ def run_cojo(
     return output_file
 
 
+def collapse_qtl_peaks(peaks: pd.DataFrame) -> pd.DataFrame:
+    columns = [
+        "chrom", "bci_start_dm3", "bci_end_dm3", "lead_peak_dm3",
+        "lead_lod", "raw_peak_count", "all_founders_observed",
+    ]
+    if peaks.empty:
+        return pd.DataFrame(columns=columns)
+    required = {
+        "chrom", "peak_dm3", "lod", "bci_start_dm3", "bci_end_dm3",
+        "all_founders_observed",
+    }
+    if not required.issubset(peaks.columns):
+        raise ValueError(f"DSPR peaks are missing columns: {sorted(required - set(peaks.columns))}")
+    peaks = peaks.copy()
+    for column in ("peak_dm3", "lod", "bci_start_dm3", "bci_end_dm3"):
+        peaks[column] = pd.to_numeric(peaks[column], errors="raise")
+    if not np.isfinite(
+        peaks[["peak_dm3", "lod", "bci_start_dm3", "bci_end_dm3"]].to_numpy()
+    ).all():
+        raise ValueError("DSPR peak coordinates and LOD scores must be finite")
+    if not (
+        (peaks["bci_start_dm3"] <= peaks["peak_dm3"])
+        & (peaks["peak_dm3"] <= peaks["bci_end_dm3"])
+    ).all():
+        raise ValueError("A DSPR peak lies outside its Bayesian interval")
+
+    peaks = peaks.sort_values(["chrom", "bci_start_dm3", "bci_end_dm3", "lod"])
+    regions = []
+    for row in peaks.itertuples(index=False):
+        if (
+            regions and regions[-1]["chrom"] == row.chrom
+            and row.bci_start_dm3 <= regions[-1]["bci_end_dm3"]
+        ):
+            region = regions[-1]
+            region["bci_end_dm3"] = max(region["bci_end_dm3"], row.bci_end_dm3)
+            region["raw_peak_count"] += 1
+            region["all_founders_observed"] &= bool(row.all_founders_observed)
+            if row.lod > region["lead_lod"]:
+                region["lead_peak_dm3"] = row.peak_dm3
+                region["lead_lod"] = row.lod
+        else:
+            regions.append({
+                "chrom": row.chrom,
+                "bci_start_dm3": row.bci_start_dm3,
+                "bci_end_dm3": row.bci_end_dm3,
+                "lead_peak_dm3": row.peak_dm3,
+                "lead_lod": row.lod,
+                "raw_peak_count": 1,
+                "all_founders_observed": bool(row.all_founders_observed),
+            })
+    return pd.DataFrame(regions, columns=columns)
+
+
+def run_qtl_scan(
+    phenotype_file: Path, output_dir: Path, rscript_bin: str,
+    threshold: float = 6.8, force_scan: bool = False
+) -> Path:
+    if not phenotype_file.is_file():
+        raise FileNotFoundError(f"Prepared phenotype not found: {phenotype_file}")
+    if not np.isfinite(threshold) or threshold <= 0:
+        raise ValueError("DSPR QTL threshold must be positive and finite")
+    rscript = shutil.which(rscript_bin)
+    if rscript is None:
+        raise FileNotFoundError(f"Rscript executable not found: {rscript_bin}")
+
+    qtl_dir = output_dir / "dspr_qtl"
+    qtl_dir.mkdir(parents=True, exist_ok=True)
+    scan_file = qtl_dir / "dspr_scan.rds"
+    peaks_file = qtl_dir / "dspr_peaks.rds"
+    raw_file = qtl_dir / "dspr_raw_peaks.tsv"
+    regions_file = qtl_dir / "dspr_qtl_regions.tsv"
+    manifest_file = qtl_dir / "scan_manifest.json"
+    phenotype_hash = hashlib.sha256(phenotype_file.read_bytes()).hexdigest()
+    manifest = {
+        "phenotype_sha256": phenotype_hash,
+        "scan_model": "DSPRscan_inbredB_MedLifespanHrs_factorBlock_v1",
+    }
+    try:
+        cached_manifest = json.loads(manifest_file.read_text())
+    except (FileNotFoundError, json.JSONDecodeError):
+        cached_manifest = None
+    reuse_scan = not force_scan and scan_file.is_file() and cached_manifest == manifest
+
+    command = [
+        rscript, "--vanilla", "-e", QTL_R_CODE,
+        str(phenotype_file), str(scan_file), str(peaks_file), str(raw_file),
+        str(threshold), "TRUE" if reuse_scan else "FALSE",
+    ]
+    result = subprocess.run(command, capture_output=True, text=True)
+    if result.returncode:
+        raise RuntimeError(
+            f"DSPR QTL scan failed\n{result.stdout[-3000:]}\n{result.stderr[-3000:]}"
+        )
+    if not raw_file.is_file() or not peaks_file.is_file() or not scan_file.is_file():
+        raise RuntimeError("DSPR QTL scan did not create its expected outputs")
+    peaks = pd.read_csv(raw_file, sep="\t")
+    regions = collapse_qtl_peaks(peaks)
+    regions.to_csv(regions_file, sep="\t", index=False)
+    manifest_file.write_text(json.dumps(manifest, indent=2) + "\n")
+    print(result.stdout.strip())
+    print(f"Collapsed {len(peaks)} raw peaks into {len(regions)} QTL regions: {regions_file}")
+    return regions_file
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="Highfill DSPR Drosophila lifespan fine-mapping pipeline"
     )
     parser.add_argument(
-        "--stage", choices=("phenotype", "gwas", "genotype", "cojo"),
+        "--stage", choices=("phenotype", "gwas", "genotype", "cojo", "qtl"),
         default="phenotype"
     )
     parser.add_argument("--phenotype", type=Path, default=DEFAULT_PHENOTYPE)
@@ -396,6 +568,9 @@ def main() -> None:
     parser.add_argument("--cojo-p", type=float, default=1e-5)
     parser.add_argument("--min-n", type=int, default=100)
     parser.add_argument("--cojo-collinear", type=float, default=0.5)
+    parser.add_argument("--rscript-bin", default="Rscript")
+    parser.add_argument("--qtl-threshold", type=float, default=6.8)
+    parser.add_argument("--force-qtl-scan", action="store_true")
     args = parser.parse_args()
 
     if args.stage == "phenotype":
@@ -418,6 +593,12 @@ def main() -> None:
             output_dir / "highfill_genotypes", output_dir,
             args.plink_bin, args.gcta_bin,
             args.cojo_p, args.min_n, args.cojo_collinear,
+        )
+    elif args.stage == "qtl":
+        output_dir = args.output_dir.expanduser()
+        run_qtl_scan(
+            output_dir / "highfill_phenotype_prepared.tsv", output_dir,
+            args.rscript_bin, args.qtl_threshold, args.force_qtl_scan,
         )
 
 
