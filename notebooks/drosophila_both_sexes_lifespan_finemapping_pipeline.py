@@ -14,6 +14,7 @@ DEFAULT_GWAS = REPO_DIR / "data" / "Highfill_803RILs_GWAS_PCA.txt"
 DEFAULT_GENOTYPE = REPO_DIR / "data" / "Highfill_803RILs_genotype.txt"
 DEFAULT_LIFTOVER_CHAIN = REPO_DIR / "data" / "dm3ToDm6.over.chain.gz"
 DEFAULT_OUTPUT_DIR = REPO_DIR / "data" / "highfill_finemap"
+DEFAULT_GCTA = REPO_DIR / "tools" / "gcta" / "1.94.1" / "gcta64"
 CHROMOSOMES = {"2L": "1", "2R": "2", "3L": "3", "3R": "4", "4": "5", "X": "23"}
 
 
@@ -146,6 +147,8 @@ def prepare_genotypes(
     if raw.empty:
         raise ValueError("Highfill genotype file is empty")
     raw["CHR"] = raw["CHR"].str.removeprefix("chr")
+    raw["A1"] = raw["A1"].str.upper()
+    raw["A2"] = raw["A2"].str.upper()
     if raw["CHR"].isna().any() or not raw["CHR"].isin(CHROMOSOMES).all():
         raise ValueError("Highfill genotypes contain an unsupported chromosome")
     if raw[["RIL", "A1", "A2"]].isna().any().any() or (raw["A1"] == raw["A2"]).any():
@@ -242,12 +245,146 @@ def prepare_genotypes(
     return final_prefix
 
 
+def prepare_cojo_input(
+    gwas_file: Path, bfile_prefix: Path, output_dir: Path,
+    plink_bin: str, p_threshold: float = 1e-5, min_n: int = 100
+) -> Path:
+    if not 0 < p_threshold < 1 or min_n < 3:
+        raise ValueError("COJO requires 0 < p threshold < 1 and minimum N >= 3")
+    if not gwas_file.is_file():
+        raise FileNotFoundError(f"Prepared Highfill GWAS not found: {gwas_file}")
+    for extension in (".bed", ".bim", ".fam"):
+        if not bfile_prefix.with_suffix(extension).is_file():
+            raise FileNotFoundError(f"PLINK reference is incomplete: {bfile_prefix}")
+    plink = shutil.which(plink_bin)
+    if plink is None:
+        raise FileNotFoundError(f"PLINK executable not found: {plink_bin}")
+
+    gwas = pd.read_csv(gwas_file, sep="\t", dtype={"SNP": "string", "CHR": "string"})
+    required = {"SNP", "CHR", "POS_dm6", "BETA", "se", "P", "N"}
+    if not required.issubset(gwas.columns):
+        raise ValueError(f"Prepared GWAS is missing columns: {sorted(required - set(gwas.columns))}")
+    if gwas["SNP"].isna().any() or gwas["SNP"].duplicated().any():
+        raise ValueError("Prepared GWAS requires unique SNP identifiers")
+    for column in ("POS_dm6", "BETA", "se", "P", "N"):
+        gwas[column] = pd.to_numeric(gwas[column], errors="coerce")
+    eligible = gwas.loc[(gwas["P"] <= p_threshold) & (gwas["N"] >= min_n)].copy()
+    if eligible.empty:
+        raise ValueError("No GWAS SNPs pass the COJO p-value and sample-size thresholds")
+    if not np.isfinite(eligible[["POS_dm6", "BETA", "se", "P", "N"]].to_numpy()).all():
+        raise ValueError("COJO-eligible SNPs contain nonfinite statistics")
+    if (eligible["se"] <= 0).any() or (eligible["N"] != np.floor(eligible["N"])).any():
+        raise ValueError("COJO-eligible SNPs require positive SE and integer N")
+
+    bim = pd.read_csv(
+        bfile_prefix.with_suffix(".bim"), sep=r"\s+", header=None,
+        names=["CHR_REF", "SNP", "CM", "POS_REF", "A1_REF", "A2_REF"],
+        dtype={"CHR_REF": "string", "SNP": "string", "A1_REF": "string", "A2_REF": "string"},
+    )
+    if bim["SNP"].duplicated().any():
+        raise ValueError("PLINK reference contains duplicate SNP identifiers")
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(prefix="highfill_freq_", dir=output_dir) as temp:
+        freq_prefix = Path(temp) / "highfill_genotypes_freq"
+        command = [
+            plink, "--bfile", str(bfile_prefix), "--keep-allele-order",
+            "--freq", "--out", str(freq_prefix),
+        ]
+        result = subprocess.run(command, capture_output=True, text=True)
+        if result.returncode:
+            raise RuntimeError(
+                f"PLINK frequency calculation failed\n{result.stdout[-2000:]}\n"
+                f"{result.stderr[-2000:]}"
+            )
+        freq = pd.read_csv(freq_prefix.with_suffix(".frq"), sep=r"\s+")
+
+    if freq["SNP"].duplicated().any():
+        raise ValueError("PLINK frequency output contains duplicate SNP identifiers")
+    reference = bim.merge(
+        freq[["SNP", "A1", "A2", "MAF"]], on="SNP", how="left", validate="one_to_one"
+    )
+    if not reference["A1_REF"].eq(reference["A1"]).all() or not reference["A2_REF"].eq(
+        reference["A2"]
+    ).all():
+        raise ValueError("PLINK frequencies disagree with the reference A1/A2 alleles")
+
+    selected = eligible.merge(reference, on="SNP", how="inner", validate="one_to_one")
+    if selected.empty:
+        raise ValueError("No COJO-eligible GWAS SNPs are present in the PLINK reference")
+    if not selected["CHR"].map(CHROMOSOMES).eq(selected["CHR_REF"]).all():
+        raise ValueError("GWAS and reference chromosomes disagree")
+    if not selected["POS_dm6"].eq(selected["POS_REF"]).all():
+        raise ValueError("GWAS and reference dm6 positions disagree")
+    selected["MAF"] = pd.to_numeric(selected["MAF"], errors="coerce")
+    selected = selected.loc[selected["MAF"].between(0, 1, inclusive="neither")].copy()
+    if selected.empty:
+        raise ValueError("No COJO-eligible SNPs have polymorphic reference genotypes")
+
+    cojo = selected[["SNP", "A1_REF", "A2_REF", "MAF", "BETA", "se", "P", "N"]].copy()
+    cojo.columns = ["SNP", "A1", "A2", "freq", "b", "se", "p", "N"]
+    cojo["N"] = cojo["N"].astype(int)
+    cojo = cojo.sort_values(["p", "SNP"])
+    output_file = output_dir / "highfill_cojo_input.txt"
+    cojo.to_csv(output_file, sep=" ", index=False)
+    print(
+        f"Prepared {len(cojo)} COJO SNPs from {len(eligible)} eligible GWAS SNPs: "
+        f"{output_file}"
+    )
+    return output_file
+
+
+def run_cojo(
+    gwas_file: Path, bfile_prefix: Path, output_dir: Path,
+    plink_bin: str, gcta_bin: str, p_threshold: float = 1e-5,
+    min_n: int = 100, collinear: float = 0.5
+) -> Path:
+    if not 0 < collinear < 1:
+        raise ValueError("COJO collinearity cutoff must be between zero and one")
+    gcta = shutil.which(gcta_bin)
+    if gcta is None:
+        raise FileNotFoundError(f"GCTA executable not found: {gcta_bin}")
+    cojo_input = prepare_cojo_input(
+        gwas_file, bfile_prefix, output_dir, plink_bin, p_threshold, min_n
+    )
+    result_dir = output_dir / "cojo"
+    result_dir.mkdir(parents=True, exist_ok=True)
+    with tempfile.TemporaryDirectory(prefix="highfill_cojo_", dir=result_dir) as temp:
+        prefix = Path(temp) / "highfill_lifespan_cojo"
+        command = [
+            gcta, "--bfile", str(bfile_prefix), "--cojo-file", str(cojo_input),
+            "--cojo-slct", "--cojo-p", str(p_threshold),
+            "--cojo-collinear", str(collinear), "--out", str(prefix),
+        ]
+        result = subprocess.run(command, capture_output=True, text=True)
+        if result.returncode:
+            raise RuntimeError(
+                f"GCTA-COJO failed\n{result.stdout[-3000:]}\n{result.stderr[-3000:]}"
+            )
+        jma_file = prefix.with_suffix(".jma.cojo")
+        if not jma_file.is_file():
+            raise RuntimeError("GCTA-COJO did not write a joint-signal result")
+        signals = pd.read_csv(jma_file, sep=r"\s+")
+        if signals.empty or not {"SNP", "Chr", "bp", "pJ"}.issubset(signals.columns):
+            raise ValueError("GCTA-COJO did not return valid independent signals")
+        input_snps = set(pd.read_csv(cojo_input, sep=r"\s+")["SNP"])
+        if not set(signals["SNP"]).issubset(input_snps):
+            raise ValueError("GCTA-COJO selected SNPs absent from its input")
+        for artifact in prefix.parent.glob(f"{prefix.name}.*"):
+            shutil.copy2(artifact, result_dir / artifact.name)
+
+    output_file = result_dir / "highfill_lifespan_cojo.jma.cojo"
+    print(f"COJO selected {len(signals)} independent signals: {output_file}")
+    return output_file
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="Highfill DSPR Drosophila lifespan fine-mapping pipeline"
     )
     parser.add_argument(
-        "--stage", choices=("phenotype", "gwas", "genotype"), default="phenotype"
+        "--stage", choices=("phenotype", "gwas", "genotype", "cojo"),
+        default="phenotype"
     )
     parser.add_argument("--phenotype", type=Path, default=DEFAULT_PHENOTYPE)
     parser.add_argument("--gwas", type=Path, default=DEFAULT_GWAS)
@@ -255,6 +392,10 @@ def main() -> None:
     parser.add_argument("--liftover-chain", type=Path, default=DEFAULT_LIFTOVER_CHAIN)
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
     parser.add_argument("--plink-bin", default="plink")
+    parser.add_argument("--gcta-bin", default=str(DEFAULT_GCTA))
+    parser.add_argument("--cojo-p", type=float, default=1e-5)
+    parser.add_argument("--min-n", type=int, default=100)
+    parser.add_argument("--cojo-collinear", type=float, default=0.5)
     args = parser.parse_args()
 
     if args.stage == "phenotype":
@@ -269,6 +410,14 @@ def main() -> None:
             args.genotype.expanduser(), args.liftover_chain.expanduser(),
             args.output_dir.expanduser() / "highfill_phenotype_prepared.tsv",
             args.output_dir.expanduser(), args.plink_bin
+        )
+    elif args.stage == "cojo":
+        output_dir = args.output_dir.expanduser()
+        run_cojo(
+            output_dir / "highfill_gwas_prepared.tsv",
+            output_dir / "highfill_genotypes", output_dir,
+            args.plink_bin, args.gcta_bin,
+            args.cojo_p, args.min_n, args.cojo_collinear,
         )
 
 
