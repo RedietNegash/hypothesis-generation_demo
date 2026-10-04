@@ -1,7 +1,9 @@
 import argparse
+import gzip
 import hashlib
 import json
 from pathlib import Path
+import re
 import shutil
 import subprocess
 import tempfile
@@ -15,6 +17,7 @@ DEFAULT_PHENOTYPE = REPO_DIR / "data" / "Highfilletal(2016)805pBDSPRRILs.txt"
 DEFAULT_GWAS = REPO_DIR / "data" / "Highfill_803RILs_GWAS_PCA.txt"
 DEFAULT_GENOTYPE = REPO_DIR / "data" / "Highfill_803RILs_genotype.txt"
 DEFAULT_LIFTOVER_CHAIN = REPO_DIR / "data" / "dm3ToDm6.over.chain.gz"
+DEFAULT_GTF = REPO_DIR / "data" / "genes" / "Drosophila_melanogaster.BDGP6.54.62.chr.gtf.gz"
 DEFAULT_OUTPUT_DIR = REPO_DIR / "data" / "highfill_finemap"
 DEFAULT_GCTA = REPO_DIR / "tools" / "gcta" / "1.94.1" / "gcta64"
 CHROMOSOMES = {"2L": "1", "2R": "2", "3L": "3", "3R": "4", "4": "5", "X": "23"}
@@ -550,18 +553,120 @@ def run_qtl_scan(
     return regions_file
 
 
+def load_gene_annotations(gtf_file: Path) -> pd.DataFrame:
+    if not gtf_file.is_file():
+        raise FileNotFoundError(f"Drosophila gene annotation not found: {gtf_file}")
+    rows = []
+    with gzip.open(gtf_file, "rt", encoding="utf-8") as source:
+        for line in source:
+            if line.startswith("#"):
+                continue
+            fields = line.rstrip("\n").split("\t")
+            if len(fields) != 9 or fields[2] != "gene":
+                continue
+            attributes = dict(re.findall(r'(\w+) "([^"]*)"', fields[8]))
+            gene_id = attributes.get("gene_id", "")
+            rows.append({
+                "chrom": fields[0].removeprefix("chr"),
+                "start": int(fields[3]),
+                "end": int(fields[4]),
+                "gene_id": gene_id,
+                "gene_name": attributes.get("gene_name", gene_id),
+                "gene_biotype": attributes.get("gene_biotype", ""),
+            })
+    genes = pd.DataFrame(rows)
+    if genes.empty or genes["gene_id"].eq("").any():
+        raise ValueError(f"No valid gene features found in {gtf_file}")
+    return genes
+
+
+def map_qtl_peaks_to_genes(
+    regions_file: Path, chain_file: Path, gtf_file: Path, output_dir: Path
+) -> Path:
+    from pyliftover import LiftOver
+
+    if not regions_file.is_file():
+        raise FileNotFoundError(f"DSPR QTL regions not found: {regions_file}")
+    if not chain_file.is_file():
+        raise FileNotFoundError(f"dm3-to-dm6 chain file not found: {chain_file}")
+    regions = pd.read_csv(regions_file, sep="\t", dtype={"chrom": "string"})
+    required = {
+        "chrom", "bci_start_dm3", "bci_end_dm3", "lead_peak_dm3",
+        "lead_lod", "raw_peak_count", "all_founders_observed",
+    }
+    if not required.issubset(regions.columns):
+        raise ValueError(f"DSPR regions are missing columns: {sorted(required - set(regions.columns))}")
+    genes = load_gene_annotations(gtf_file)
+    liftover = LiftOver(str(chain_file))
+    columns = [
+        "chrom", "bci_start_dm3", "bci_end_dm3", "lead_peak_dm3",
+        "lead_peak_dm6", "lead_lod", "raw_peak_count", "all_founders_observed",
+        "gene_id", "gene_name", "gene_biotype", "relation", "distance_bp",
+    ]
+    rows = []
+    for region in regions.itertuples(index=False):
+        chrom = str(region.chrom).removeprefix("chr")
+        peak_dm3 = int(region.lead_peak_dm3)
+        if chrom not in CHROMOSOMES or peak_dm3 < 1:
+            raise ValueError(f"Invalid QTL peak coordinate: {chrom}:{peak_dm3}")
+        mapped = liftover.convert_coordinate(f"chr{chrom}", peak_dm3 - 1) or []
+        mapped = [hit for hit in mapped if hit[0] == f"chr{chrom}"]
+        if len(mapped) != 1:
+            raise ValueError(f"QTL peak has no unique same-chromosome dm6 mapping: {chrom}:{peak_dm3}")
+        peak_dm6 = int(mapped[0][1]) + 1
+        on_chrom = genes.loc[genes["chrom"] == chrom]
+        if on_chrom.empty:
+            raise ValueError(f"No dm6 genes found on chromosome {chrom}")
+        overlapping = on_chrom.loc[
+            (on_chrom["start"] <= peak_dm6) & (peak_dm6 <= on_chrom["end"])
+        ]
+        if overlapping.empty:
+            distance = np.maximum(
+                peak_dm6 - on_chrom["end"], on_chrom["start"] - peak_dm6
+            )
+            nearest_distance = int(distance.min())
+            selected = on_chrom.loc[distance == nearest_distance]
+            relation = "nearest"
+        else:
+            selected = overlapping
+            nearest_distance = 0
+            relation = "overlapping"
+        for gene in selected.itertuples(index=False):
+            rows.append({
+                "chrom": chrom,
+                "bci_start_dm3": int(region.bci_start_dm3),
+                "bci_end_dm3": int(region.bci_end_dm3),
+                "lead_peak_dm3": peak_dm3,
+                "lead_peak_dm6": peak_dm6,
+                "lead_lod": float(region.lead_lod),
+                "raw_peak_count": int(region.raw_peak_count),
+                "all_founders_observed": bool(region.all_founders_observed),
+                "gene_id": gene.gene_id,
+                "gene_name": gene.gene_name,
+                "gene_biotype": gene.gene_biotype,
+                "relation": relation,
+                "distance_bp": nearest_distance,
+            })
+    output_dir.mkdir(parents=True, exist_ok=True)
+    output_file = output_dir / "highfill_qtl_peak_genes.tsv"
+    pd.DataFrame(rows, columns=columns).to_csv(output_file, sep="\t", index=False)
+    print(f"Mapped {len(regions)} DSPR QTL peaks to {len(rows)} gene records: {output_file}")
+    return output_file
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="Highfill DSPR Drosophila lifespan fine-mapping pipeline"
     )
     parser.add_argument(
-        "--stage", choices=("phenotype", "gwas", "genotype", "cojo", "qtl"),
+        "--stage", choices=("phenotype", "gwas", "genotype", "cojo", "qtl", "genes"),
         default="phenotype"
     )
     parser.add_argument("--phenotype", type=Path, default=DEFAULT_PHENOTYPE)
     parser.add_argument("--gwas", type=Path, default=DEFAULT_GWAS)
     parser.add_argument("--genotype", type=Path, default=DEFAULT_GENOTYPE)
     parser.add_argument("--liftover-chain", type=Path, default=DEFAULT_LIFTOVER_CHAIN)
+    parser.add_argument("--gtf", type=Path, default=DEFAULT_GTF)
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
     parser.add_argument("--plink-bin", default="plink")
     parser.add_argument("--gcta-bin", default=str(DEFAULT_GCTA))
@@ -599,6 +704,12 @@ def main() -> None:
         run_qtl_scan(
             output_dir / "highfill_phenotype_prepared.tsv", output_dir,
             args.rscript_bin, args.qtl_threshold, args.force_qtl_scan,
+        )
+    elif args.stage == "genes":
+        output_dir = args.output_dir.expanduser()
+        map_qtl_peaks_to_genes(
+            output_dir / "dspr_qtl" / "dspr_qtl_regions.tsv",
+            args.liftover_chain.expanduser(), args.gtf.expanduser(), output_dir,
         )
 
 
