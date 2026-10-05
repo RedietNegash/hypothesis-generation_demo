@@ -18,6 +18,7 @@ DEFAULT_GWAS = REPO_DIR / "data" / "Highfill_803RILs_GWAS_PCA.txt"
 DEFAULT_GENOTYPE = REPO_DIR / "data" / "Highfill_803RILs_genotype.txt"
 DEFAULT_LIFTOVER_CHAIN = REPO_DIR / "data" / "dm3ToDm6.over.chain.gz"
 DEFAULT_GTF = REPO_DIR / "data" / "genes" / "Drosophila_melanogaster.BDGP6.54.62.chr.gtf.gz"
+DEFAULT_ENHANCERS = REPO_DIR / "data" / "enhancers" / "dm"
 DEFAULT_OUTPUT_DIR = REPO_DIR / "data" / "highfill_finemap"
 DEFAULT_GCTA = REPO_DIR / "tools" / "gcta" / "1.94.1" / "gcta64"
 CHROMOSOMES = {"2L": "1", "2R": "2", "3L": "3", "3R": "4", "4": "5", "X": "23"}
@@ -742,12 +743,105 @@ def select_qtl_interval_variants(
     return output_file
 
 
+def map_qtl_variants_to_enhancers(
+    variants_file: Path, enhancer_dir: Path, output_dir: Path
+) -> Path:
+    if not variants_file.is_file():
+        raise FileNotFoundError(f"DSPR QTL interval variants not found: {variants_file}")
+    if not enhancer_dir.is_dir():
+        raise FileNotFoundError(f"Fly enhancer BED directory not found: {enhancer_dir}")
+    bed_files = sorted(enhancer_dir.glob("*.bed"))
+    if not bed_files:
+        raise FileNotFoundError(f"No fly enhancer BED files found in {enhancer_dir}")
+
+    variants = pd.read_csv(
+        variants_file, sep="\t", dtype={"region": "string", "chrom": "string", "SNP": "string"}
+    )
+    required = {"region", "chrom", "SNP", "POS_dm6", "P", "passes_region_bonferroni"}
+    if not required.issubset(variants.columns):
+        raise ValueError(
+            f"QTL interval variants are missing columns: {sorted(required - set(variants.columns))}"
+        )
+    variants["POS_dm6"] = pd.to_numeric(variants["POS_dm6"], errors="raise")
+    if not np.isfinite(variants["POS_dm6"]).all() or (
+        (variants["POS_dm6"] < 1) | (variants["POS_dm6"] != np.floor(variants["POS_dm6"]))
+    ).any():
+        raise ValueError("QTL interval variant dm6 positions must be positive integers")
+    if variants[["region", "chrom", "SNP"]].isna().any().any() or variants.duplicated(
+        ["region", "SNP"]
+    ).any():
+        raise ValueError("QTL interval variant identifiers must be complete and unique per region")
+
+    positions_by_chrom = {}
+    for chrom, subset in variants.groupby("chrom", sort=False):
+        ordered = subset.sort_values("POS_dm6")
+        positions_by_chrom[str(chrom).removeprefix("chr")] = (
+            ordered["POS_dm6"].to_numpy(dtype=np.int64) - 1,
+            ordered.index.to_numpy(),
+        )
+
+    rows = []
+    matched = set()
+    for bed_file in bed_files:
+        with bed_file.open(encoding="utf-8") as source:
+            for number, line in enumerate(source, start=1):
+                if not line.strip() or line.startswith(("#", "track", "browser")):
+                    continue
+                fields = line.split()
+                if len(fields) < 3:
+                    raise ValueError(f"Invalid enhancer BED row in {bed_file}:{number}")
+                chrom = fields[0].removeprefix("chr")
+                if chrom not in positions_by_chrom:
+                    continue
+                try:
+                    start, end = int(fields[1]), int(fields[2])
+                    score = float(fields[3]) if len(fields) > 3 else np.nan
+                except ValueError as exc:
+                    raise ValueError(f"Invalid enhancer BED row in {bed_file}:{number}") from exc
+                if start < 0 or end <= start or (len(fields) > 3 and not np.isfinite(score)):
+                    raise ValueError(f"Invalid enhancer BED interval in {bed_file}:{number}")
+                positions, indices = positions_by_chrom[chrom]
+                left = np.searchsorted(positions, start, side="left")
+                right = np.searchsorted(positions, end, side="left")
+                for index in indices[left:right]:
+                    matched.add(int(index))
+                    rows.append({
+                        **variants.loc[index].to_dict(),
+                        "enhancer_tissue": bed_file.stem,
+                        "enh_start": start,
+                        "enh_end": end,
+                        "enh_score": score,
+                    })
+
+    for index in variants.index.difference(list(matched)):
+        rows.append({
+            **variants.loc[index].to_dict(),
+            "enhancer_tissue": "-NONE-",
+            "enh_start": pd.NA,
+            "enh_end": pd.NA,
+            "enh_score": pd.NA,
+        })
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+    output_file = output_dir / "highfill_qtl_variant_enhancers.tsv"
+    columns = list(variants.columns) + [
+        "enhancer_tissue", "enh_start", "enh_end", "enh_score"
+    ]
+    pd.DataFrame(rows, columns=columns).to_csv(output_file, sep="\t", index=False)
+    print(
+        f"Mapped {len(matched)} of {len(variants)} QTL interval variant records "
+        f"to {len(rows) - (len(variants) - len(matched))} enhancer overlaps "
+        f"across {len(bed_files)} tracks: {output_file}"
+    )
+    return output_file
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="Highfill DSPR Drosophila lifespan fine-mapping pipeline"
     )
     parser.add_argument(
-        "--stage", choices=("phenotype", "gwas", "genotype", "cojo", "qtl", "genes", "variants"),
+        "--stage", choices=("phenotype", "gwas", "genotype", "cojo", "qtl", "genes", "variants", "enhancers"),
         default="phenotype"
     )
     parser.add_argument("--phenotype", type=Path, default=DEFAULT_PHENOTYPE)
@@ -755,6 +849,7 @@ def main() -> None:
     parser.add_argument("--genotype", type=Path, default=DEFAULT_GENOTYPE)
     parser.add_argument("--liftover-chain", type=Path, default=DEFAULT_LIFTOVER_CHAIN)
     parser.add_argument("--gtf", type=Path, default=DEFAULT_GTF)
+    parser.add_argument("--enhancer-dir", type=Path, default=DEFAULT_ENHANCERS)
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
     parser.add_argument("--plink-bin", default="plink")
     parser.add_argument("--gcta-bin", default=str(DEFAULT_GCTA))
@@ -805,6 +900,12 @@ def main() -> None:
         select_qtl_interval_variants(
             output_dir / "dspr_qtl" / "dspr_qtl_regions.tsv",
             output_dir / "highfill_gwas_prepared.tsv", output_dir, args.variant_p,
+        )
+    elif args.stage == "enhancers":
+        output_dir = args.output_dir.expanduser()
+        map_qtl_variants_to_enhancers(
+            output_dir / "highfill_qtl_interval_variants.tsv",
+            args.enhancer_dir.expanduser(), output_dir,
         )
 
 
