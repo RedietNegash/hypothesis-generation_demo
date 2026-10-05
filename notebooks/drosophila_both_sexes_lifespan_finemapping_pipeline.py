@@ -13,6 +13,13 @@ REPO_DIR = Path(__file__).resolve().parents[1]
 STUDY_URL = "https://dgrpool.epfl.ch/studies/1/get_file?name=summary.tsv"
 DEFAULT_OUTPUT_DIR = REPO_DIR / "data" / "finemap" / "both_sexes"
 PHENOTYPE_NAME = "longevity_both_sexes_days"
+GENOTYPE_URL_PREFIX = "https://zenodo.org/records/837947/files/dgrp2_dm6_dbSNP.vcf"
+DEFAULT_GENOTYPE_BFILE = REPO_DIR / "data" / "reference" / "dgrp2_dm6_dbSNP.vcf"
+GENOTYPE_MD5 = {
+    ".bed": "6e3b0c5b2c186c3a6dec99c20c24e3f4",
+    ".bim": "18ba9e60111dd6398d160f9bba89023c",
+    ".fam": "d5cbeec02da5e40a89f3c3a9ab8f15cf",
+}
 
 
 def download_phenotype_source(destination: Path, url: str = STUDY_URL) -> Path:
@@ -94,21 +101,111 @@ def prepare_phenotype(
     return output_file
 
 
+def file_digest(path: Path, algorithm: str) -> str:
+    digest = hashlib.new(algorithm)
+    with path.open("rb") as source:
+        for block in iter(lambda: source.read(1024 * 1024), b""):
+            digest.update(block)
+    return digest.hexdigest()
+
+
+def ensure_genotype_reference(prefix: Path, download: bool) -> None:
+    for extension, expected_md5 in GENOTYPE_MD5.items():
+        destination = Path(f"{prefix}{extension}")
+        if not download:
+            if not destination.is_file():
+                raise FileNotFoundError(f"DGRP2 genotype reference is missing: {destination}")
+            continue
+        if destination.is_file() and file_digest(destination, "md5") == expected_md5:
+            continue
+        destination.parent.mkdir(parents=True, exist_ok=True)
+        with tempfile.NamedTemporaryFile(
+            prefix="dgrp2_", suffix=".tmp", dir=destination.parent, delete=False
+        ) as temporary:
+            temporary_path = Path(temporary.name)
+            try:
+                with urllib.request.urlopen(
+                    GENOTYPE_URL_PREFIX + extension + "?download=1", timeout=120
+                ) as response:
+                    shutil.copyfileobj(response, temporary)
+            except BaseException:
+                temporary_path.unlink(missing_ok=True)
+                raise
+        try:
+            observed_md5 = file_digest(temporary_path, "md5")
+            if observed_md5 != expected_md5:
+                raise ValueError(
+                    f"DGRP2 genotype checksum mismatch for {extension}: {observed_md5}"
+                )
+            temporary_path.replace(destination)
+        finally:
+            temporary_path.unlink(missing_ok=True)
+
+
+def prepare_genotype_reference(
+    phenotype_file: Path, bfile_prefix: Path, output_dir: Path,
+    download: bool = True
+) -> Path:
+    if not phenotype_file.is_file():
+        raise FileNotFoundError(f"Prepared Arya phenotype not found: {phenotype_file}")
+    ensure_genotype_reference(bfile_prefix, download)
+    phenotype = pd.read_csv(phenotype_file, sep="\t", dtype={"FID": "string", "IID": "string"})
+    if not {"FID", "IID", PHENOTYPE_NAME}.issubset(phenotype.columns):
+        raise ValueError("Prepared Arya phenotype lacks FID, IID, or mean longevity")
+    if phenotype[["FID", "IID"]].isna().any().any() or phenotype.duplicated(
+        ["FID", "IID"]
+    ).any():
+        raise ValueError("Prepared Arya phenotype has missing or duplicate sample IDs")
+    fam = pd.read_csv(
+        Path(f"{bfile_prefix}.fam"), sep=r"\s+", header=None,
+        usecols=[0, 1], names=["FID", "IID"], dtype="string",
+    )
+    if fam.empty or fam.isna().any().any() or fam.duplicated(["FID", "IID"]).any():
+        raise ValueError("DGRP2 reference has missing or duplicate sample IDs")
+    matched = phenotype[["FID", "IID"]].merge(
+        fam, on=["FID", "IID"], how="inner", validate="one_to_one"
+    )
+    if len(matched) < 2:
+        raise ValueError("Fewer than two paired Arya lines match the DGRP2 genotypes")
+    output_dir.mkdir(parents=True, exist_ok=True)
+    keep_file = output_dir / "arya_genotyped_lines.keep"
+    temporary_file = keep_file.with_suffix(".keep.tmp")
+    try:
+        matched.to_csv(temporary_file, sep="\t", header=False, index=False)
+        temporary_file.replace(keep_file)
+    finally:
+        temporary_file.unlink(missing_ok=True)
+    print(
+        f"Matched {len(matched)} of {len(phenotype)} paired Arya lines "
+        f"to DGRP2 genotypes: {keep_file}"
+    )
+    return keep_file
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="Arya et al. DGRP male and female longevity fine-mapping pipeline"
     )
-    parser.add_argument("--stage", choices=("phenotype",), default="phenotype")
+    parser.add_argument("--stage", choices=("phenotype", "genotype"), default="phenotype")
     parser.add_argument("--phenotype-source", type=Path)
     parser.add_argument("--phenotype-url", default=STUDY_URL)
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
+    parser.add_argument("--genotype-bfile", type=Path)
     parser.add_argument("--force-download", action="store_true")
     args = parser.parse_args()
-    prepare_phenotype(
-        args.output_dir.expanduser(),
-        args.phenotype_source.expanduser() if args.phenotype_source else None,
-        args.phenotype_url, args.force_download,
-    )
+    output_dir = args.output_dir.expanduser()
+    if args.stage == "phenotype":
+        prepare_phenotype(
+            output_dir,
+            args.phenotype_source.expanduser() if args.phenotype_source else None,
+            args.phenotype_url, args.force_download,
+        )
+    elif args.stage == "genotype":
+        prepare_genotype_reference(
+            output_dir / "arya_both_sexes_phenotype.tsv",
+            args.genotype_bfile.expanduser() if args.genotype_bfile else DEFAULT_GENOTYPE_BFILE,
+            output_dir, download=args.genotype_bfile is None,
+        )
 
 
 if __name__ == "__main__":
