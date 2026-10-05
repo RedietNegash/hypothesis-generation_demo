@@ -1,6 +1,7 @@
 import argparse
 import gzip
 import hashlib
+import importlib.util
 import json
 from pathlib import Path
 import re
@@ -898,12 +899,55 @@ def summarize_results(output_dir: Path) -> Path:
     return output_file
 
 
+def check_run_inputs(args: argparse.Namespace) -> None:
+    required_files = {
+        "phenotype": args.phenotype.expanduser(),
+        "GWAS summary statistics": args.gwas.expanduser(),
+        "genotype calls": args.genotype.expanduser(),
+        "dm3-to-dm6 liftOver chain": args.liftover_chain.expanduser(),
+        "dm6 gene annotation": args.gtf.expanduser(),
+    }
+    missing = [
+        f"{name}: {path}" for name, path in required_files.items() if not path.is_file()
+    ]
+    enhancer_dir = args.enhancer_dir.expanduser()
+    if not enhancer_dir.is_dir() or not any(enhancer_dir.glob("*.bed")):
+        missing.append(f"fly enhancer BED tracks: {enhancer_dir}")
+    for name, executable in (
+        ("PLINK", args.plink_bin),
+        ("GCTA", args.gcta_bin),
+        ("Rscript", args.rscript_bin),
+    ):
+        if shutil.which(executable) is None:
+            missing.append(f"{name} executable: {executable}")
+    for package in ("pyliftover", "scipy"):
+        if importlib.util.find_spec(package) is None:
+            missing.append(f"Python package: {package}")
+    rscript = shutil.which(args.rscript_bin)
+    if rscript is not None:
+        result = subprocess.run(
+            [
+                rscript, "--vanilla", "-e",
+                'quit(status=as.integer(!all(vapply(c("DSPRqtl", "DSPRqtlDataB"), '
+                'requireNamespace, logical(1), quietly=TRUE))))',
+            ],
+            capture_output=True, text=True,
+        )
+        if result.returncode:
+            missing.append("R packages: DSPRqtl and DSPRqtlDataB")
+    if missing:
+        raise FileNotFoundError(
+            "Highfill full-run prerequisites are missing:\n- " + "\n- ".join(missing)
+        )
+    print("All Highfill full-run inputs and tools are available")
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="Highfill DSPR Drosophila lifespan fine-mapping pipeline"
     )
     parser.add_argument(
-        "--stage", choices=("phenotype", "gwas", "genotype", "cojo", "qtl", "genes", "variants", "enhancers", "report", "all"),
+        "--stage", choices=("check", "phenotype", "gwas", "genotype", "cojo", "qtl", "genes", "variants", "enhancers", "report", "all"),
         default="phenotype"
     )
     parser.add_argument("--phenotype", type=Path, default=DEFAULT_PHENOTYPE)
@@ -925,6 +969,8 @@ def main() -> None:
     args = parser.parse_args()
 
     output_dir = args.output_dir.expanduser()
+    if args.stage in ("check", "all"):
+        check_run_inputs(args)
     if args.stage in ("phenotype", "all"):
         prepare_phenotype(args.phenotype.expanduser(), output_dir)
     if args.stage in ("gwas", "all"):
