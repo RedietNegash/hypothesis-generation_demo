@@ -654,12 +654,100 @@ def map_qtl_peaks_to_genes(
     return output_file
 
 
+def select_qtl_interval_variants(
+    regions_file: Path, gwas_file: Path, output_dir: Path,
+    p_cutoff: float = 0.01
+) -> Path:
+    if not 0 < p_cutoff <= 1:
+        raise ValueError("QTL interval variant p-value cutoff must be between zero and one")
+    if not regions_file.is_file():
+        raise FileNotFoundError(f"DSPR QTL regions not found: {regions_file}")
+    if not gwas_file.is_file():
+        raise FileNotFoundError(f"Prepared Highfill GWAS not found: {gwas_file}")
+
+    regions = pd.read_csv(regions_file, sep="\t", dtype={"chrom": "string"})
+    gwas = pd.read_csv(gwas_file, sep="\t", dtype={"SNP": "string", "CHR": "string"})
+    region_columns = {
+        "chrom", "bci_start_dm3", "bci_end_dm3", "lead_peak_dm3",
+        "lead_lod", "all_founders_observed",
+    }
+    gwas_columns = {"SNP", "CHR", "POS", "POS_dm6", "BETA", "P", "N"}
+    if not region_columns.issubset(regions.columns):
+        raise ValueError(
+            f"DSPR regions are missing columns: {sorted(region_columns - set(regions.columns))}"
+        )
+    if not gwas_columns.issubset(gwas.columns):
+        raise ValueError(
+            f"Prepared GWAS is missing columns: {sorted(gwas_columns - set(gwas.columns))}"
+        )
+    for column in ("POS", "POS_dm6", "BETA", "P", "N"):
+        gwas[column] = pd.to_numeric(gwas[column], errors="raise")
+    if not np.isfinite(gwas[["POS", "POS_dm6", "BETA", "P", "N"]].to_numpy()).all():
+        raise ValueError("Prepared GWAS contains nonfinite variant statistics")
+    if ((gwas["P"] < 0) | (gwas["P"] > 1)).any():
+        raise ValueError("Prepared GWAS contains invalid p-values")
+    if gwas["SNP"].isna().any() or gwas["SNP"].duplicated().any():
+        raise ValueError("Prepared GWAS requires unique nonmissing SNP identifiers")
+
+    columns = [
+        "region", "chrom", "bci_start_dm3", "bci_end_dm3", "lead_peak_dm3",
+        "lead_lod", "all_founders_observed", "SNP", "POS_dm3", "POS_dm6",
+        "BETA", "P", "N", "region_snp_count", "region_bonferroni_p",
+        "passes_region_bonferroni",
+    ]
+    rows = []
+    for region in regions.itertuples(index=False):
+        chrom = str(region.chrom).removeprefix("chr")
+        start = int(region.bci_start_dm3)
+        end = int(region.bci_end_dm3)
+        peak = int(region.lead_peak_dm3)
+        if chrom not in CHROMOSOMES or start < 1 or start > peak or peak > end:
+            raise ValueError(f"Invalid DSPR QTL interval: {chrom}:{start}-{end}, peak {peak}")
+        within = gwas.loc[
+            (gwas["CHR"].str.removeprefix("chr") == chrom)
+            & gwas["POS"].between(start, end)
+        ]
+        if within.empty:
+            continue
+        corrected_p = 0.05 / len(within)
+        selected = within.loc[within["P"] <= p_cutoff].sort_values(["P", "SNP"])
+        for variant in selected.itertuples(index=False):
+            rows.append({
+                "region": f"{chrom}:{start}-{end}",
+                "chrom": chrom,
+                "bci_start_dm3": start,
+                "bci_end_dm3": end,
+                "lead_peak_dm3": peak,
+                "lead_lod": float(region.lead_lod),
+                "all_founders_observed": bool(region.all_founders_observed),
+                "SNP": variant.SNP,
+                "POS_dm3": int(variant.POS),
+                "POS_dm6": int(variant.POS_dm6),
+                "BETA": float(variant.BETA),
+                "P": float(variant.P),
+                "N": int(variant.N),
+                "region_snp_count": len(within),
+                "region_bonferroni_p": corrected_p,
+                "passes_region_bonferroni": bool(variant.P <= corrected_p),
+            })
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+    output_file = output_dir / "highfill_qtl_interval_variants.tsv"
+    result = pd.DataFrame(rows, columns=columns)
+    result.to_csv(output_file, sep="\t", index=False)
+    print(
+        f"Selected {len(result)} GWAS variants from {len(regions)} DSPR QTL intervals; "
+        f"{int(result['passes_region_bonferroni'].sum())} pass interval Bonferroni: {output_file}"
+    )
+    return output_file
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="Highfill DSPR Drosophila lifespan fine-mapping pipeline"
     )
     parser.add_argument(
-        "--stage", choices=("phenotype", "gwas", "genotype", "cojo", "qtl", "genes"),
+        "--stage", choices=("phenotype", "gwas", "genotype", "cojo", "qtl", "genes", "variants"),
         default="phenotype"
     )
     parser.add_argument("--phenotype", type=Path, default=DEFAULT_PHENOTYPE)
@@ -675,6 +763,7 @@ def main() -> None:
     parser.add_argument("--cojo-collinear", type=float, default=0.5)
     parser.add_argument("--rscript-bin", default="Rscript")
     parser.add_argument("--qtl-threshold", type=float, default=6.8)
+    parser.add_argument("--variant-p", type=float, default=0.01)
     parser.add_argument("--force-qtl-scan", action="store_true")
     args = parser.parse_args()
 
@@ -710,6 +799,12 @@ def main() -> None:
         map_qtl_peaks_to_genes(
             output_dir / "dspr_qtl" / "dspr_qtl_regions.tsv",
             args.liftover_chain.expanduser(), args.gtf.expanduser(), output_dir,
+        )
+    elif args.stage == "variants":
+        output_dir = args.output_dir.expanduser()
+        select_qtl_interval_variants(
+            output_dir / "dspr_qtl" / "dspr_qtl_regions.tsv",
+            output_dir / "highfill_gwas_prepared.tsv", output_dir, args.variant_p,
         )
 
 
