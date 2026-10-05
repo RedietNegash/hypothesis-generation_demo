@@ -836,12 +836,74 @@ def map_qtl_variants_to_enhancers(
     return output_file
 
 
+def summarize_results(output_dir: Path) -> Path:
+    files = {
+        "phenotype": output_dir / "highfill_phenotype_prepared.tsv",
+        "gwas": output_dir / "highfill_gwas_prepared.tsv",
+        "genotype_fam": output_dir / "highfill_genotypes.fam",
+        "genotype_bim": output_dir / "highfill_genotypes.bim",
+        "cojo": output_dir / "cojo" / "highfill_lifespan_cojo.jma.cojo",
+        "qtl_regions": output_dir / "dspr_qtl" / "dspr_qtl_regions.tsv",
+        "peak_genes": output_dir / "highfill_qtl_peak_genes.tsv",
+        "interval_variants": output_dir / "highfill_qtl_interval_variants.tsv",
+        "enhancers": output_dir / "highfill_qtl_variant_enhancers.tsv",
+    }
+    missing = [name for name, path in files.items() if not path.is_file()]
+    if missing:
+        raise FileNotFoundError(f"Cannot summarize incomplete Highfill run; missing: {missing}")
+
+    phenotype = pd.read_csv(files["phenotype"], sep="\t")
+    gwas = pd.read_csv(files["gwas"], sep="\t")
+    cojo = pd.read_csv(files["cojo"], sep=r"\s+")
+    qtl = pd.read_csv(files["qtl_regions"], sep="\t")
+    genes = pd.read_csv(files["peak_genes"], sep="\t")
+    variants = pd.read_csv(files["interval_variants"], sep="\t")
+    enhancers = pd.read_csv(files["enhancers"], sep="\t")
+    if "passes_region_bonferroni" not in variants:
+        raise ValueError("QTL interval variants lack regional significance calls")
+    if not {"region", "SNP", "enhancer_tissue"}.issubset(enhancers.columns):
+        raise ValueError("Enhancer mapping lacks region, SNP, or tissue columns")
+
+    enhancer_hits = enhancers.loc[enhancers["enhancer_tissue"] != "-NONE-"]
+    with files["genotype_fam"].open() as source:
+        genotype_rils = sum(1 for line in source if line.strip())
+    with files["genotype_bim"].open() as source:
+        genotype_variants = sum(1 for line in source if line.strip())
+    report = {
+        "phenotype_rils": len(phenotype),
+        "gwas_variants": len(gwas),
+        "genotype_rils": genotype_rils,
+        "genotype_variants": genotype_variants,
+        "cojo_independent_signals": len(cojo),
+        "dspr_qtl_regions": len(qtl),
+        "qtl_peak_gene_records": len(genes),
+        "qtl_interval_candidate_variants": len(variants),
+        "qtl_interval_variants_passing_bonferroni": int(
+            variants["passes_region_bonferroni"].sum()
+        ),
+        "candidate_variant_enhancer_overlaps": len(enhancer_hits),
+        "candidate_variants_overlapping_enhancers": len(
+            enhancer_hits[["region", "SNP"]].drop_duplicates()
+        ),
+        "enhancer_tissues_with_overlaps": int(enhancer_hits["enhancer_tissue"].nunique()),
+        "artifacts": {name: str(path.resolve()) for name, path in files.items()},
+    }
+    output_dir.mkdir(parents=True, exist_ok=True)
+    output_file = output_dir / "highfill_run_summary.json"
+    temporary_file = output_file.with_suffix(".json.tmp")
+    temporary_file.write_text(json.dumps(report, indent=2) + "\n")
+    temporary_file.replace(output_file)
+    print(json.dumps({key: value for key, value in report.items() if key != "artifacts"}, indent=2))
+    print(f"Saved Highfill run summary: {output_file}")
+    return output_file
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="Highfill DSPR Drosophila lifespan fine-mapping pipeline"
     )
     parser.add_argument(
-        "--stage", choices=("phenotype", "gwas", "genotype", "cojo", "qtl", "genes", "variants", "enhancers", "all"),
+        "--stage", choices=("phenotype", "gwas", "genotype", "cojo", "qtl", "genes", "variants", "enhancers", "report", "all"),
         default="phenotype"
     )
     parser.add_argument("--phenotype", type=Path, default=DEFAULT_PHENOTYPE)
@@ -903,6 +965,8 @@ def main() -> None:
             output_dir / "highfill_qtl_interval_variants.tsv",
             args.enhancer_dir.expanduser(), output_dir,
         )
+    if args.stage in ("report", "all"):
+        summarize_results(output_dir)
 
 
 if __name__ == "__main__":
