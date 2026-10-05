@@ -841,7 +841,7 @@ def main() -> None:
         description="Highfill DSPR Drosophila lifespan fine-mapping pipeline"
     )
     parser.add_argument(
-        "--stage", choices=("phenotype", "gwas", "genotype", "cojo", "qtl", "genes", "variants", "enhancers"),
+        "--stage", choices=("phenotype", "gwas", "genotype", "cojo", "qtl", "genes", "variants", "enhancers", "all"),
         default="phenotype"
     )
     parser.add_argument("--phenotype", type=Path, default=DEFAULT_PHENOTYPE)
@@ -862,47 +862,43 @@ def main() -> None:
     parser.add_argument("--force-qtl-scan", action="store_true")
     args = parser.parse_args()
 
-    if args.stage == "phenotype":
-        prepare_phenotype(args.phenotype.expanduser(), args.output_dir.expanduser())
-    elif args.stage == "gwas":
+    output_dir = args.output_dir.expanduser()
+    if args.stage in ("phenotype", "all"):
+        prepare_phenotype(args.phenotype.expanduser(), output_dir)
+    if args.stage in ("gwas", "all"):
         prepare_gwas(
             args.gwas.expanduser(), args.liftover_chain.expanduser(),
-            args.output_dir.expanduser()
+            output_dir,
         )
-    elif args.stage == "genotype":
+    if args.stage in ("genotype", "all"):
         prepare_genotypes(
             args.genotype.expanduser(), args.liftover_chain.expanduser(),
-            args.output_dir.expanduser() / "highfill_phenotype_prepared.tsv",
-            args.output_dir.expanduser(), args.plink_bin
+            output_dir / "highfill_phenotype_prepared.tsv",
+            output_dir, args.plink_bin,
         )
-    elif args.stage == "cojo":
-        output_dir = args.output_dir.expanduser()
+    if args.stage in ("cojo", "all"):
         run_cojo(
             output_dir / "highfill_gwas_prepared.tsv",
             output_dir / "highfill_genotypes", output_dir,
             args.plink_bin, args.gcta_bin,
             args.cojo_p, args.min_n, args.cojo_collinear,
         )
-    elif args.stage == "qtl":
-        output_dir = args.output_dir.expanduser()
+    if args.stage in ("qtl", "all"):
         run_qtl_scan(
             output_dir / "highfill_phenotype_prepared.tsv", output_dir,
             args.rscript_bin, args.qtl_threshold, args.force_qtl_scan,
         )
-    elif args.stage == "genes":
-        output_dir = args.output_dir.expanduser()
+    if args.stage in ("genes", "all"):
         map_qtl_peaks_to_genes(
             output_dir / "dspr_qtl" / "dspr_qtl_regions.tsv",
             args.liftover_chain.expanduser(), args.gtf.expanduser(), output_dir,
         )
-    elif args.stage == "variants":
-        output_dir = args.output_dir.expanduser()
+    if args.stage in ("variants", "all"):
         select_qtl_interval_variants(
             output_dir / "dspr_qtl" / "dspr_qtl_regions.tsv",
             output_dir / "highfill_gwas_prepared.tsv", output_dir, args.variant_p,
         )
-    elif args.stage == "enhancers":
-        output_dir = args.output_dir.expanduser()
+    if args.stage in ("enhancers", "all"):
         map_qtl_variants_to_enhancers(
             output_dir / "highfill_qtl_interval_variants.tsv",
             args.enhancer_dir.expanduser(), output_dir,
