@@ -25,6 +25,8 @@ GO_GAF_URL = "https://current.geneontology.org/annotations/gaf/DROME-mod.gaf.gz"
 GO_OBO_URL = "https://current.geneontology.org/ontology/go-basic.obo"
 CHROM_MAP = {"2L": "1", "2R": "2", "3L": "3", "3R": "4", "4": "5", "X": "X", "23": "X"}
 GENE_ID_PATTERN = re.compile(r'gene_id "([^"]+)"')
+GENE_NAME_PATTERN = re.compile(r'gene_name "([^"]+)"')
+GENE_BIOTYPE_PATTERN = re.compile(r'gene_biotype "([^"]+)"')
 
 
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
@@ -116,6 +118,29 @@ def write_gene_locations(gtf_path: Path, output_path: Path) -> Path:
         temporary_path.unlink(missing_ok=True)
     print(f"Wrote {count} gene locations: {output_path}")
     return output_path
+
+
+def load_gene_metadata(gtf_path: Path) -> dict[str, tuple[str, str]]:
+    metadata = {}
+    opener = gzip.open if gtf_path.suffix == ".gz" else open
+    with opener(gtf_path, "rt", encoding="utf-8") as source:
+        for line in source:
+            if line.startswith("#"):
+                continue
+            fields = line.rstrip("\n").split("\t")
+            if len(fields) != 9 or fields[2] != "gene":
+                continue
+            match = GENE_ID_PATTERN.search(fields[8])
+            if match is None:
+                continue
+            gene_id = match.group(1)
+            name_match = GENE_NAME_PATTERN.search(fields[8])
+            biotype_match = GENE_BIOTYPE_PATTERN.search(fields[8])
+            metadata[gene_id] = (
+                name_match.group(1) if name_match else gene_id,
+                biotype_match.group(1) if biotype_match else "",
+            )
+    return metadata
 
 
 def write_snp_locations(bfile: Path, output_path: Path) -> Path:
@@ -487,7 +512,10 @@ def run_gene_set_analysis(
 
 
 def summarize_magma_results(
-    result_path: Path, identifier_column: str, output_path: Path
+    result_path: Path,
+    identifier_column: str,
+    output_path: Path,
+    gene_metadata: dict[str, tuple[str, str]] | None = None,
 ) -> Path:
     records = []
     columns = None
@@ -521,13 +549,20 @@ def summarize_magma_results(
     temporary_path = output_path.with_name(f"{output_path.name}.tmp")
     try:
         with temporary_path.open("w", encoding="utf-8") as destination:
-            destination.write("ID\tP\tP_BONFERRONI\tSIGNIFICANT\n")
+            columns = ["ID"]
+            if gene_metadata is not None:
+                columns.extend(("GENE_NAME", "GENE_BIOTYPE"))
+            columns.extend(("P", "P_BONFERRONI", "SIGNIFICANT"))
+            destination.write("\t".join(columns) + "\n")
             for identifier, p_value in sorted(records, key=lambda item: (item[1], item[0])):
                 adjusted = min(1.0, p_value * test_count)
-                destination.write(
-                    f"{identifier}\t{p_value:.17g}\t{adjusted:.17g}"
-                    f"\t{str(p_value <= threshold).lower()}\n"
+                values = [identifier]
+                if gene_metadata is not None:
+                    values.extend(gene_metadata.get(identifier, (identifier, "")))
+                values.extend(
+                    (f"{p_value:.17g}", f"{adjusted:.17g}", str(p_value <= threshold).lower())
                 )
+                destination.write("\t".join(values) + "\n")
         temporary_path.replace(output_path)
     finally:
         temporary_path.unlink(missing_ok=True)
@@ -575,6 +610,7 @@ def main(argv: list[str] | None = None) -> None:
         args.out_dir / "dgrp_lifespan_female_gene.genes.out",
         "GENE",
         args.out_dir / "gene_results_bonferroni.tsv",
+        gene_metadata=load_gene_metadata(args.gtf),
     )
     if set_file is not None:
         set_results = run_gene_set_analysis(
