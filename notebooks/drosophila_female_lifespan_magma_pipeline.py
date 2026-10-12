@@ -4,12 +4,15 @@ import argparse
 from collections import defaultdict
 import errno
 import gzip
+import hashlib
+import json
 import math
 import os
 from pathlib import Path
 import re
 import shutil
 import subprocess
+import urllib.request
 
 
 BASE_DIR = Path(__file__).resolve().parents[1]
@@ -18,6 +21,8 @@ DEFAULT_GTF = BASE_DIR / "data" / "genes" / "Drosophila_melanogaster.BDGP6.54.62
 DEFAULT_BFILE = BASE_DIR / "data" / "gwas" / "tmp" / "merged_qc"
 DEFAULT_MAGMA_BIN = BASE_DIR / "tools" / "magma" / "magma"
 DEFAULT_OUT_DIR = BASE_DIR / "results" / "magma_female"
+GO_GAF_URL = "https://current.geneontology.org/annotations/gaf/DROME-mod.gaf.gz"
+GO_OBO_URL = "https://current.geneontology.org/ontology/go-basic.obo"
 CHROM_MAP = {"2L": "1", "2R": "2", "3L": "3", "3R": "4", "4": "5", "X": "X", "23": "X"}
 GENE_ID_PATTERN = re.compile(r'gene_id "([^"]+)"')
 
@@ -34,6 +39,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     gene_set_source = parser.add_mutually_exclusive_group()
     gene_set_source.add_argument("--gene-sets", type=Path)
     gene_set_source.add_argument("--go-gaf", type=Path)
+    gene_set_source.add_argument("--download-go", action="store_true")
     parser.add_argument("--go-obo", type=Path)
     args = parser.parse_args(argv)
     if (args.go_gaf is None) != (args.go_obo is None):
@@ -410,6 +416,55 @@ def build_go_gene_sets(
     return output_path
 
 
+def download_go_inputs(output_dir: Path) -> tuple[Path, Path]:
+    output_dir.mkdir(parents=True, exist_ok=True)
+    manifest_path = output_dir / "source_manifest.json"
+    previous_manifest = (
+        json.loads(manifest_path.read_text(encoding="utf-8"))
+        if manifest_path.is_file()
+        else {}
+    )
+    files = (
+        (GO_GAF_URL, output_dir / "DROME-mod.gaf.gz"),
+        (GO_OBO_URL, output_dir / "go-basic.obo"),
+    )
+    manifest = {}
+    for url, destination in files:
+        cached = destination.is_file() and destination.stat().st_size > 0
+        if not cached:
+            temporary = destination.with_name(f"{destination.name}.tmp")
+            try:
+                with urllib.request.urlopen(url, timeout=120) as response, temporary.open(
+                    "wb"
+                ) as output:
+                    shutil.copyfileobj(response, output)
+                if temporary.stat().st_size == 0:
+                    raise ValueError(f"Downloaded empty GO input from {url}")
+                temporary.replace(destination)
+            finally:
+                temporary.unlink(missing_ok=True)
+            print(f"Downloaded GO input: {destination}")
+        digest = hashlib.sha256()
+        with destination.open("rb") as source:
+            for chunk in iter(lambda: source.read(1024 * 1024), b""):
+                digest.update(chunk)
+        old_record = previous_manifest.get(destination.name)
+        if cached and old_record and old_record["sha256"] != digest.hexdigest():
+            raise ValueError(f"Cached GO input differs from its recorded checksum: {destination}")
+        manifest[destination.name] = {
+            "url": old_record["url"] if cached and old_record else url,
+            "sha256": digest.hexdigest(),
+        }
+    temporary_manifest = manifest_path.with_name(f"{manifest_path.name}.tmp")
+    try:
+        temporary_manifest.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+        temporary_manifest.replace(manifest_path)
+    finally:
+        temporary_manifest.unlink(missing_ok=True)
+    print(f"Recorded GO input sources and checksums: {manifest_path}")
+    return files[0][1], files[1][1]
+
+
 def run_gene_set_analysis(
     magma_bin: Path, gene_results: Path, set_file: Path, output_prefix: Path
 ) -> Path:
@@ -436,10 +491,13 @@ def main(argv: list[str] | None = None) -> None:
     validate_inputs(args)
     gene_locations = write_gene_locations(args.gtf, args.out_dir / "gene_loc.txt")
     set_file = args.gene_sets
-    if args.go_gaf is not None:
+    gaf_path, obo_path = args.go_gaf, args.go_obo
+    if args.download_go:
+        gaf_path, obo_path = download_go_inputs(args.out_dir / "go_inputs")
+    if gaf_path is not None:
         set_file = build_go_gene_sets(
-            args.go_gaf,
-            args.go_obo,
+            gaf_path,
+            obo_path,
             gene_locations,
             args.out_dir / "go_biological_process.sets.txt",
         )
