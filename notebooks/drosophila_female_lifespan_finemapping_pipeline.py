@@ -1237,6 +1237,7 @@ def _download_verified(url: str, destination: Path, digest: str, algorithm: str,
         return
     destination.parent.mkdir(parents=True, exist_ok=True)
     last_error = None
+    wget_bin = shutil.which("wget")
     for attempt in range(3):
         for candidate in (url, *fallback_urls):
             with tempfile.NamedTemporaryFile(prefix=destination.name + ".", suffix=".tmp",
@@ -1244,9 +1245,14 @@ def _download_verified(url: str, destination: Path, digest: str, algorithm: str,
                 temporary_path = Path(temporary.name)
                 try:
                     print(f"Downloading {candidate} -> {destination}", flush=True)
-                    with urllib.request.urlopen(candidate, timeout=120) as response:
-                        shutil.copyfileobj(response, temporary, length=1024 * 1024)
-                except (urllib.error.URLError, TimeoutError, ConnectionError) as error:
+                    if wget_bin:
+                        subprocess.run([wget_bin, "--no-verbose", "--timeout=120", "--tries=1",
+                                        "--output-document", str(temporary_path), candidate], check=True)
+                    else:
+                        with urllib.request.urlopen(candidate, timeout=120) as response:
+                            shutil.copyfileobj(response, temporary, length=1024 * 1024)
+                except (subprocess.CalledProcessError, urllib.error.URLError,
+                        TimeoutError, ConnectionError) as error:
                     last_error = error
                     print(f"Download failed: {error}", flush=True)
                 else:
