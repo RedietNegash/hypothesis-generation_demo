@@ -14,6 +14,7 @@ import platform
 import re
 import shutil
 import subprocess
+import sys
 import tempfile
 import urllib.error
 import urllib.request
@@ -103,7 +104,9 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--out-dir", type=Path, default=DEFAULT_OUT_DIR)
     parser.add_argument(
         "--stage",
-        choices=("all", "install", "validate", "prepare", "annotate", "genes", "sets", "report"),
+        choices=(
+            "all", "inputs", "install", "validate", "prepare", "annotate", "genes", "sets", "report"
+        ),
         default="all",
     )
     gene_set_source = parser.add_mutually_exclusive_group()
@@ -154,6 +157,27 @@ def require_files(paths: list[Path]) -> None:
         raise FileNotFoundError(
             "Missing or empty MAGMA inputs:\n" + "\n".join(str(path) for path in missing)
         )
+
+
+def ensure_gwas_inputs(args: argparse.Namespace) -> None:
+    required = [
+        args.sumstats,
+        args.gtf,
+        *(Path(f"{args.bfile}{extension}") for extension in (".bed", ".bim", ".fam")),
+    ]
+    if all(path.is_file() and path.stat().st_size > 0 for path in required):
+        return
+    if (args.sumstats, args.gtf, args.bfile) != (
+        DEFAULT_SUMSTATS,
+        DEFAULT_GTF,
+        DEFAULT_BFILE,
+    ):
+        require_files(required)
+    female_pipeline = BASE_DIR / "notebooks" / "drosophila_female_lifespan_finemapping_pipeline.py"
+    require_files([female_pipeline])
+    print("Generating female lifespan GWAS inputs for MAGMA", flush=True)
+    subprocess.run([sys.executable, str(female_pipeline), "--stage", "gwas"], check=True)
+    require_files(required)
 
 
 def write_gene_locations(gtf_path: Path, output_path: Path) -> Path:
@@ -753,6 +777,9 @@ def write_run_manifest(args: argparse.Namespace, set_file: Path | None) -> Path:
 
 def main(argv: list[str] | None = None) -> None:
     args = parse_args(argv)
+    if args.stage == "inputs":
+        ensure_gwas_inputs(args)
+        return
     if args.stage == "install":
         print(f"MAGMA executable: {resolve_magma_binary(args.magma_bin)}")
         return
@@ -799,6 +826,7 @@ def main(argv: list[str] | None = None) -> None:
         args.magma_bin = resolve_magma_binary(args.magma_bin)
 
     if args.stage in {"all", "prepare"}:
+        ensure_gwas_inputs(args)
         validate_inputs(args)
         gene_locations = write_gene_locations(args.gtf, gene_locations)
         snp_locations = write_snp_locations(args.bfile, snp_locations)
