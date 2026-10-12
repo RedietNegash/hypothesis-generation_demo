@@ -39,7 +39,9 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--magma-bin", type=Path, default=DEFAULT_MAGMA_BIN)
     parser.add_argument("--out-dir", type=Path, default=DEFAULT_OUT_DIR)
     parser.add_argument(
-        "--stage", choices=("all", "prepare", "annotate", "genes", "sets", "report"), default="all"
+        "--stage",
+        choices=("all", "validate", "prepare", "annotate", "genes", "sets", "report"),
+        default="all",
     )
     gene_set_source = parser.add_mutually_exclusive_group()
     gene_set_source.add_argument("--gene-sets", type=Path)
@@ -629,6 +631,9 @@ def summarize_magma_results(
 
 def main(argv: list[str] | None = None) -> None:
     args = parse_args(argv)
+    if args.stage == "validate":
+        validate_inputs(args)
+        return
     out_dir = args.out_dir
     gene_locations = out_dir / "gene_loc.txt"
     snp_locations = out_dir / "snp_loc.txt"
