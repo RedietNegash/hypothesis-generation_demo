@@ -1238,34 +1238,41 @@ def _download_verified(url: str, destination: Path, digest: str, algorithm: str,
     destination.parent.mkdir(parents=True, exist_ok=True)
     last_error = None
     wget_bin = shutil.which("wget")
+    partial_path = destination.with_name(destination.name + ".part")
+    if partial_path.is_file() and _file_digest(partial_path, algorithm) == digest:
+        partial_path.replace(destination)
+        print(f"Using verified source: {destination}")
+        return
     for attempt in range(3):
         for candidate in (url, *fallback_urls):
-            with tempfile.NamedTemporaryFile(prefix=destination.name + ".", suffix=".tmp",
-                                             dir=destination.parent, delete=False) as temporary:
-                temporary_path = Path(temporary.name)
-                try:
-                    print(f"Downloading {candidate} -> {destination}", flush=True)
-                    if wget_bin:
-                        subprocess.run([wget_bin, "--no-verbose", "--timeout=120", "--tries=1",
-                                        "--output-document", str(temporary_path), candidate], check=True)
-                    else:
-                        with urllib.request.urlopen(candidate, timeout=120) as response:
-                            shutil.copyfileobj(response, temporary, length=1024 * 1024)
-                except (subprocess.CalledProcessError, urllib.error.URLError,
-                        TimeoutError, ConnectionError) as error:
-                    last_error = error
-                    print(f"Download failed: {error}", flush=True)
+            try:
+                print(f"Downloading {candidate} -> {destination}", flush=True)
+                if wget_bin:
+                    subprocess.run([wget_bin, "--continue", "--no-verbose", "--timeout=120",
+                                    "--tries=3", "--output-document", str(partial_path), candidate],
+                                   check=True)
                 else:
-                    temporary.flush()
-                    actual = _file_digest(temporary_path, algorithm)
-                    if actual != digest:
-                        raise ValueError(
-                            f"{algorithm} mismatch for {candidate}: expected {digest}, got {actual}"
-                        )
-                    temporary_path.replace(destination)
-                    return
-                finally:
-                    temporary_path.unlink(missing_ok=True)
+                    existing_size = partial_path.stat().st_size if partial_path.exists() else 0
+                    request = urllib.request.Request(candidate)
+                    if existing_size:
+                        request.add_header("Range", f"bytes={existing_size}-")
+                    with urllib.request.urlopen(request, timeout=120) as response:
+                        append = existing_size and response.status == 206
+                        with partial_path.open("ab" if append else "wb") as temporary:
+                            shutil.copyfileobj(response, temporary, length=1024 * 1024)
+            except (subprocess.CalledProcessError, urllib.error.URLError,
+                    TimeoutError, ConnectionError) as error:
+                last_error = error
+                print(f"Download failed: {error}", flush=True)
+            else:
+                actual = _file_digest(partial_path, algorithm)
+                if actual != digest:
+                    partial_path.unlink(missing_ok=True)
+                    raise ValueError(
+                        f"{algorithm} mismatch for {candidate}: expected {digest}, got {actual}"
+                    )
+                partial_path.replace(destination)
+                return
         if attempt < 2:
             time.sleep(2 ** (attempt + 1))
     raise RuntimeError(
