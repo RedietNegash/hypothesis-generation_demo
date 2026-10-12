@@ -636,6 +636,36 @@ def summarize_magma_results(
     return output_path
 
 
+def write_run_manifest(args: argparse.Namespace, set_file: Path | None) -> Path:
+    output_path = args.out_dir / "run_manifest.json"
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    manifest = {
+        "stage": args.stage,
+        "sumstats": str(args.sumstats.resolve()),
+        "gtf": str(args.gtf.resolve()),
+        "bfile": str(args.bfile.resolve()),
+        "magma_bin": str(args.magma_bin.resolve()),
+        "gene_sets": str(set_file.resolve()) if set_file is not None else None,
+        "sample_size_column": "N",
+        "multiple_testing": "Bonferroni",
+        "alpha": 0.05,
+        "gene_results": str((args.out_dir / "gene_results_bonferroni.tsv").resolve()),
+        "gene_set_results": (
+            str((args.out_dir / "gene_set_results_bonferroni.tsv").resolve())
+            if set_file is not None
+            else None
+        ),
+    }
+    temporary_path = output_path.with_name(f"{output_path.name}.tmp")
+    try:
+        temporary_path.write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
+        temporary_path.replace(output_path)
+    finally:
+        temporary_path.unlink(missing_ok=True)
+    print(f"Saved MAGMA run manifest: {output_path}")
+    return output_path
+
+
 def main(argv: list[str] | None = None) -> None:
     args = parse_args(argv)
     if args.stage == "validate":
@@ -766,6 +796,8 @@ def main(argv: list[str] | None = None) -> None:
             go_names=load_go_names(obo_path) if obo_path is not None else None,
             significant_output_path=out_dir / "gene_set_results_significant.tsv",
         )
+    if args.stage == "all":
+        write_run_manifest(args, set_file)
 
 
 if __name__ == "__main__":
