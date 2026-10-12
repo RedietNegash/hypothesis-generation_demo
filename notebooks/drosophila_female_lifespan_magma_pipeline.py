@@ -486,6 +486,58 @@ def run_gene_set_analysis(
     return output_path
 
 
+def summarize_magma_results(
+    result_path: Path, identifier_column: str, output_path: Path
+) -> Path:
+    records = []
+    columns = None
+    with result_path.open("r", encoding="utf-8") as source:
+        for line_number, line in enumerate(source, start=1):
+            if not line.strip() or line.startswith("#"):
+                continue
+            fields = line.split()
+            if columns is None:
+                columns = fields
+                if identifier_column not in columns or "P" not in columns:
+                    raise ValueError(f"Unexpected MAGMA result header in {result_path}")
+                continue
+            if len(fields) != len(columns):
+                raise ValueError(f"Invalid MAGMA result at {result_path}:{line_number}")
+            row = dict(zip(columns, fields))
+            if row.get("TYPE", "SET") != "SET":
+                continue
+            p_value = float(row["P"])
+            if not math.isfinite(p_value) or not 0 <= p_value <= 1:
+                raise ValueError(f"Invalid MAGMA p-value at {result_path}:{line_number}")
+            identifier = row.get("FULL_NAME", row[identifier_column])
+            records.append((identifier, p_value))
+    if not records:
+        raise ValueError(f"No tested MAGMA results found in {result_path}")
+
+    test_count = len(records)
+    threshold = 0.05 / test_count
+    significant = sum(p_value <= threshold for _, p_value in records)
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    temporary_path = output_path.with_name(f"{output_path.name}.tmp")
+    try:
+        with temporary_path.open("w", encoding="utf-8") as destination:
+            destination.write("ID\tP\tP_BONFERRONI\tSIGNIFICANT\n")
+            for identifier, p_value in sorted(records, key=lambda item: (item[1], item[0])):
+                adjusted = min(1.0, p_value * test_count)
+                destination.write(
+                    f"{identifier}\t{p_value:.17g}\t{adjusted:.17g}"
+                    f"\t{str(p_value <= threshold).lower()}\n"
+                )
+        temporary_path.replace(output_path)
+    finally:
+        temporary_path.unlink(missing_ok=True)
+    print(
+        f"MAGMA {identifier_column.lower()} results: {test_count} tests, "
+        f"Bonferroni threshold {threshold:.6g}, {significant} significant: {output_path}"
+    )
+    return output_path
+
+
 def main(argv: list[str] | None = None) -> None:
     args = parse_args(argv)
     validate_inputs(args)
@@ -519,12 +571,22 @@ def main(argv: list[str] | None = None) -> None:
         annotation,
         args.out_dir / "dgrp_lifespan_female_gene",
     )
+    summarize_magma_results(
+        args.out_dir / "dgrp_lifespan_female_gene.genes.out",
+        "GENE",
+        args.out_dir / "gene_results_bonferroni.tsv",
+    )
     if set_file is not None:
-        run_gene_set_analysis(
+        set_results = run_gene_set_analysis(
             args.magma_bin,
             gene_results,
             set_file,
             args.out_dir / "dgrp_lifespan_female_geneset",
+        )
+        summarize_magma_results(
+            set_results,
+            "VARIABLE",
+            args.out_dir / "gene_set_results_bonferroni.tsv",
         )
 
 
