@@ -30,6 +30,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--bfile", type=Path, default=DEFAULT_BFILE)
     parser.add_argument("--magma-bin", type=Path, default=DEFAULT_MAGMA_BIN)
     parser.add_argument("--out-dir", type=Path, default=DEFAULT_OUT_DIR)
+    parser.add_argument("--gene-sets", type=Path)
     return parser.parse_args(argv)
 
 
@@ -40,6 +41,8 @@ def validate_inputs(args: argparse.Namespace) -> None:
         args.magma_bin,
         *(Path(f"{args.bfile}{extension}") for extension in (".bed", ".bim", ".fam")),
     ]
+    if args.gene_sets is not None:
+        required_files.append(args.gene_sets)
     missing = [path for path in required_files if not path.is_file()]
     if missing:
         raise FileNotFoundError(
@@ -271,10 +274,55 @@ def run_gene_analysis(
     return output_path
 
 
+def validate_gene_sets(set_file: Path, gene_locations: Path) -> int:
+    with gene_locations.open("r", encoding="utf-8") as source:
+        known_genes = {line.split()[0] for line in source if line.strip()}
+    set_count = 0
+    matched_genes = set()
+    seen_sets = set()
+    with set_file.open("r", encoding="utf-8") as source:
+        for line_number, line in enumerate(source, start=1):
+            fields = line.split()
+            if len(fields) < 2 or fields[0].startswith("#"):
+                raise ValueError(f"Invalid MAGMA gene set at {set_file}:{line_number}")
+            if fields[0] in seen_sets:
+                raise ValueError(f"Duplicate MAGMA gene set name: {fields[0]}")
+            seen_sets.add(fields[0])
+            matched_genes.update(known_genes.intersection(fields[1:]))
+            set_count += 1
+    if set_count == 0 or not matched_genes:
+        raise ValueError(f"Gene sets contain no IDs matching the MAGMA gene locations: {set_file}")
+    print(f"Validated {set_count} gene sets with {len(matched_genes)} matching genes")
+    return set_count
+
+
+def run_gene_set_analysis(
+    magma_bin: Path, gene_results: Path, set_file: Path, output_prefix: Path
+) -> Path:
+    command = [
+        str(magma_bin),
+        "--gene-results",
+        str(gene_results),
+        "--set-annot",
+        str(set_file),
+        "--out",
+        str(output_prefix),
+    ]
+    print("Running MAGMA gene-set analysis", flush=True)
+    subprocess.run(command, check=True)
+    output_path = Path(f"{output_prefix}.gsa.out")
+    if not output_path.is_file() or output_path.stat().st_size == 0:
+        raise RuntimeError(f"MAGMA did not produce nonempty gene-set results: {output_path}")
+    print(f"Saved MAGMA gene-set results: {output_path}")
+    return output_path
+
+
 def main(argv: list[str] | None = None) -> None:
     args = parse_args(argv)
     validate_inputs(args)
     gene_locations = write_gene_locations(args.gtf, args.out_dir / "gene_loc.txt")
+    if args.gene_sets is not None:
+        validate_gene_sets(args.gene_sets, gene_locations)
     snp_locations = write_snp_locations(args.bfile, args.out_dir / "snp_loc.txt")
     pvalues = write_magma_pvalues(args.sumstats, args.out_dir / "lifespan_female.magma.p.txt")
     annotation = run_annotation(
@@ -284,13 +332,20 @@ def main(argv: list[str] | None = None) -> None:
         args.out_dir / "dgrp_lifespan_female",
     )
     bfile = prepare_magma_bfile(args.bfile, args.out_dir / "merged_qc_magma")
-    run_gene_analysis(
+    gene_results = run_gene_analysis(
         args.magma_bin,
         bfile,
         pvalues,
         annotation,
         args.out_dir / "dgrp_lifespan_female_gene",
     )
+    if args.gene_sets is not None:
+        run_gene_set_analysis(
+            args.magma_bin,
+            gene_results,
+            args.gene_sets,
+            args.out_dir / "dgrp_lifespan_female_geneset",
+        )
 
 
 if __name__ == "__main__":
