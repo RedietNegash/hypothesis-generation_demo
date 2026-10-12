@@ -96,10 +96,42 @@ def write_gene_locations(gtf_path: Path, output_path: Path) -> Path:
     return output_path
 
 
+def write_snp_locations(bfile: Path, output_path: Path) -> Path:
+    bim_path = Path(f"{bfile}.bim")
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    temporary_path = output_path.with_name(f"{output_path.name}.tmp")
+    count = 0
+    try:
+        with bim_path.open("r", encoding="utf-8") as source, temporary_path.open(
+            "w", encoding="utf-8"
+        ) as destination:
+            for line_number, line in enumerate(source, start=1):
+                fields = line.split()
+                if len(fields) != 6:
+                    raise ValueError(f"Invalid BIM record at {bim_path}:{line_number}")
+                chrom = fields[0].removeprefix("chr")
+                chrom = CHROM_MAP.get(chrom, chrom)
+                if chrom not in CHROM_MAP.values():
+                    raise ValueError(f"Unsupported chromosome at {bim_path}:{line_number}")
+                position = int(fields[3])
+                if position < 1 or fields[1] in {"", "."}:
+                    raise ValueError(f"Invalid SNP ID or position at {bim_path}:{line_number}")
+                destination.write(f"{fields[1]}\t{chrom}\t{position}\n")
+                count += 1
+        if count == 0:
+            raise ValueError(f"No SNP records found in {bim_path}")
+        temporary_path.replace(output_path)
+    finally:
+        temporary_path.unlink(missing_ok=True)
+    print(f"Wrote {count} SNP locations: {output_path}")
+    return output_path
+
+
 def main(argv: list[str] | None = None) -> None:
     args = parse_args(argv)
     validate_inputs(args)
     write_gene_locations(args.gtf, args.out_dir / "gene_loc.txt")
+    write_snp_locations(args.bfile, args.out_dir / "snp_loc.txt")
 
 
 if __name__ == "__main__":
