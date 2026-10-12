@@ -2,6 +2,7 @@
 
 import argparse
 import gzip
+import math
 import os
 from pathlib import Path
 import re
@@ -127,11 +128,56 @@ def write_snp_locations(bfile: Path, output_path: Path) -> Path:
     return output_path
 
 
+def write_magma_pvalues(sumstats_path: Path, output_path: Path) -> Path:
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    temporary_path = output_path.with_name(f"{output_path.name}.tmp")
+    count = 0
+    try:
+        opener = gzip.open if sumstats_path.suffix == ".gz" else open
+        with opener(sumstats_path, "rt", encoding="utf-8") as source, temporary_path.open(
+            "w", encoding="utf-8"
+        ) as destination:
+            columns = source.readline().split()
+            missing = {"SNP", "p", "N"} - set(columns)
+            if missing:
+                raise ValueError(f"GWAS statistics are missing columns: {sorted(missing)}")
+            indices = [columns.index(name) for name in ("SNP", "p", "N")]
+            destination.write("SNP\tP\tN\n")
+            for line_number, line in enumerate(source, start=2):
+                if not line.strip():
+                    continue
+                fields = line.split()
+                if len(fields) != len(columns):
+                    raise ValueError(f"Invalid GWAS row at {sumstats_path}:{line_number}")
+                snp, raw_p, raw_n = (fields[index] for index in indices)
+                p_value = float(raw_p)
+                sample_size = float(raw_n)
+                if (
+                    snp == "."
+                    or not math.isfinite(p_value)
+                    or not 0 <= p_value <= 1
+                    or not math.isfinite(sample_size)
+                    or sample_size <= 0
+                    or not sample_size.is_integer()
+                ):
+                    raise ValueError(f"Invalid SNP, p-value, or N at {sumstats_path}:{line_number}")
+                destination.write(f"{snp}\t{max(p_value, 1e-300):.17g}\t{int(sample_size)}\n")
+                count += 1
+        if count == 0:
+            raise ValueError(f"No GWAS variants found in {sumstats_path}")
+        temporary_path.replace(output_path)
+    finally:
+        temporary_path.unlink(missing_ok=True)
+    print(f"Wrote {count} MAGMA p-values: {output_path}")
+    return output_path
+
+
 def main(argv: list[str] | None = None) -> None:
     args = parse_args(argv)
     validate_inputs(args)
     write_gene_locations(args.gtf, args.out_dir / "gene_loc.txt")
     write_snp_locations(args.bfile, args.out_dir / "snp_loc.txt")
+    write_magma_pvalues(args.sumstats, args.out_dir / "lifespan_female.magma.p.txt")
 
 
 if __name__ == "__main__":
