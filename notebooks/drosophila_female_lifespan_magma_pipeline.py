@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 
 import argparse
+import errno
 import gzip
 import math
 import os
 from pathlib import Path
 import re
+import shutil
 import subprocess
 
 
@@ -196,17 +198,98 @@ def run_annotation(
     return output_path
 
 
+def prepare_magma_bfile(source_prefix: Path, output_prefix: Path) -> Path:
+    output_prefix.parent.mkdir(parents=True, exist_ok=True)
+    for extension in (".bed", ".fam"):
+        source = Path(f"{source_prefix}{extension}")
+        destination = Path(f"{output_prefix}{extension}")
+        temporary = Path(f"{destination}.tmp")
+        try:
+            temporary.unlink(missing_ok=True)
+            try:
+                os.link(source, temporary)
+            except OSError as exc:
+                if exc.errno != errno.EXDEV:
+                    raise
+                shutil.copy2(source, temporary)
+            temporary.replace(destination)
+        finally:
+            temporary.unlink(missing_ok=True)
+
+    source_bim = Path(f"{source_prefix}.bim")
+    destination_bim = Path(f"{output_prefix}.bim")
+    temporary_bim = Path(f"{destination_bim}.tmp")
+    count = 0
+    try:
+        with source_bim.open("r", encoding="utf-8") as source, temporary_bim.open(
+            "w", encoding="utf-8"
+        ) as destination:
+            for line_number, line in enumerate(source, start=1):
+                fields = line.split()
+                if len(fields) != 6:
+                    raise ValueError(f"Invalid BIM record at {source_bim}:{line_number}")
+                chromosome = fields[0].removeprefix("chr")
+                chromosome = CHROM_MAP.get(chromosome, chromosome)
+                if chromosome not in CHROM_MAP.values():
+                    raise ValueError(f"Unsupported chromosome at {source_bim}:{line_number}")
+                destination.write("\t".join((chromosome, *fields[1:])) + "\n")
+                count += 1
+        if count == 0:
+            raise ValueError(f"No SNP records found in {source_bim}")
+        temporary_bim.replace(destination_bim)
+    finally:
+        temporary_bim.unlink(missing_ok=True)
+    print(f"Prepared MAGMA PLINK reference with {count} SNPs: {output_prefix}")
+    return output_prefix
+
+
+def run_gene_analysis(
+    magma_bin: Path,
+    bfile: Path,
+    pvalues: Path,
+    annotation: Path,
+    output_prefix: Path,
+) -> Path:
+    command = [
+        str(magma_bin),
+        "--bfile",
+        str(bfile),
+        "--pval",
+        str(pvalues),
+        "ncol=N",
+        "--gene-annot",
+        str(annotation),
+        "--out",
+        str(output_prefix),
+    ]
+    print("Running MAGMA gene-based analysis", flush=True)
+    subprocess.run(command, check=True)
+    output_path = Path(f"{output_prefix}.genes.raw")
+    if not output_path.is_file() or output_path.stat().st_size == 0:
+        raise RuntimeError(f"MAGMA did not produce nonempty gene results: {output_path}")
+    print(f"Saved MAGMA gene results: {output_path}")
+    return output_path
+
+
 def main(argv: list[str] | None = None) -> None:
     args = parse_args(argv)
     validate_inputs(args)
     gene_locations = write_gene_locations(args.gtf, args.out_dir / "gene_loc.txt")
     snp_locations = write_snp_locations(args.bfile, args.out_dir / "snp_loc.txt")
-    write_magma_pvalues(args.sumstats, args.out_dir / "lifespan_female.magma.p.txt")
-    run_annotation(
+    pvalues = write_magma_pvalues(args.sumstats, args.out_dir / "lifespan_female.magma.p.txt")
+    annotation = run_annotation(
         args.magma_bin,
         snp_locations,
         gene_locations,
         args.out_dir / "dgrp_lifespan_female",
+    )
+    bfile = prepare_magma_bfile(args.bfile, args.out_dir / "merged_qc_magma")
+    run_gene_analysis(
+        args.magma_bin,
+        bfile,
+        pvalues,
+        annotation,
+        args.out_dir / "dgrp_lifespan_female_gene",
     )
 
 
