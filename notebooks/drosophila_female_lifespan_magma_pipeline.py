@@ -29,6 +29,13 @@ GENE_NAME_PATTERN = re.compile(r'gene_name "([^"]+)"')
 GENE_BIOTYPE_PATTERN = re.compile(r'gene_biotype "([^"]+)"')
 
 
+def default_magma_bin() -> Path:
+    if DEFAULT_MAGMA_BIN.is_file() and os.access(DEFAULT_MAGMA_BIN, os.X_OK):
+        return DEFAULT_MAGMA_BIN
+    path_binary = shutil.which("magma")
+    return Path(path_binary) if path_binary is not None else DEFAULT_MAGMA_BIN
+
+
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Run MAGMA gene and gene-set analysis for DGRP female lifespan."
@@ -36,7 +43,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--sumstats", type=Path, default=DEFAULT_SUMSTATS)
     parser.add_argument("--gtf", type=Path, default=DEFAULT_GTF)
     parser.add_argument("--bfile", type=Path, default=DEFAULT_BFILE)
-    parser.add_argument("--magma-bin", type=Path, default=DEFAULT_MAGMA_BIN)
+    parser.add_argument("--magma-bin", type=Path, default=default_magma_bin())
     parser.add_argument("--out-dir", type=Path, default=DEFAULT_OUT_DIR)
     parser.add_argument(
         "--stage",
