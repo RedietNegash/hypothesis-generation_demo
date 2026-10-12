@@ -639,12 +639,17 @@ def summarize_magma_results(
 def write_run_manifest(args: argparse.Namespace, set_file: Path | None) -> Path:
     output_path = args.out_dir / "run_manifest.json"
     output_path.parent.mkdir(parents=True, exist_ok=True)
+    binary_hash = hashlib.sha256()
+    with args.magma_bin.open("rb") as source:
+        for chunk in iter(lambda: source.read(1024 * 1024), b""):
+            binary_hash.update(chunk)
     manifest = {
         "stage": args.stage,
         "sumstats": str(args.sumstats.resolve()),
         "gtf": str(args.gtf.resolve()),
         "bfile": str(args.bfile.resolve()),
         "magma_bin": str(args.magma_bin.resolve()),
+        "magma_sha256": binary_hash.hexdigest(),
         "gene_sets": str(set_file.resolve()) if set_file is not None else None,
         "sample_size_column": "N",
         "multiple_testing": "Bonferroni",
