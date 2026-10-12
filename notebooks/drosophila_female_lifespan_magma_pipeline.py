@@ -6,6 +6,7 @@ import math
 import os
 from pathlib import Path
 import re
+import subprocess
 
 
 BASE_DIR = Path(__file__).resolve().parents[1]
@@ -14,7 +15,7 @@ DEFAULT_GTF = BASE_DIR / "data" / "genes" / "Drosophila_melanogaster.BDGP6.54.62
 DEFAULT_BFILE = BASE_DIR / "data" / "gwas" / "tmp" / "merged_qc"
 DEFAULT_MAGMA_BIN = BASE_DIR / "tools" / "magma" / "magma"
 DEFAULT_OUT_DIR = BASE_DIR / "results" / "magma_female"
-CHROM_MAP = {"2L": "1", "2R": "2", "3L": "3", "3R": "4", "4": "5", "X": "23"}
+CHROM_MAP = {"2L": "1", "2R": "2", "3L": "3", "3R": "4", "4": "5", "X": "X", "23": "X"}
 GENE_ID_PATTERN = re.compile(r'gene_id "([^"]+)"')
 
 
@@ -172,12 +173,41 @@ def write_magma_pvalues(sumstats_path: Path, output_path: Path) -> Path:
     return output_path
 
 
+def run_annotation(
+    magma_bin: Path, snp_locations: Path, gene_locations: Path, output_prefix: Path
+) -> Path:
+    command = [
+        str(magma_bin),
+        "--annotate",
+        "nonhuman",
+        "--snp-loc",
+        str(snp_locations),
+        "--gene-loc",
+        str(gene_locations),
+        "--out",
+        str(output_prefix),
+    ]
+    print("Running MAGMA SNP-to-gene annotation", flush=True)
+    subprocess.run(command, check=True)
+    output_path = Path(f"{output_prefix}.genes.annot")
+    if not output_path.is_file() or output_path.stat().st_size == 0:
+        raise RuntimeError(f"MAGMA did not produce a nonempty annotation: {output_path}")
+    print(f"Saved MAGMA gene annotation: {output_path}")
+    return output_path
+
+
 def main(argv: list[str] | None = None) -> None:
     args = parse_args(argv)
     validate_inputs(args)
-    write_gene_locations(args.gtf, args.out_dir / "gene_loc.txt")
-    write_snp_locations(args.bfile, args.out_dir / "snp_loc.txt")
+    gene_locations = write_gene_locations(args.gtf, args.out_dir / "gene_loc.txt")
+    snp_locations = write_snp_locations(args.bfile, args.out_dir / "snp_loc.txt")
     write_magma_pvalues(args.sumstats, args.out_dir / "lifespan_female.magma.p.txt")
+    run_annotation(
+        args.magma_bin,
+        snp_locations,
+        gene_locations,
+        args.out_dir / "dgrp_lifespan_female",
+    )
 
 
 if __name__ == "__main__":
