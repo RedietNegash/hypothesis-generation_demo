@@ -39,7 +39,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--magma-bin", type=Path, default=DEFAULT_MAGMA_BIN)
     parser.add_argument("--out-dir", type=Path, default=DEFAULT_OUT_DIR)
     parser.add_argument(
-        "--stage", choices=("all", "prepare", "annotate", "genes", "sets"), default="all"
+        "--stage", choices=("all", "prepare", "annotate", "genes", "sets", "report"), default="all"
     )
     gene_set_source = parser.add_mutually_exclusive_group()
     gene_set_source.add_argument("--gene-sets", type=Path)
@@ -47,7 +47,9 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     gene_set_source.add_argument("--download-go", action="store_true")
     parser.add_argument("--go-obo", type=Path)
     args = parser.parse_args(argv)
-    if (args.go_gaf is None) != (args.go_obo is None):
+    if args.go_gaf is not None and args.go_obo is None:
+        parser.error("--go-gaf requires --go-obo")
+    if args.go_obo is not None and args.go_gaf is None and args.stage != "report":
         parser.error("--go-gaf and --go-obo must be provided together")
     return args
 
@@ -625,6 +627,32 @@ def main(argv: list[str] | None = None) -> None:
     annotation = out_dir / "dgrp_lifespan_female.genes.annot"
     bfile = out_dir / "merged_qc_magma"
     gene_results = out_dir / "dgrp_lifespan_female_gene.genes.raw"
+
+    if args.stage == "report":
+        gene_output = out_dir / "dgrp_lifespan_female_gene.genes.out"
+        require_files([args.gtf, gene_output])
+        summarize_magma_results(
+            gene_output,
+            "GENE",
+            out_dir / "gene_results_bonferroni.tsv",
+            gene_metadata=load_gene_metadata(args.gtf),
+        )
+        set_output = out_dir / "dgrp_lifespan_female_geneset.gsa.out"
+        if set_output.is_file() and set_output.stat().st_size > 0:
+            obo_path = args.go_obo
+            if obo_path is None:
+                cached_obo = out_dir / "go_inputs" / "go-basic.obo"
+                if cached_obo.is_file():
+                    obo_path = cached_obo
+            if obo_path is not None:
+                require_files([obo_path])
+            summarize_magma_results(
+                set_output,
+                "VARIABLE",
+                out_dir / "gene_set_results_bonferroni.tsv",
+                go_names=load_go_names(obo_path) if obo_path is not None else None,
+            )
+        return
 
     if args.stage in {"all", "prepare"}:
         validate_inputs(args)
