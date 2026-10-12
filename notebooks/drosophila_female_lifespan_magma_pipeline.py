@@ -586,7 +586,11 @@ def download_go_inputs(output_dir: Path) -> tuple[Path, Path]:
         if not cached:
             temporary = destination.with_name(f"{destination.name}.tmp")
             try:
-                with urllib.request.urlopen(url, timeout=120) as response, temporary.open(
+                print(f"Downloading GO input: {url}", flush=True)
+                request = urllib.request.Request(
+                    url, headers={"User-Agent": "DrosophilaLifespanMAGMA/1.0"}
+                )
+                with urllib.request.urlopen(request, timeout=120) as response, temporary.open(
                     "wb"
                 ) as output:
                     shutil.copyfileobj(response, output)
