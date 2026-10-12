@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
+from collections import defaultdict
 import errno
 import gzip
 import math
@@ -30,8 +31,14 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--bfile", type=Path, default=DEFAULT_BFILE)
     parser.add_argument("--magma-bin", type=Path, default=DEFAULT_MAGMA_BIN)
     parser.add_argument("--out-dir", type=Path, default=DEFAULT_OUT_DIR)
-    parser.add_argument("--gene-sets", type=Path)
-    return parser.parse_args(argv)
+    gene_set_source = parser.add_mutually_exclusive_group()
+    gene_set_source.add_argument("--gene-sets", type=Path)
+    gene_set_source.add_argument("--go-gaf", type=Path)
+    parser.add_argument("--go-obo", type=Path)
+    args = parser.parse_args(argv)
+    if (args.go_gaf is None) != (args.go_obo is None):
+        parser.error("--go-gaf and --go-obo must be provided together")
+    return args
 
 
 def validate_inputs(args: argparse.Namespace) -> None:
@@ -43,6 +50,8 @@ def validate_inputs(args: argparse.Namespace) -> None:
     ]
     if args.gene_sets is not None:
         required_files.append(args.gene_sets)
+    if args.go_gaf is not None:
+        required_files.extend((args.go_gaf, args.go_obo))
     missing = [path for path in required_files if not path.is_file()]
     if missing:
         raise FileNotFoundError(
@@ -296,6 +305,111 @@ def validate_gene_sets(set_file: Path, gene_locations: Path) -> int:
     return set_count
 
 
+def load_go_parents(obo_path: Path) -> tuple[dict[str, set[str]], dict[str, str]]:
+    parents = {}
+    namespaces = {}
+    term_id = None
+    namespace = None
+    term_parents = set()
+    obsolete = False
+    in_term = False
+
+    def save_term() -> None:
+        if in_term and term_id and namespace and not obsolete:
+            parents[term_id] = term_parents.copy()
+            namespaces[term_id] = namespace
+
+    with obo_path.open("r", encoding="utf-8") as source:
+        for line in source:
+            line = line.strip()
+            if line.startswith("["):
+                save_term()
+                in_term = line == "[Term]"
+                term_id = None
+                namespace = None
+                term_parents = set()
+                obsolete = False
+            elif in_term and line.startswith("id: GO:"):
+                term_id = line[4:]
+            elif in_term and line.startswith("namespace: "):
+                namespace = line[11:]
+            elif in_term and line == "is_obsolete: true":
+                obsolete = True
+            elif in_term and line.startswith("is_a: GO:"):
+                term_parents.add(line[6:].split()[0])
+            elif in_term and line.startswith("relationship: part_of GO:"):
+                term_parents.add(line.split()[2])
+    save_term()
+    if not parents:
+        raise ValueError(f"No GO terms found in {obo_path}")
+    return parents, namespaces
+
+
+def build_go_gene_sets(
+    gaf_path: Path,
+    obo_path: Path,
+    gene_locations: Path,
+    output_path: Path,
+    min_size: int = 10,
+    max_size: int = 500,
+) -> Path:
+    parents, namespaces = load_go_parents(obo_path)
+    with gene_locations.open("r", encoding="utf-8") as source:
+        known_genes = {line.split()[0] for line in source if line.strip()}
+    ancestor_cache = {}
+
+    def ancestors(term: str) -> set[str]:
+        if term not in ancestor_cache:
+            ancestor_cache[term] = set()
+            for parent in parents.get(term, ()):
+                if parent in parents:
+                    ancestor_cache[term].add(parent)
+                    ancestor_cache[term].update(ancestors(parent))
+        return ancestor_cache[term]
+
+    gene_sets = defaultdict(set)
+    opener = gzip.open if gaf_path.suffix == ".gz" else open
+    with opener(gaf_path, "rt", encoding="utf-8") as source:
+        for line_number, line in enumerate(source, start=1):
+            if line.startswith("!"):
+                continue
+            fields = line.rstrip("\n").split("\t")
+            if len(fields) < 9:
+                raise ValueError(f"Invalid GAF record at {gaf_path}:{line_number}")
+            gene_id, qualifier, term, evidence, aspect = (
+                fields[1], fields[3], fields[4], fields[6], fields[8]
+            )
+            if (
+                gene_id not in known_genes
+                or aspect != "P"
+                or evidence == "ND"
+                or "NOT" in qualifier.split("|")
+                or namespaces.get(term) != "biological_process"
+            ):
+                continue
+            for related in {term, *ancestors(term)}:
+                if namespaces.get(related) == "biological_process":
+                    gene_sets[related].add(gene_id)
+
+    retained = {
+        term: genes for term, genes in gene_sets.items()
+        if min_size <= len(genes) <= max_size
+    }
+    if not retained:
+        raise ValueError(f"No GO biological-process sets of size {min_size}-{max_size}")
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    temporary_path = output_path.with_name(f"{output_path.name}.tmp")
+    try:
+        with temporary_path.open("w", encoding="utf-8") as destination:
+            for term, genes in sorted(retained.items()):
+                destination.write("\t".join((term, *sorted(genes))) + "\n")
+        temporary_path.replace(output_path)
+    finally:
+        temporary_path.unlink(missing_ok=True)
+    print(f"Wrote {len(retained)} GO biological-process gene sets: {output_path}")
+    return output_path
+
+
 def run_gene_set_analysis(
     magma_bin: Path, gene_results: Path, set_file: Path, output_prefix: Path
 ) -> Path:
@@ -321,8 +435,16 @@ def main(argv: list[str] | None = None) -> None:
     args = parse_args(argv)
     validate_inputs(args)
     gene_locations = write_gene_locations(args.gtf, args.out_dir / "gene_loc.txt")
-    if args.gene_sets is not None:
-        validate_gene_sets(args.gene_sets, gene_locations)
+    set_file = args.gene_sets
+    if args.go_gaf is not None:
+        set_file = build_go_gene_sets(
+            args.go_gaf,
+            args.go_obo,
+            gene_locations,
+            args.out_dir / "go_biological_process.sets.txt",
+        )
+    if set_file is not None:
+        validate_gene_sets(set_file, gene_locations)
     snp_locations = write_snp_locations(args.bfile, args.out_dir / "snp_loc.txt")
     pvalues = write_magma_pvalues(args.sumstats, args.out_dir / "lifespan_female.magma.p.txt")
     annotation = run_annotation(
@@ -339,11 +461,11 @@ def main(argv: list[str] | None = None) -> None:
         annotation,
         args.out_dir / "dgrp_lifespan_female_gene",
     )
-    if args.gene_sets is not None:
+    if set_file is not None:
         run_gene_set_analysis(
             args.magma_bin,
             gene_results,
-            args.gene_sets,
+            set_file,
             args.out_dir / "dgrp_lifespan_female_geneset",
         )
 
