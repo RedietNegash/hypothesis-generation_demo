@@ -10,10 +10,14 @@ import json
 import math
 import os
 from pathlib import Path
+import platform
 import re
 import shutil
 import subprocess
+import tempfile
+import urllib.error
 import urllib.request
+import zipfile
 
 
 BASE_DIR = Path(__file__).resolve().parents[1]
@@ -22,6 +26,9 @@ DEFAULT_GTF = BASE_DIR / "data" / "genes" / "Drosophila_melanogaster.BDGP6.54.62
 DEFAULT_BFILE = BASE_DIR / "data" / "gwas" / "tmp" / "merged_qc"
 DEFAULT_MAGMA_BIN = BASE_DIR / "tools" / "magma" / "magma"
 DEFAULT_OUT_DIR = BASE_DIR / "results" / "magma_female"
+MAGMA_VERSION = "1.10"
+MAGMA_ARCHIVE_URL = "https://vu.data.surf.nl/index.php/s/lxDgt2dNdNr6DYt/download"
+MAGMA_ARCHIVE_SHA256 = "d8b20778b773f47b4fb0f1020baefebc92b11ee65946e708a618d494d6819e39"
 GO_GAF_URL = "https://current.geneontology.org/annotations/gaf/DROME-mod.gaf.gz"
 GO_OBO_URL = "https://current.geneontology.org/ontology/go-basic.obo"
 CHROM_MAP = {"2L": "1", "2R": "2", "3L": "3", "3R": "4", "4": "5", "X": "X", "23": "X"}
@@ -37,6 +44,54 @@ def default_magma_bin() -> Path:
     return Path(path_binary) if path_binary is not None else DEFAULT_MAGMA_BIN
 
 
+def install_magma(destination: Path = DEFAULT_MAGMA_BIN) -> Path:
+    if platform.system() != "Linux" or platform.machine().lower() not in {"x86_64", "amd64"}:
+        raise RuntimeError(
+            "Automatic MAGMA installation supports Linux x86_64 only; "
+            "pass a compatible executable with --magma-bin"
+        )
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    try:
+        with tempfile.TemporaryDirectory(prefix="magma-download-", dir=destination.parent) as temp:
+            archive = Path(temp) / "magma.zip"
+            digest = hashlib.sha256()
+            with urllib.request.urlopen(MAGMA_ARCHIVE_URL, timeout=120) as response, archive.open(
+                "wb"
+            ) as output:
+                for chunk in iter(lambda: response.read(1024 * 1024), b""):
+                    output.write(chunk)
+                    digest.update(chunk)
+            if digest.hexdigest() != MAGMA_ARCHIVE_SHA256:
+                raise RuntimeError(
+                    "Downloaded MAGMA archive failed SHA-256 verification: "
+                    f"expected {MAGMA_ARCHIVE_SHA256}, found {digest.hexdigest()}"
+                )
+            with zipfile.ZipFile(archive) as package, package.open("magma") as executable:
+                temporary_binary = Path(temp) / "magma"
+                with temporary_binary.open("wb") as output:
+                    shutil.copyfileobj(executable, output)
+            with temporary_binary.open("rb") as executable:
+                if executable.read(4) != b"\x7fELF":
+                    raise RuntimeError("Downloaded MAGMA executable is not a Linux ELF binary")
+            temporary_binary.chmod(0o755)
+            temporary_binary.replace(destination)
+    except (OSError, urllib.error.URLError, zipfile.BadZipFile, KeyError) as error:
+        raise RuntimeError(
+            f"Could not install MAGMA {MAGMA_VERSION}; pass a local executable with --magma-bin: "
+            f"{error}"
+        ) from error
+    print(f"Installed MAGMA {MAGMA_VERSION}: {destination}")
+    return destination
+
+
+def resolve_magma_binary(requested: Path) -> Path:
+    if requested.is_file() and os.access(requested, os.X_OK):
+        return requested
+    if requested == DEFAULT_MAGMA_BIN and not requested.exists():
+        return install_magma(requested)
+    raise FileNotFoundError(f"MAGMA executable is missing or not executable: {requested}")
+
+
 def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description="Run MAGMA gene and gene-set analysis for DGRP female lifespan."
@@ -48,7 +103,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--out-dir", type=Path, default=DEFAULT_OUT_DIR)
     parser.add_argument(
         "--stage",
-        choices=("all", "validate", "prepare", "annotate", "genes", "sets", "report"),
+        choices=("all", "install", "validate", "prepare", "annotate", "genes", "sets", "report"),
         default="all",
     )
     gene_set_source = parser.add_mutually_exclusive_group()
@@ -70,15 +125,13 @@ def validate_inputs(args: argparse.Namespace) -> None:
         args.gtf,
         *(Path(f"{args.bfile}{extension}") for extension in (".bed", ".bim", ".fam")),
     ]
-    if args.stage != "prepare":
-        required_files.append(args.magma_bin)
     if args.gene_sets is not None:
         required_files.append(args.gene_sets)
     if args.go_gaf is not None:
         required_files.extend((args.go_gaf, args.go_obo))
     require_files(required_files)
-    if args.stage != "prepare" and not os.access(args.magma_bin, os.X_OK):
-        raise PermissionError(f"MAGMA binary is not executable: {args.magma_bin}")
+    if args.stage != "prepare":
+        args.magma_bin = resolve_magma_binary(args.magma_bin)
 
     opener = gzip.open if args.sumstats.suffix == ".gz" else open
     with opener(args.sumstats, "rt", encoding="utf-8") as source:
@@ -700,6 +753,9 @@ def write_run_manifest(args: argparse.Namespace, set_file: Path | None) -> Path:
 
 def main(argv: list[str] | None = None) -> None:
     args = parse_args(argv)
+    if args.stage == "install":
+        print(f"MAGMA executable: {resolve_magma_binary(args.magma_bin)}")
+        return
     if args.stage == "validate":
         validate_inputs(args)
         return
@@ -738,6 +794,9 @@ def main(argv: list[str] | None = None) -> None:
                 significant_output_path=out_dir / "gene_set_results_significant.tsv",
             )
         return
+
+    if args.stage in {"annotate", "genes", "sets"}:
+        args.magma_bin = resolve_magma_binary(args.magma_bin)
 
     if args.stage in {"all", "prepare"}:
         validate_inputs(args)
