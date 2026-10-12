@@ -557,6 +557,7 @@ def summarize_magma_results(
     output_path: Path,
     gene_metadata: dict[str, tuple[str, str]] | None = None,
     go_names: dict[str, str] | None = None,
+    significant_output_path: Path | None = None,
 ) -> Path:
     records = []
     columns = None
@@ -586,31 +587,39 @@ def summarize_magma_results(
     test_count = len(records)
     threshold = 0.05 / test_count
     significant = sum(p_value <= threshold for _, p_value in records)
-    output_path.parent.mkdir(parents=True, exist_ok=True)
-    temporary_path = output_path.with_name(f"{output_path.name}.tmp")
-    try:
-        with temporary_path.open("w", encoding="utf-8") as destination:
-            columns = ["ID"]
-            if gene_metadata is not None:
-                columns.extend(("GENE_NAME", "GENE_BIOTYPE"))
-            if go_names is not None:
-                columns.append("GO_TERM_NAME")
-            columns.extend(("P", "P_BONFERRONI", "SIGNIFICANT"))
-            destination.write("\t".join(columns) + "\n")
-            for identifier, p_value in sorted(records, key=lambda item: (item[1], item[0])):
-                adjusted = min(1.0, p_value * test_count)
-                values = [identifier]
+    for destination_path, significant_only in (
+        (output_path, False),
+        (significant_output_path, True),
+    ):
+        if destination_path is None:
+            continue
+        destination_path.parent.mkdir(parents=True, exist_ok=True)
+        temporary_path = destination_path.with_name(f"{destination_path.name}.tmp")
+        try:
+            with temporary_path.open("w", encoding="utf-8") as destination:
+                columns = ["ID"]
                 if gene_metadata is not None:
-                    values.extend(gene_metadata.get(identifier, (identifier, "")))
+                    columns.extend(("GENE_NAME", "GENE_BIOTYPE"))
                 if go_names is not None:
-                    values.append(go_names.get(identifier, ""))
-                values.extend(
-                    (f"{p_value:.17g}", f"{adjusted:.17g}", str(p_value <= threshold).lower())
-                )
-                destination.write("\t".join(values) + "\n")
-        temporary_path.replace(output_path)
-    finally:
-        temporary_path.unlink(missing_ok=True)
+                    columns.append("GO_TERM_NAME")
+                columns.extend(("P", "P_BONFERRONI", "SIGNIFICANT"))
+                destination.write("\t".join(columns) + "\n")
+                for identifier, p_value in sorted(records, key=lambda item: (item[1], item[0])):
+                    if significant_only and p_value > threshold:
+                        continue
+                    adjusted = min(1.0, p_value * test_count)
+                    values = [identifier]
+                    if gene_metadata is not None:
+                        values.extend(gene_metadata.get(identifier, (identifier, "")))
+                    if go_names is not None:
+                        values.append(go_names.get(identifier, ""))
+                    values.extend(
+                        (f"{p_value:.17g}", f"{adjusted:.17g}", str(p_value <= threshold).lower())
+                    )
+                    destination.write("\t".join(values) + "\n")
+            temporary_path.replace(destination_path)
+        finally:
+            temporary_path.unlink(missing_ok=True)
     print(
         f"MAGMA {identifier_column.lower()} results: {test_count} tests, "
         f"Bonferroni threshold {threshold:.6g}, {significant} significant: {output_path}"
@@ -636,6 +645,7 @@ def main(argv: list[str] | None = None) -> None:
             "GENE",
             out_dir / "gene_results_bonferroni.tsv",
             gene_metadata=load_gene_metadata(args.gtf),
+            significant_output_path=out_dir / "gene_results_significant.tsv",
         )
         set_output = out_dir / "dgrp_lifespan_female_geneset.gsa.out"
         if set_output.is_file() and set_output.stat().st_size > 0:
@@ -651,6 +661,7 @@ def main(argv: list[str] | None = None) -> None:
                 "VARIABLE",
                 out_dir / "gene_set_results_bonferroni.tsv",
                 go_names=load_go_names(obo_path) if obo_path is not None else None,
+                significant_output_path=out_dir / "gene_set_results_significant.tsv",
             )
         return
 
@@ -724,6 +735,7 @@ def main(argv: list[str] | None = None) -> None:
             "GENE",
             out_dir / "gene_results_bonferroni.tsv",
             gene_metadata=load_gene_metadata(args.gtf),
+            significant_output_path=out_dir / "gene_results_significant.tsv",
         )
     if args.stage == "genes":
         return
@@ -740,6 +752,7 @@ def main(argv: list[str] | None = None) -> None:
             "VARIABLE",
             out_dir / "gene_set_results_bonferroni.tsv",
             go_names=load_go_names(obo_path) if obo_path is not None else None,
+            significant_output_path=out_dir / "gene_set_results_significant.tsv",
         )
 
 
