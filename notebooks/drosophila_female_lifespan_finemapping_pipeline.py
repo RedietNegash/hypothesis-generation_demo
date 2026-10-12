@@ -13,6 +13,7 @@ import shutil
 import subprocess
 import tarfile
 import tempfile
+import time
 import urllib.error
 import urllib.request
 from pathlib import Path
@@ -35,6 +36,7 @@ SOURCE_CHROM_MAP = {"2L": "chr2L", "2R": "chr2R", "3L": "chr3L", "3R": "chr3R", 
 PHENOTYPE_URL = "https://dgrpool.epfl.ch/studies/18/get_file?name=summary.tsv"
 PHENOTYPE_SHA256 = "efb9a7f2dcd46ab24a01ff41876b4340a1450de90cb35d211b3f0c07bd68e9aa"
 GENOTYPE_URL_PREFIX = "https://zenodo.org/records/837947/files/dgrp2_dm6_dbSNP.vcf"
+GENOTYPE_API_URL_PREFIX = "https://zenodo.org/api/records/837947/files/dgrp2_dm6_dbSNP.vcf"
 GENOTYPE_MD5 = {
     ".bed": "6e3b0c5b2c186c3a6dec99c20c24e3f4",
     ".bim": "18ba9e60111dd6398d160f9bba89023c",
@@ -1225,7 +1227,8 @@ def _file_digest(path: Path, algorithm: str) -> str:
     return digest.hexdigest()
 
 
-def _download_verified(url: str, destination: Path, digest: str, algorithm: str) -> None:
+def _download_verified(url: str, destination: Path, digest: str, algorithm: str,
+                       fallback_urls: tuple[str, ...] = ()) -> None:
     """Cache a source file only after its published/local checksum matches."""
     if destination.is_file():
         if _file_digest(destination, algorithm) != digest:
@@ -1233,23 +1236,36 @@ def _download_verified(url: str, destination: Path, digest: str, algorithm: str)
         print(f"Using verified source: {destination}")
         return
     destination.parent.mkdir(parents=True, exist_ok=True)
-    with tempfile.NamedTemporaryFile(prefix=destination.name + ".", suffix=".tmp",
-                                     dir=destination.parent, delete=False) as temporary:
-        temporary_path = Path(temporary.name)
-        try:
-            print(f"Downloading {url} -> {destination}", flush=True)
-            with urllib.request.urlopen(url, timeout=120) as response:
-                shutil.copyfileobj(response, temporary, length=1024 * 1024)
-        except BaseException:
-            temporary_path.unlink(missing_ok=True)
-            raise
-    try:
-        actual = _file_digest(temporary_path, algorithm)
-        if actual != digest:
-            raise ValueError(f"{algorithm} mismatch for {url}: expected {digest}, got {actual}")
-        temporary_path.replace(destination)
-    finally:
-        temporary_path.unlink(missing_ok=True)
+    last_error = None
+    for attempt in range(3):
+        for candidate in (url, *fallback_urls):
+            with tempfile.NamedTemporaryFile(prefix=destination.name + ".", suffix=".tmp",
+                                             dir=destination.parent, delete=False) as temporary:
+                temporary_path = Path(temporary.name)
+                try:
+                    print(f"Downloading {candidate} -> {destination}", flush=True)
+                    with urllib.request.urlopen(candidate, timeout=120) as response:
+                        shutil.copyfileobj(response, temporary, length=1024 * 1024)
+                except (urllib.error.URLError, TimeoutError, ConnectionError) as error:
+                    last_error = error
+                    print(f"Download failed: {error}", flush=True)
+                else:
+                    temporary.flush()
+                    actual = _file_digest(temporary_path, algorithm)
+                    if actual != digest:
+                        raise ValueError(
+                            f"{algorithm} mismatch for {candidate}: expected {digest}, got {actual}"
+                        )
+                    temporary_path.replace(destination)
+                    return
+                finally:
+                    temporary_path.unlink(missing_ok=True)
+        if attempt < 2:
+            time.sleep(2 ** (attempt + 1))
+    raise RuntimeError(
+        f"Could not download {destination} after three attempts: {last_error}. "
+        "Retry later or place a checksum-matching file at that path."
+    ) from last_error
 
 
 def _verify_phenotype_source(path: Path) -> None:
@@ -1331,7 +1347,8 @@ def prepare_genotypes(plink2_bin: str, force: bool = False) -> None:
         return
     for extension, digest in GENOTYPE_MD5.items():
         _download_verified(GENOTYPE_URL_PREFIX + extension + "?download=1",
-                           Path(f"{RAW_GENOTYPE_PREFIX}{extension}"), digest, "md5")
+                           Path(f"{RAW_GENOTYPE_PREFIX}{extension}"), digest, "md5",
+                           fallback_urls=(GENOTYPE_API_URL_PREFIX + extension + "/content",))
     for chrom in FLY_CHROMS:
         prefix = REFERENCE_DIR / f"DGRP.{chrom}"
         if _plink_trio_exists(prefix) and not force:
