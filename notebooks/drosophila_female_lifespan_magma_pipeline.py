@@ -2,6 +2,7 @@
 
 import argparse
 from collections import defaultdict
+import csv
 import errno
 import gzip
 import hashlib
@@ -636,6 +637,24 @@ def summarize_magma_results(
     return output_path
 
 
+def count_summary_results(summary_path: Path) -> dict[str, int]:
+    tested = 0
+    significant = 0
+    with summary_path.open("r", encoding="utf-8", newline="") as source:
+        reader = csv.DictReader(source, delimiter="\t")
+        if reader.fieldnames is None or "SIGNIFICANT" not in reader.fieldnames:
+            raise ValueError(f"Invalid MAGMA summary header: {summary_path}")
+        for row in reader:
+            value = row["SIGNIFICANT"]
+            if value not in {"true", "false"}:
+                raise ValueError(f"Invalid significance value in {summary_path}: {value}")
+            tested += 1
+            significant += value == "true"
+    if tested == 0:
+        raise ValueError(f"No MAGMA results found in {summary_path}")
+    return {"tested": tested, "significant": significant}
+
+
 def write_run_manifest(args: argparse.Namespace, set_file: Path | None) -> Path:
     output_path = args.out_dir / "run_manifest.json"
     output_path.parent.mkdir(parents=True, exist_ok=True)
@@ -643,6 +662,12 @@ def write_run_manifest(args: argparse.Namespace, set_file: Path | None) -> Path:
     with args.magma_bin.open("rb") as source:
         for chunk in iter(lambda: source.read(1024 * 1024), b""):
             binary_hash.update(chunk)
+    gene_summary = count_summary_results(args.out_dir / "gene_results_bonferroni.tsv")
+    gene_set_summary = (
+        count_summary_results(args.out_dir / "gene_set_results_bonferroni.tsv")
+        if set_file is not None
+        else None
+    )
     manifest = {
         "stage": args.stage,
         "sumstats": str(args.sumstats.resolve()),
@@ -655,11 +680,13 @@ def write_run_manifest(args: argparse.Namespace, set_file: Path | None) -> Path:
         "multiple_testing": "Bonferroni",
         "alpha": 0.05,
         "gene_results": str((args.out_dir / "gene_results_bonferroni.tsv").resolve()),
+        "gene_summary": gene_summary,
         "gene_set_results": (
             str((args.out_dir / "gene_set_results_bonferroni.tsv").resolve())
             if set_file is not None
             else None
         ),
+        "gene_set_summary": gene_set_summary,
     }
     temporary_path = output_path.with_name(f"{output_path.name}.tmp")
     try:
