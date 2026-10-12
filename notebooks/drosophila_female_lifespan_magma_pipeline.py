@@ -376,6 +376,36 @@ def load_go_parents(obo_path: Path) -> tuple[dict[str, set[str]], dict[str, str]
     return parents, namespaces
 
 
+def load_go_names(obo_path: Path) -> dict[str, str]:
+    names = {}
+    term_id = None
+    name = None
+    obsolete = False
+    in_term = False
+
+    def save_term() -> None:
+        if in_term and term_id and name and not obsolete:
+            names[term_id] = name
+
+    with obo_path.open("r", encoding="utf-8") as source:
+        for line in source:
+            line = line.strip()
+            if line.startswith("["):
+                save_term()
+                in_term = line == "[Term]"
+                term_id = None
+                name = None
+                obsolete = False
+            elif in_term and line.startswith("id: GO:"):
+                term_id = line[4:]
+            elif in_term and line.startswith("name: "):
+                name = line[6:]
+            elif in_term and line == "is_obsolete: true":
+                obsolete = True
+    save_term()
+    return names
+
+
 def build_go_gene_sets(
     gaf_path: Path,
     obo_path: Path,
@@ -516,6 +546,7 @@ def summarize_magma_results(
     identifier_column: str,
     output_path: Path,
     gene_metadata: dict[str, tuple[str, str]] | None = None,
+    go_names: dict[str, str] | None = None,
 ) -> Path:
     records = []
     columns = None
@@ -552,6 +583,8 @@ def summarize_magma_results(
             columns = ["ID"]
             if gene_metadata is not None:
                 columns.extend(("GENE_NAME", "GENE_BIOTYPE"))
+            if go_names is not None:
+                columns.append("GO_TERM_NAME")
             columns.extend(("P", "P_BONFERRONI", "SIGNIFICANT"))
             destination.write("\t".join(columns) + "\n")
             for identifier, p_value in sorted(records, key=lambda item: (item[1], item[0])):
@@ -559,6 +592,8 @@ def summarize_magma_results(
                 values = [identifier]
                 if gene_metadata is not None:
                     values.extend(gene_metadata.get(identifier, (identifier, "")))
+                if go_names is not None:
+                    values.append(go_names.get(identifier, ""))
                 values.extend(
                     (f"{p_value:.17g}", f"{adjusted:.17g}", str(p_value <= threshold).lower())
                 )
@@ -623,6 +658,7 @@ def main(argv: list[str] | None = None) -> None:
             set_results,
             "VARIABLE",
             args.out_dir / "gene_set_results_bonferroni.tsv",
+            go_names=load_go_names(obo_path) if obo_path is not None else None,
         )
 
 
