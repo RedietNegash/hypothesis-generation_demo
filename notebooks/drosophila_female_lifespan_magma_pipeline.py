@@ -38,6 +38,9 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--bfile", type=Path, default=DEFAULT_BFILE)
     parser.add_argument("--magma-bin", type=Path, default=DEFAULT_MAGMA_BIN)
     parser.add_argument("--out-dir", type=Path, default=DEFAULT_OUT_DIR)
+    parser.add_argument(
+        "--stage", choices=("all", "prepare", "annotate", "genes", "sets"), default="all"
+    )
     gene_set_source = parser.add_mutually_exclusive_group()
     gene_set_source.add_argument("--gene-sets", type=Path)
     gene_set_source.add_argument("--go-gaf", type=Path)
@@ -53,19 +56,16 @@ def validate_inputs(args: argparse.Namespace) -> None:
     required_files = [
         args.sumstats,
         args.gtf,
-        args.magma_bin,
         *(Path(f"{args.bfile}{extension}") for extension in (".bed", ".bim", ".fam")),
     ]
+    if args.stage != "prepare":
+        required_files.append(args.magma_bin)
     if args.gene_sets is not None:
         required_files.append(args.gene_sets)
     if args.go_gaf is not None:
         required_files.extend((args.go_gaf, args.go_obo))
-    missing = [path for path in required_files if not path.is_file()]
-    if missing:
-        raise FileNotFoundError(
-            "Missing MAGMA inputs:\n" + "\n".join(str(path) for path in missing)
-        )
-    if not os.access(args.magma_bin, os.X_OK):
+    require_files(required_files)
+    if args.stage != "prepare" and not os.access(args.magma_bin, os.X_OK):
         raise PermissionError(f"MAGMA binary is not executable: {args.magma_bin}")
 
     opener = gzip.open if args.sumstats.suffix == ".gz" else open
@@ -81,6 +81,14 @@ def validate_inputs(args: argparse.Namespace) -> None:
             raise ValueError(f"GWAS summary statistics contain no variants: {args.sumstats}")
 
     print(f"Validated MAGMA inputs: {args.sumstats}")
+
+
+def require_files(paths: list[Path]) -> None:
+    missing = [path for path in paths if not path.is_file() or path.stat().st_size == 0]
+    if missing:
+        raise FileNotFoundError(
+            "Missing or empty MAGMA inputs:\n" + "\n".join(str(path) for path in missing)
+        )
 
 
 def write_gene_locations(gtf_path: Path, output_path: Path) -> Path:
@@ -610,54 +618,99 @@ def summarize_magma_results(
 
 def main(argv: list[str] | None = None) -> None:
     args = parse_args(argv)
-    validate_inputs(args)
-    gene_locations = write_gene_locations(args.gtf, args.out_dir / "gene_loc.txt")
-    set_file = args.gene_sets
-    gaf_path, obo_path = args.go_gaf, args.go_obo
-    if args.download_go:
-        gaf_path, obo_path = download_go_inputs(args.out_dir / "go_inputs")
-    if gaf_path is not None:
-        set_file = build_go_gene_sets(
-            gaf_path,
-            obo_path,
-            gene_locations,
-            args.out_dir / "go_biological_process.sets.txt",
+    out_dir = args.out_dir
+    gene_locations = out_dir / "gene_loc.txt"
+    snp_locations = out_dir / "snp_loc.txt"
+    pvalues = out_dir / "lifespan_female.magma.p.txt"
+    annotation = out_dir / "dgrp_lifespan_female.genes.annot"
+    bfile = out_dir / "merged_qc_magma"
+    gene_results = out_dir / "dgrp_lifespan_female_gene.genes.raw"
+
+    if args.stage in {"all", "prepare"}:
+        validate_inputs(args)
+        gene_locations = write_gene_locations(args.gtf, gene_locations)
+        snp_locations = write_snp_locations(args.bfile, snp_locations)
+        pvalues = write_magma_pvalues(args.sumstats, pvalues)
+        bfile = prepare_magma_bfile(args.bfile, bfile)
+
+    if args.stage in {"all", "prepare", "sets"}:
+        if args.stage == "sets":
+            require_files([args.magma_bin, gene_locations, gene_results])
+            if not os.access(args.magma_bin, os.X_OK):
+                raise PermissionError(f"MAGMA binary is not executable: {args.magma_bin}")
+        set_file = args.gene_sets
+        gaf_path, obo_path = args.go_gaf, args.go_obo
+        if args.download_go:
+            gaf_path, obo_path = download_go_inputs(out_dir / "go_inputs")
+        if gaf_path is not None:
+            require_files([gaf_path, obo_path])
+            set_file = build_go_gene_sets(
+                gaf_path, obo_path, gene_locations, out_dir / "go_biological_process.sets.txt"
+            )
+        if args.stage == "sets" and set_file is None:
+            set_file = out_dir / "go_biological_process.sets.txt"
+            cached_obo = out_dir / "go_inputs" / "go-basic.obo"
+            if cached_obo.is_file():
+                obo_path = cached_obo
+        if set_file is not None:
+            require_files([set_file])
+            validate_gene_sets(set_file, gene_locations)
+    else:
+        set_file = None
+        obo_path = None
+
+    if args.stage == "prepare":
+        return
+
+    if args.stage in {"all", "annotate"}:
+        if args.stage == "annotate":
+            require_files([args.magma_bin, snp_locations, gene_locations])
+            if not os.access(args.magma_bin, os.X_OK):
+                raise PermissionError(f"MAGMA binary is not executable: {args.magma_bin}")
+        annotation = run_annotation(
+            args.magma_bin, snp_locations, gene_locations, out_dir / "dgrp_lifespan_female"
         )
-    if set_file is not None:
-        validate_gene_sets(set_file, gene_locations)
-    snp_locations = write_snp_locations(args.bfile, args.out_dir / "snp_loc.txt")
-    pvalues = write_magma_pvalues(args.sumstats, args.out_dir / "lifespan_female.magma.p.txt")
-    annotation = run_annotation(
-        args.magma_bin,
-        snp_locations,
-        gene_locations,
-        args.out_dir / "dgrp_lifespan_female",
-    )
-    bfile = prepare_magma_bfile(args.bfile, args.out_dir / "merged_qc_magma")
-    gene_results = run_gene_analysis(
-        args.magma_bin,
-        bfile,
-        pvalues,
-        annotation,
-        args.out_dir / "dgrp_lifespan_female_gene",
-    )
-    summarize_magma_results(
-        args.out_dir / "dgrp_lifespan_female_gene.genes.out",
-        "GENE",
-        args.out_dir / "gene_results_bonferroni.tsv",
-        gene_metadata=load_gene_metadata(args.gtf),
-    )
+    if args.stage == "annotate":
+        return
+
+    if args.stage in {"all", "genes"}:
+        if args.stage == "genes":
+            require_files([
+                args.magma_bin,
+                args.gtf,
+                pvalues,
+                annotation,
+                *(Path(f"{bfile}{extension}") for extension in (".bed", ".bim", ".fam")),
+            ])
+            if not os.access(args.magma_bin, os.X_OK):
+                raise PermissionError(f"MAGMA binary is not executable: {args.magma_bin}")
+        gene_results = run_gene_analysis(
+            args.magma_bin,
+            bfile,
+            pvalues,
+            annotation,
+            out_dir / "dgrp_lifespan_female_gene",
+        )
+        summarize_magma_results(
+            out_dir / "dgrp_lifespan_female_gene.genes.out",
+            "GENE",
+            out_dir / "gene_results_bonferroni.tsv",
+            gene_metadata=load_gene_metadata(args.gtf),
+        )
+    if args.stage == "genes":
+        return
+
     if set_file is not None:
         set_results = run_gene_set_analysis(
             args.magma_bin,
             gene_results,
             set_file,
-            args.out_dir / "dgrp_lifespan_female_geneset",
+            out_dir / "dgrp_lifespan_female_geneset",
         )
         summarize_magma_results(
             set_results,
             "VARIABLE",
-            args.out_dir / "gene_set_results_bonferroni.tsv",
+            out_dir / "gene_set_results_bonferroni.tsv",
             go_names=load_go_names(obo_path) if obo_path is not None else None,
         )
 
