@@ -297,7 +297,10 @@ def write_snp_locations(bfile: Path, output_path: Path, force: bool = False) -> 
     return output_path
 
 
-def write_magma_pvalues(sumstats_path: Path, output_path: Path) -> Path:
+def write_magma_pvalues(sumstats_path: Path, output_path: Path, force: bool = False) -> Path:
+    if not force and outputs_current([output_path], [sumstats_path]):
+        print(f"Using existing MAGMA p-values: {output_path}")
+        return output_path
     output_path.parent.mkdir(parents=True, exist_ok=True)
     temporary_path = output_path.with_name(f"{output_path.name}.tmp")
     count = 0
@@ -860,7 +863,7 @@ def main(argv: list[str] | None = None) -> None:
         validate_inputs(args)
         gene_locations = write_gene_locations(args.gtf, gene_locations, force=args.force)
         snp_locations = write_snp_locations(args.bfile, snp_locations, force=args.force)
-        pvalues = write_magma_pvalues(args.sumstats, pvalues)
+        pvalues = write_magma_pvalues(args.sumstats, pvalues, force=args.force)
         bfile = prepare_magma_bfile(args.bfile, bfile)
 
     if args.stage in {"all", "prepare", "sets"}:
