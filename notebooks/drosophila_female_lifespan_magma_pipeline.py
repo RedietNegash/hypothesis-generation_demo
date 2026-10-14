@@ -104,6 +104,9 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--magma-bin", type=Path, default=default_magma_bin())
     parser.add_argument("--out-dir", type=Path, default=DEFAULT_OUT_DIR)
     parser.add_argument(
+        "--force", action="store_true", help="Rebuild MAGMA outputs regardless of file timestamps"
+    )
+    parser.add_argument(
         "--stage",
         choices=(
             "all", "inputs", "install", "validate", "prepare", "annotate", "genes", "sets", "report"
@@ -164,6 +167,18 @@ def bfile_files(prefix: Path) -> list[Path]:
     return [Path(f"{prefix}{extension}") for extension in BFILE_EXTENSIONS]
 
 
+def outputs_current(outputs: list[Path], inputs: list[Path], log: Path | None = None) -> bool:
+    if any(not path.is_file() or path.stat().st_size == 0 for path in (*outputs, *inputs)):
+        return False
+    if log is not None:
+        if not log.is_file() or "End time is" not in log.read_text(encoding="utf-8"):
+            return False
+        outputs = [*outputs, log]
+    return min(path.stat().st_mtime_ns for path in outputs) >= max(
+        path.stat().st_mtime_ns for path in inputs
+    )
+
+
 def ensure_gwas_inputs(args: argparse.Namespace) -> None:
     required = [
         args.sumstats,
@@ -185,7 +200,10 @@ def ensure_gwas_inputs(args: argparse.Namespace) -> None:
     require_files(required)
 
 
-def write_gene_locations(gtf_path: Path, output_path: Path) -> Path:
+def write_gene_locations(gtf_path: Path, output_path: Path, force: bool = False) -> Path:
+    if not force and outputs_current([output_path], [gtf_path]):
+        print(f"Using existing gene locations: {output_path}")
+        return output_path
     output_path.parent.mkdir(parents=True, exist_ok=True)
     temporary_path = output_path.with_name(f"{output_path.name}.tmp")
     count = 0
@@ -837,7 +855,7 @@ def main(argv: list[str] | None = None) -> None:
     if args.stage in {"all", "prepare"}:
         ensure_gwas_inputs(args)
         validate_inputs(args)
-        gene_locations = write_gene_locations(args.gtf, gene_locations)
+        gene_locations = write_gene_locations(args.gtf, gene_locations, force=args.force)
         snp_locations = write_snp_locations(args.bfile, snp_locations)
         pvalues = write_magma_pvalues(args.sumstats, pvalues)
         bfile = prepare_magma_bfile(args.bfile, bfile)
