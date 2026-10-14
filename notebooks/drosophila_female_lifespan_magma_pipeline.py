@@ -367,7 +367,16 @@ def run_annotation(
     return output_path
 
 
-def prepare_magma_bfile(source_prefix: Path, output_prefix: Path) -> Path:
+def prepare_magma_bfile(source_prefix: Path, output_prefix: Path, force: bool = False) -> Path:
+    if not force and all(
+        outputs_current(
+            [Path(f"{output_prefix}{extension}")],
+            [Path(f"{source_prefix}{extension}")],
+        )
+        for extension in BFILE_EXTENSIONS
+    ):
+        print(f"Using existing MAGMA PLINK reference: {output_prefix}")
+        return output_prefix
     output_prefix.parent.mkdir(parents=True, exist_ok=True)
     for extension in (".bed", ".fam"):
         source = Path(f"{source_prefix}{extension}")
@@ -864,7 +873,7 @@ def main(argv: list[str] | None = None) -> None:
         gene_locations = write_gene_locations(args.gtf, gene_locations, force=args.force)
         snp_locations = write_snp_locations(args.bfile, snp_locations, force=args.force)
         pvalues = write_magma_pvalues(args.sumstats, pvalues, force=args.force)
-        bfile = prepare_magma_bfile(args.bfile, bfile)
+        bfile = prepare_magma_bfile(args.bfile, bfile, force=args.force)
 
     if args.stage in {"all", "prepare", "sets"}:
         if args.stage == "sets":
