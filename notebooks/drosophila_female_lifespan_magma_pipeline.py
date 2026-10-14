@@ -33,6 +33,7 @@ MAGMA_ARCHIVE_SHA256 = "d8b20778b773f47b4fb0f1020baefebc92b11ee65946e708a618d494
 GO_GAF_URL = "https://current.geneontology.org/annotations/gaf/DROME-mod.gaf.gz"
 GO_OBO_URL = "https://current.geneontology.org/ontology/go-basic.obo"
 CHROM_MAP = {"2L": "1", "2R": "2", "3L": "3", "3R": "4", "4": "5", "X": "X", "23": "X"}
+BFILE_EXTENSIONS = (".bed", ".bim", ".fam")
 GENE_ID_PATTERN = re.compile(r'gene_id "([^"]+)"')
 GENE_NAME_PATTERN = re.compile(r'gene_name "([^"]+)"')
 GENE_BIOTYPE_PATTERN = re.compile(r'gene_biotype "([^"]+)"')
@@ -126,7 +127,7 @@ def validate_inputs(args: argparse.Namespace) -> None:
     required_files = [
         args.sumstats,
         args.gtf,
-        *(Path(f"{args.bfile}{extension}") for extension in (".bed", ".bim", ".fam")),
+        *bfile_files(args.bfile),
     ]
     if args.gene_sets is not None:
         required_files.append(args.gene_sets)
@@ -159,11 +160,15 @@ def require_files(paths: list[Path]) -> None:
         )
 
 
+def bfile_files(prefix: Path) -> list[Path]:
+    return [Path(f"{prefix}{extension}") for extension in BFILE_EXTENSIONS]
+
+
 def ensure_gwas_inputs(args: argparse.Namespace) -> None:
     required = [
         args.sumstats,
         args.gtf,
-        *(Path(f"{args.bfile}{extension}") for extension in (".bed", ".bim", ".fam")),
+        *bfile_files(args.bfile),
     ]
     if all(path.is_file() and path.stat().st_size > 0 for path in required):
         return
@@ -884,7 +889,7 @@ def main(argv: list[str] | None = None) -> None:
                 args.gtf,
                 pvalues,
                 annotation,
-                *(Path(f"{bfile}{extension}") for extension in (".bed", ".bim", ".fam")),
+                *bfile_files(bfile),
             ])
             if not os.access(args.magma_bin, os.X_OK):
                 raise PermissionError(f"MAGMA binary is not executable: {args.magma_bin}")
