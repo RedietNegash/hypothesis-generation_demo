@@ -208,6 +208,9 @@ coordinatesUsed.bed
 
 # Data
 tools/magma/
+data/genes/
+data/gwas/
+data/reference/
 data/susie
 data/uploads
 data/metadata
