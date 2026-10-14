@@ -263,8 +263,11 @@ def load_gene_metadata(gtf_path: Path) -> dict[str, tuple[str, str]]:
     return metadata
 
 
-def write_snp_locations(bfile: Path, output_path: Path) -> Path:
+def write_snp_locations(bfile: Path, output_path: Path, force: bool = False) -> Path:
     bim_path = Path(f"{bfile}.bim")
+    if not force and outputs_current([output_path], [bim_path]):
+        print(f"Using existing SNP locations: {output_path}")
+        return output_path
     output_path.parent.mkdir(parents=True, exist_ok=True)
     temporary_path = output_path.with_name(f"{output_path.name}.tmp")
     count = 0
@@ -856,7 +859,7 @@ def main(argv: list[str] | None = None) -> None:
         ensure_gwas_inputs(args)
         validate_inputs(args)
         gene_locations = write_gene_locations(args.gtf, gene_locations, force=args.force)
-        snp_locations = write_snp_locations(args.bfile, snp_locations)
+        snp_locations = write_snp_locations(args.bfile, snp_locations, force=args.force)
         pvalues = write_magma_pvalues(args.sumstats, pvalues)
         bfile = prepare_magma_bfile(args.bfile, bfile)
 
