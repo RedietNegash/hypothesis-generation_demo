@@ -50,9 +50,7 @@ import numpy as np
 import pandas as pd
 from scipy.stats import norm
 
-# ----------------------------------------------------------------------
-# Configuration -- paths match the project layout
-# ----------------------------------------------------------------------
+
 BASE_DIR = Path("/mnt/hdd_1/rediet/fly-ldsc")
 MAGMA_BIN = BASE_DIR / "tools" / "magma" / "magma"
 MAGMA_DIR = BASE_DIR / "data" / "magma"
@@ -61,16 +59,15 @@ MAGMA_BFILE = MAGMA_DIR / "merged_qc"
 PHENO_FILE = BASE_DIR / "data" / "gwas" / "lifespan_female.pheno"
 PHENO_NAME = "S18_1537_F"
 
-# Use the SAME annotation / gene-set files as the observed run you are testing.
-# Switch to the non-windowed versions if that is the analysis you want a null for.
+
 ANNOT_FILE = MAGMA_DIR / "dgrp_lifespan_female_w5.genes.annot"
 GENE_SETS_FILE = MAGMA_DIR / "gene_sets.txt"
 
-# Observed results, for comparison
+
 OBS_GENES_OUT = MAGMA_DIR / "dgrp_lifespan_female_gene_w5.genes.out"
 OBS_GSA_OUT = MAGMA_DIR / "dgrp_lifespan_female_geneset_w5.gsa.out"
 
-# Flags from the observed run. chrX-use-sex=0 is a modifier, not a covar file.
+
 COVAR_ARGS = ["--covar", "chrX-use-sex=0"]
 
 PERM_DIR = MAGMA_DIR / "permutations"
@@ -82,10 +79,8 @@ N_PERM = 100
 SEED = 42
 THRESHOLDS = [0.05, 0.01, 0.001]
 KEEP_INTERMEDIATE = False
-COMPUTE_PER_GENE_EMPIRICAL = True   # Moskvina method 1; adds no real cost
+COMPUTE_PER_GENE_EMPIRICAL = True 
 
-
-# ----------------------------------------------------------------------
 def read_magma_table(path, colname="P"):
     """Read a MAGMA .genes.out or .gsa.out, skipping '#' comment lines."""
     df = pd.read_csv(path, sep=r"\s+", comment="#")
@@ -155,7 +150,7 @@ def summarise(label, observed, null_counts, n_done):
     return rows
 
 
-# ----------------------------------------------------------------------
+
 def main():
     for p in [MAGMA_BIN, ANNOT_FILE, GENE_SETS_FILE, PHENO_FILE, OBS_GENES_OUT]:
         if not Path(p).exists():
@@ -164,7 +159,7 @@ def main():
     PERM_DIR.mkdir(parents=True, exist_ok=True)
     RESULTS_DIR.mkdir(parents=True, exist_ok=True)
 
-    # ---- observed results ------------------------------------------------
+  
     obs_genes = read_magma_table(OBS_GENES_OUT)
     obs_gene_counts = {t: int((obs_genes["P"] < t).sum()) for t in THRESHOLDS}
     obs_gene_min_p = float(obs_genes["P"].min())
@@ -187,7 +182,6 @@ def main():
         print(f"\nNo observed .gsa.out at {OBS_GSA_OUT}; skipping gene-set null.")
         obs_set_counts, n_sets = None, 0
 
-    # gene order is fixed across runs; used for per-gene empirical p-values
     gene_index = {g: i for i, g in enumerate(obs_genes["GENE"].to_numpy())}
     obs_p_vec = obs_genes["P"].to_numpy()
     ge_counter = np.zeros(n_genes, dtype=np.int64)
@@ -204,7 +198,7 @@ def main():
     min_ps, rows = [], []
     t_start = time.time()
 
-    # ---- permutation loop ------------------------------------------------
+   
     for i in range(1, N_PERM + 1):
         work = PERM_DIR / f"perm_{i:04d}"
         work.mkdir(parents=True, exist_ok=True)
@@ -256,7 +250,7 @@ def main():
     if n_done == 0:
         sys.exit("No permutations completed.")
 
-    # ---- summary ---------------------------------------------------------
+
     print(f"\n{'='*78}")
     print(f"{n_done} permutations in {(time.time()-t_start)/60:.1f} min")
     print(f"{'='*78}")
@@ -279,7 +273,7 @@ def main():
           f"(empirical FWER p = {max(n_below/n_done, 1/n_done):.4g})")
 
     if COMPUTE_PER_GENE_EMPIRICAL and n_perm_for_gene > 0:
-        emp = (ge_counter + 1) / (n_perm_for_gene + 1)   # add-one, avoids p=0
+        emp = (ge_counter + 1) / (n_perm_for_gene + 1)   
         out = pd.DataFrame({
             "GENE": obs_genes["GENE"].to_numpy(),
             "P_MAGMA": obs_p_vec,
