@@ -1,0 +1,11 @@
+{
+  "database": "Reactome direct Ensembl mappings; species-specific; no inferred human-symbol matching",
+  "release": "98",
+  "test": "one-sided hypergeometric over-representation, BH across every size-eligible pathway per gene list",
+  "pathway_size": "5\u2013500 genes after universe intersection; all overlaps including zero tested",
+  "rat_2019": "conditional enrichment among S2 disease genes only; S5/S6 genes outside S2 excluded and counted",
+  "human": "up and down separately, padj<0.05; background = nonmissing DESeq2 padj in each contrast",
+  "singlecell": "top 50 cluster markers, log2FC>0.5, detected in >=25% of cluster; background = retained expressed genes",
+  "interpretation": "Association with a gene set does not establish pathway activation, inhibition, direct binding, or causality.",
+  "identifier_handling": "Remove Ensembl version suffix and collapse to unique stable gene IDs; primary and _PAR_Y features map to the same gene for enrichment only. DESeq2 retains the distinct source features."
+}

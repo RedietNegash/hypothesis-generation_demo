@@ -1,0 +1,1084 @@
+pathway_id	pathway	overlap	query_size	pathway_size	background_size	pvalue	genes	padj
+R-RNO-6798695	Neutrophil degranulation	15	37	446	8224	2.5448971409454555e-10	ENSRNOG00000003622;ENSRNOG00000005825;ENSRNOG00000006542;ENSRNOG00000010181;ENSRNOG00000010331;ENSRNOG00000010645;ENSRNOG00000013014;ENSRNOG00000017819;ENSRNOG00000020843;ENSRNOG00000020845;ENSRNOG00000022619;ENSRNOG00000024159;ENSRNOG00000031506;ENSRNOG00000037563;ENSRNOG00000050697	2.7561236036439283e-07
+R-RNO-5621480	Dectin-2 family	4	37	6	8224	5.168123232189524e-09	ENSRNOG00000008180;ENSRNOG00000010181;ENSRNOG00000024159;ENSRNOG00000061394	2.7985387302306272e-06
+R-RNO-1222556	ROS and RNS production in phagocytes	4	37	32	8224	1.1396087651963877e-05	ENSRNOG00000003622;ENSRNOG00000006542;ENSRNOG00000013014;ENSRNOG00000019655	0.00411398764235896
+R-RNO-380108	Chemokine receptors bind chemokines	4	37	43	8224	3.775171694680137e-05	ENSRNOG00000002792;ENSRNOG00000011205;ENSRNOG00000028015;ENSRNOG00000028043	0.010221277363346472
+R-RNO-2132295	MHC class II antigen presentation	5	37	113	8224	0.00013754430019224264	ENSRNOG00000007089;ENSRNOG00000010331;ENSRNOG00000018735;ENSRNOG00000032844;ENSRNOG00000033215	0.029792095421639755
+R-RNO-917937	Iron uptake and transport	3	37	30	8224	0.000313063456017115	ENSRNOG00000020843;ENSRNOG00000022619;ENSRNOG00000031506	0.05650795381108926
+R-RNO-3299685	Detoxification of Reactive Oxygen Species	3	37	32	8224	0.00038010015295150186	ENSRNOG00000003622;ENSRNOG00000009088;ENSRNOG00000013014	0.05880692366378236
+R-RNO-1236973	Cross-presentation of particulate exogenous antigens (phagosomes)	2	37	8	8224	0.000542186028965181	ENSRNOG00000003622;ENSRNOG00000013014	0.07339843367116138
+R-RNO-2454202	Fc epsilon receptor (FCERI) signaling	2	37	9	8224	0.0006951211745839026	ENSRNOG00000008180;ENSRNOG00000024159	0.08364624800826294
+R-RNO-1679131	Trafficking and processing of endosomal TLR	2	37	10	8224	0.0008664401858506444	ENSRNOG00000007089;ENSRNOG00000010331	0.09383547212762479
+R-RNO-2730905	Role of LAT2/NTAL/LAB on calcium mobilization	2	37	14	8224	0.001732379329267859	ENSRNOG00000008180;ENSRNOG00000024159	0.16026464150286276
+R-RNO-432722	Golgi Associated Vesicle Biogenesis	3	37	54	8224	0.001775785501416762	ENSRNOG00000020843;ENSRNOG00000022619;ENSRNOG00000031506	0.16026464150286276
+R-RNO-202430	Translocation of ZAP-70 to Immunological synapse	2	37	15	8224	0.0019932446634610594	ENSRNOG00000032844;ENSRNOG00000033215	0.16605261311756364
+R-RNO-202427	Phosphorylation of CD3 and TCR zeta chains	2	37	18	8224	0.00287987651915334	ENSRNOG00000032844;ENSRNOG00000033215	0.20792708468287116
+R-RNO-389948	Co-inhibition by PD-1	2	37	18	8224	0.00287987651915334	ENSRNOG00000032844;ENSRNOG00000033215	0.20792708468287116
+R-RNO-5668599	RHO GTPases Activate NADPH Oxidases	2	37	21	8224	0.003919366321287868	ENSRNOG00000003622;ENSRNOG00000013014	0.2652921078721726
+R-RNO-983712	Ion channel transport	2	37	22	8224	0.004299130077125881	ENSRNOG00000006542;ENSRNOG00000019655	0.27387987491337235
+R-RNO-114604	GPVI-mediated activation cascade	2	37	25	8224	0.00553615198660498	ENSRNOG00000008180;ENSRNOG00000024159	0.29978263007465966
+R-RNO-202433	Generation of second messenger molecules	2	37	25	8224	0.00553615198660498	ENSRNOG00000032844;ENSRNOG00000033215	0.29978263007465966
+R-RNO-2871809	FCERI mediated Ca+2 mobilization	2	37	25	8224	0.00553615198660498	ENSRNOG00000008180;ENSRNOG00000024159	0.29978263007465966
+R-RNO-77387	Insulin receptor recycling	2	37	27	8224	0.006440817247382237	ENSRNOG00000006542;ENSRNOG00000019655	0.3268019130815365
+R-RNO-9979719	Processing of antigen in germinal center B cells	3	37	86	8224	0.006638635353456882	ENSRNOG00000010331;ENSRNOG00000032844;ENSRNOG00000033215	0.3268019130815365
+R-RNO-917977	Transferrin endocytosis and recycling	2	37	29	8224	0.007408125869832574	ENSRNOG00000006542;ENSRNOG00000019655	0.3342916798761949
+R-RNO-2871796	FCERI mediated MAPK activation	2	37	29	8224	0.007408125869832574	ENSRNOG00000008180;ENSRNOG00000024159	0.3342916798761949
+R-RNO-9769739	Regulation of clotting cascade	2	37	37	8224	0.011881299350762016	ENSRNOG00000014297;ENSRNOG00000028015	0.5146978878750105
+R-RNO-975634	Retinoid metabolism and transport	2	37	38	8224	0.012506117057800099	ENSRNOG00000009734;ENSRNOG00000014297	0.5209278759075964
+R-RNO-202733	Cell surface interactions at the vascular wall	2	37	46	8224	0.018002776757086027	ENSRNOG00000018735;ENSRNOG00000028015	0.7221113788120062
+R-RNO-2142700	Biosynthesis of Lipoxins (LX)	1	37	5	8224	0.022299007108616205	ENSRNOG00000000907	0.8624937392368339
+R-RNO-9639288	Amino acids regulate mTORC1	2	37	53	8224	0.023502792080236527	ENSRNOG00000006542;ENSRNOG00000019655	0.8762581368529009
+R-RNO-4420097	VEGFA-VEGFR2 Pathway	2	37	55	8224	0.025186219878022737	ENSRNOG00000003622;ENSRNOG00000013014	0.8762581368529009
+R-RNO-2142688	Synthesis of 5-eicosatetraenoic acids	1	37	6	8224	0.026700386441501134	ENSRNOG00000000907	0.8762581368529009
+R-RNO-3000480	Scavenging by Class A Receptors	1	37	6	8224	0.026700386441501134	ENSRNOG00000012779	0.8762581368529009
+R-RNO-140534	Caspase activation via Death Receptors in the presence of ligand	1	37	6	8224	0.026700386441501134	ENSRNOG00000017819	0.8762581368529009
+R-RNO-193144	Estrogen biosynthesis	1	37	7	8224	0.03108248496932596	ENSRNOG00000009734	0.935064756160556
+R-RNO-9992296	Rituximab:MS4A1 (rituximab:CD20) targets B cells for antibody-dependent cellular cytotoxicity by NK cells	1	37	7	8224	0.03108248496932596	ENSRNOG00000024159	0.935064756160556
+R-RNO-2562578	TRIF-mediated programmed cell death	1	37	7	8224	0.03108248496932596	ENSRNOG00000017819	0.935064756160556
+R-RNO-418594	G alpha (i) signalling events	3	37	161	8224	0.03520048352078579	ENSRNOG00000002792;ENSRNOG00000028015;ENSRNOG00000028043	0.9362768721424076
+R-RNO-210990	PECAM1 interactions	1	37	8	8224	0.03544538481794895	ENSRNOG00000008180	0.9362768721424076
+R-RNO-8983711	OAS antiviral response	1	37	8	8224	0.03544538481794895	ENSRNOG00000001187	0.9362768721424076
+R-RNO-391160	Signal regulatory protein family interactions	1	37	8	8224	0.03544538481794895	ENSRNOG00000020845	0.9362768721424076
+R-RNO-9674555	Signaling by CSF3 (G-CSF)	1	37	8	8224	0.03544538481794895	ENSRNOG00000008180	0.9362768721424076
+R-RNO-9027284	Erythropoietin activates RAS	1	37	9	8224	0.03978916777336957	ENSRNOG00000008180	0.9793561067854374
+R-RNO-982772	Growth hormone receptor signaling	1	37	9	8224	0.03978916777336957	ENSRNOG00000008180	0.9793561067854374
+R-RNO-5690714	CD22 mediated BCR regulation	1	37	9	8224	0.03978916777336957	ENSRNOG00000008180	0.9793561067854374
+R-RNO-2871837	FCERI mediated NF-kB activation	2	37	72	8224	0.04133972415291467	ENSRNOG00000008180;ENSRNOG00000024159	0.9949093612801464
+R-RNO-9027276	Erythropoietin activates Phosphoinositide-3-kinase (PI3K)	1	37	10	8224	0.04411391528309389	ENSRNOG00000008180	0.9953202135748059
+R-RNO-8984722	Interleukin-35 Signalling	1	37	10	8224	0.04411391528309389	ENSRNOG00000050509	0.9953202135748059
+R-RNO-9020956	Interleukin-27 signaling	1	37	10	8224	0.04411391528309389	ENSRNOG00000050509	0.9953202135748059
+R-RNO-166016	Toll Like Receptor 4 (TLR4) Cascade	1	37	11	8224	0.04841970845749437	ENSRNOG00000017819	1.0
+R-RNO-196791	Vitamin D (calciferol) metabolism	1	37	11	8224	0.04841970845749437	ENSRNOG00000007089	1.0
+R-RNO-202424	Downstream TCR signaling	2	37	80	8224	0.04998286261067847	ENSRNOG00000032844;ENSRNOG00000033215	1.0
+R-RNO-9013404	RAC2 GTPase cycle	2	37	81	8224	0.05110596340906733	ENSRNOG00000003622;ENSRNOG00000013014	1.0
+R-RNO-1433559	Regulation of KIT signaling	1	37	12	8224	0.0527066280711645	ENSRNOG00000008180	1.0
+R-RNO-9013423	RAC3 GTPase cycle	2	37	86	8224	0.056856744157361645	ENSRNOG00000003622;ENSRNOG00000013014	1.0
+R-RNO-2024096	HS-GAG degradation	1	37	13	8224	0.056974754564268114	ENSRNOG00000014297	1.0
+R-RNO-2029481	FCGR activation	1	37	13	8224	0.056974754564268114	ENSRNOG00000008180	1.0
+R-RNO-5621575	CD209 (DC-SIGN) signaling	1	37	13	8224	0.056974754564268114	ENSRNOG00000008180	1.0
+R-RNO-2172127	DAP12 interactions	1	37	13	8224	0.056974754564268114	ENSRNOG00000020845	1.0
+R-RNO-416700	Other semaphorin interactions	1	37	14	8224	0.061224168043883524	ENSRNOG00000020845	1.0
+R-RNO-3000170	Syndecan interactions	1	37	14	8224	0.061224168043883524	ENSRNOG00000014297	1.0
+R-RNO-389513	Co-inhibition by CTLA4	1	37	15	8224	0.06545494828534228	ENSRNOG00000008180	1.0
+R-RNO-9824878	Regulation of TBK1, IKKε (IKBKE)-mediated activation of IRF3, IRF7 	1	37	15	8224	0.06545494828534228	ENSRNOG00000017819	1.0
+R-RNO-389356	Co-stimulation by CD28	1	37	16	8224	0.06966717473356278	ENSRNOG00000008180	1.0
+R-RNO-2142691	Synthesis of Leukotrienes (LT) and Eoxins (EX)	1	37	16	8224	0.06966717473356278	ENSRNOG00000000907	1.0
+R-RNO-3928663	EPHA-mediated growth cone collapse	1	37	17	8224	0.07386092650437882	ENSRNOG00000008180	1.0
+R-RNO-2022377	Metabolism of Angiotensinogen to Angiotensins	1	37	17	8224	0.07386092650437882	ENSRNOG00000050697	1.0
+R-RNO-975163	IRAK2 mediated activation of TAK1 complex upon TLR7/8 or 9 stimulation	1	37	17	8224	0.07386092650437882	ENSRNOG00000017819	1.0
+R-RNO-5686938	Regulation of TLR by endogenous ligand	1	37	18	8224	0.07803628238586265	ENSRNOG00000017819	1.0
+R-RNO-937072	TRAF6-mediated induction of TAK1 complex within TLR4 complex	1	37	18	8224	0.07803628238586265	ENSRNOG00000017819	1.0
+R-RNO-936964	Activation of IRF3, IRF7 mediated by TBK1, IKKε (IKBKE)	1	37	18	8224	0.07803628238586265	ENSRNOG00000017819	1.0
+R-RNO-912631	Regulation of signaling by CBL	1	37	19	8224	0.08219332083964324	ENSRNOG00000008180	1.0
+R-RNO-2424491	DAP12 signaling	1	37	19	8224	0.08219332083964324	ENSRNOG00000020845	1.0
+R-RNO-6803157	Antimicrobial peptides	1	37	19	8224	0.08219332083964324	ENSRNOG00000005825	1.0
+R-RNO-114608	Platelet degranulation 	2	37	110	8224	0.08726842179013869	ENSRNOG00000021161;ENSRNOG00000028015	1.0
+R-RNO-1971475	Glycosaminoglycan-protein linkage region biosynthesis	1	37	21	8224	0.0904527576862654	ENSRNOG00000014297	1.0
+R-RNO-9958810	SRC activates STAT3 in a quantitative manner, through Cadherin-11 (CDH11), RAC1 and gp130 (IL6ST)	1	37	22	8224	0.09455531138193876	ENSRNOG00000010331	1.0
+R-RNO-9705462	Inactivation of CSF3 (G-CSF) signaling	1	37	23	8224	0.09863985825817237	ENSRNOG00000008180	1.0
+R-RNO-937041	IKK complex recruitment mediated by RIP1	1	37	24	8224	0.10270647516397016	ENSRNOG00000017819	1.0
+R-RNO-2022090	Assembly of collagen fibrils and other multimeric structures	1	37	25	8224	0.1067552386296937	ENSRNOG00000010331	1.0
+R-RNO-2022928	HS-GAG biosynthesis	1	37	27	8224	0.11479950977684346	ENSRNOG00000014297	1.0
+R-RNO-1433557	Signaling by SCF-KIT	1	37	28	8224	0.11879516893729936	ENSRNOG00000008180	1.0
+R-RNO-499943	Interconversion of nucleotide di- and triphosphates	1	37	29	8224	0.12277327761828034	ENSRNOG00000009088	1.0
+R-RNO-5694530	Cargo concentration in the ER	1	37	31	8224	0.13067714305594832	ENSRNOG00000050697	1.0
+R-RNO-3928662	EPHB-mediated forward signaling	1	37	33	8224	0.13851170201540108	ENSRNOG00000008180	1.0
+R-RNO-432720	Lysosome Vesicle Biogenesis	1	37	33	8224	0.13851170201540108	ENSRNOG00000050697	1.0
+R-RNO-3928665	EPH-ephrin mediated repulsion of cells	1	37	36	8224	0.15013488225672683	ENSRNOG00000008180	1.0
+R-RNO-8854214	TBC/RABGAPs	1	37	36	8224	0.15013488225672683	ENSRNOG00000018009	1.0
+R-RNO-1442490	Collagen degradation	1	37	40	8224	0.1653953581853712	ENSRNOG00000010331	1.0
+R-RNO-9013149	RAC1 GTPase cycle	2	37	167	8224	0.17268985450767627	ENSRNOG00000003622;ENSRNOG00000013014	1.0
+R-RNO-69231	Cyclin D associated events in G1	1	37	45	8224	0.18409637455264197	ENSRNOG00000008180	1.0
+R-RNO-9766229	Degradation of CDH1	1	37	53	8224	0.21317305998145064	ENSRNOG00000010331	1.0
+R-RNO-8873719	RAB geranylgeranylation	1	37	55	8224	0.2202831949516089	ENSRNOG00000018009	1.0
+R-RNO-204005	COPII-mediated vesicle transport	1	37	65	8224	0.2549065594910299	ENSRNOG00000050697	1.0
+R-RNO-5628897	TP53 Regulates Metabolic Genes	1	37	67	8224	0.2616494519083931	ENSRNOG00000009088	1.0
+R-RNO-8876198	RAB GEFs exchange GTP for GDP on RABs	1	37	82	8224	0.31036292402256815	ENSRNOG00000018009	1.0
+R-RNO-1663150	The activation of arylsulfatases	0	37	10	8224	1.0		1.0
+R-RNO-9840310	Glycosphingolipid catabolism	0	37	35	8224	1.0		1.0
+R-RNO-888590	GABA synthesis, release, reuptake and degradation	0	37	14	8224	1.0		1.0
+R-RNO-444473	Formyl peptide receptors bind formyl peptides and many other ligands	0	37	7	8224	1.0		1.0
+R-RNO-174362	Transport and metabolism of PAPS	0	37	7	8224	1.0		1.0
+R-RNO-427601	Inorganic anion exchange by SLC26 transporters	0	37	8	8224	1.0		1.0
+R-RNO-2024101	CS/DS degradation	0	37	18	8224	1.0		1.0
+R-RNO-8856828	Clathrin-mediated endocytosis	0	37	122	8224	1.0		1.0
+R-RNO-173623	Classical antibody-mediated complement activation	0	37	11	8224	1.0		1.0
+R-RNO-181429	Serotonin Neurotransmitter Release Cycle	0	37	19	8224	1.0		1.0
+R-RNO-181430	Norepinephrine Neurotransmitter Release Cycle	0	37	19	8224	1.0		1.0
+R-RNO-210500	Glutamate Neurotransmitter Release Cycle	0	37	24	8224	1.0		1.0
+R-RNO-212676	Dopamine Neurotransmitter Release Cycle	0	37	22	8224	1.0		1.0
+R-RNO-264642	Acetylcholine Neurotransmitter Release Cycle	0	37	17	8224	1.0		1.0
+R-RNO-163210	Formation of ATP by chemiosmotic coupling	0	37	20	8224	1.0		1.0
+R-RNO-8949613	Cristae formation	0	37	20	8224	1.0		1.0
+R-RNO-2485179	Activation of the phototransduction cascade	0	37	8	8224	1.0		1.0
+R-RNO-2514859	Inactivation, recovery and regulation of the phototransduction cascade	0	37	27	8224	1.0		1.0
+R-RNO-4086398	Ca2+ pathway	0	37	37	8224	1.0		1.0
+R-RNO-141444	Amplification  of signal from unattached  kinetochores via a MAD2  inhibitory signal	0	37	91	8224	1.0		1.0
+R-RNO-195253	Degradation of beta-catenin by the destruction complex	0	37	53	8224	1.0		1.0
+R-RNO-196299	Beta-catenin phosphorylation cascade	0	37	11	8224	1.0		1.0
+R-RNO-2467813	Separation of Sister Chromatids	0	37	165	8224	1.0		1.0
+R-RNO-2500257	Resolution of Sister Chromatid Cohesion	0	37	112	8224	1.0		1.0
+R-RNO-432142	Platelet sensitization by LDL	0	37	12	8224	1.0		1.0
+R-RNO-4641262	Disassembly of the destruction complex and recruitment of AXIN to the membrane	0	37	18	8224	1.0		1.0
+R-RNO-5663220	RHO GTPases Activate Formins	0	37	121	8224	1.0		1.0
+R-RNO-5673000	RAF activation	0	37	27	8224	1.0		1.0
+R-RNO-5675221	Negative regulation of MAPK pathway	0	37	39	8224	1.0		1.0
+R-RNO-6811558	PI5P, PP2A and IER3 Regulate PI3K/AKT Signaling	0	37	94	8224	1.0		1.0
+R-RNO-68877	Mitotic Prometaphase	0	37	98	8224	1.0		1.0
+R-RNO-9648025	EML4 and NUDC in mitotic spindle formation	0	37	99	8224	1.0		1.0
+R-RNO-9833482	PKR-mediated signaling	0	37	54	8224	1.0		1.0
+R-RNO-9772755	Formation of WDR5-containing histone-modifying complexes	0	37	41	8224	1.0		1.0
+R-RNO-3238698	WNT ligand biogenesis and trafficking	0	37	19	8224	1.0		1.0
+R-RNO-212300	PRC2 methylates histones and DNA	0	37	36	8224	1.0		1.0
+R-RNO-8866654	E3 ubiquitin ligases ubiquitinate target proteins	0	37	47	8224	1.0		1.0
+R-RNO-201451	Signaling by BMP	0	37	29	8224	1.0		1.0
+R-RNO-198933	Immunoregulatory interactions between a Lymphoid and a non-Lymphoid cell	0	37	88	8224	1.0		1.0
+R-RNO-983168	Antigen processing: Ubiquitination & Proteasome degradation	0	37	276	8224	1.0		1.0
+R-RNO-159236	Transport of Mature mRNA derived from an Intron-Containing Transcript	0	37	70	8224	1.0		1.0
+R-RNO-109704	PI3K Cascade	0	37	28	8224	1.0		1.0
+R-RNO-1257604	PIP3 activates AKT signaling	0	37	86	8224	1.0		1.0
+R-RNO-190322	FGFR4 ligand binding and activation	0	37	9	8224	1.0		1.0
+R-RNO-190371	FGFR3b ligand binding and activation	0	37	5	8224	1.0		1.0
+R-RNO-190372	FGFR3c ligand binding and activation	0	37	10	8224	1.0		1.0
+R-RNO-190373	FGFR1c ligand binding and activation	0	37	9	8224	1.0		1.0
+R-RNO-190375	FGFR2c ligand binding and activation	0	37	9	8224	1.0		1.0
+R-RNO-5654219	Phospholipase C-mediated cascade: FGFR1	0	37	10	8224	1.0		1.0
+R-RNO-5654221	Phospholipase C-mediated cascade; FGFR2	0	37	12	8224	1.0		1.0
+R-RNO-5654227	Phospholipase C-mediated cascade; FGFR3	0	37	9	8224	1.0		1.0
+R-RNO-5654228	Phospholipase C-mediated cascade; FGFR4	0	37	10	8224	1.0		1.0
+R-RNO-5654687	Downstream signaling of activated FGFR1	0	37	13	8224	1.0		1.0
+R-RNO-5654688	SHC-mediated cascade:FGFR1	0	37	12	8224	1.0		1.0
+R-RNO-5654689	PI-3K cascade:FGFR1	0	37	14	8224	1.0		1.0
+R-RNO-5654693	FRS-mediated FGFR1 signaling	0	37	13	8224	1.0		1.0
+R-RNO-5654695	PI-3K cascade:FGFR2	0	37	16	8224	1.0		1.0
+R-RNO-5654699	SHC-mediated cascade:FGFR2	0	37	14	8224	1.0		1.0
+R-RNO-5654700	FRS-mediated FGFR2 signaling	0	37	15	8224	1.0		1.0
+R-RNO-5654704	SHC-mediated cascade:FGFR3	0	37	11	8224	1.0		1.0
+R-RNO-5654706	FRS-mediated FGFR3 signaling	0	37	12	8224	1.0		1.0
+R-RNO-5654710	PI-3K cascade:FGFR3	0	37	13	8224	1.0		1.0
+R-RNO-5654712	FRS-mediated FGFR4 signaling	0	37	13	8224	1.0		1.0
+R-RNO-5654719	SHC-mediated cascade:FGFR4	0	37	12	8224	1.0		1.0
+R-RNO-5654720	PI-3K cascade:FGFR4	0	37	14	8224	1.0		1.0
+R-RNO-5654726	Negative regulation of FGFR1 signaling	0	37	22	8224	1.0		1.0
+R-RNO-5654727	Negative regulation of FGFR2 signaling	0	37	24	8224	1.0		1.0
+R-RNO-5654732	Negative regulation of FGFR3 signaling	0	37	21	8224	1.0		1.0
+R-RNO-5654733	Negative regulation of FGFR4 signaling	0	37	22	8224	1.0		1.0
+R-RNO-5673001	RAF/MAP kinase cascade	0	37	90	8224	1.0		1.0
+R-RNO-3214858	RMTs methylate histone arginines	0	37	36	8224	1.0		1.0
+R-RNO-162710	Synthesis of glycosylphosphatidylinositol (GPI)	0	37	15	8224	1.0		1.0
+R-RNO-9958825	Activation of STAT3 by cadherin engagement	0	37	36	8224	1.0		1.0
+R-RNO-68616	Assembly of the ORC complex at the origin of replication	0	37	30	8224	1.0		1.0
+R-RNO-1266695	Interleukin-7 signaling	0	37	9	8224	1.0		1.0
+R-RNO-1660499	Synthesis of PIPs at the plasma membrane	0	37	45	8224	1.0		1.0
+R-RNO-389357	CD28 dependent PI3K/Akt signaling	0	37	21	8224	1.0		1.0
+R-RNO-416476	G alpha (q) signalling events	0	37	135	8224	1.0		1.0
+R-RNO-512988	Interleukin-3, Interleukin-5 and GM-CSF signaling	0	37	11	8224	1.0		1.0
+R-RNO-8853659	RET signaling	0	37	30	8224	1.0		1.0
+R-RNO-9009391	Extra-nuclear estrogen signaling	0	37	32	8224	1.0		1.0
+R-RNO-912526	Interleukin receptor SHC signaling	0	37	18	8224	1.0		1.0
+R-RNO-9927354	Co-stimulation by ICOS	0	37	8	8224	1.0		1.0
+R-RNO-8856825	Cargo recognition for clathrin-mediated endocytosis	0	37	100	8224	1.0		1.0
+R-RNO-8964026	Chylomicron clearance	0	37	5	8224	1.0		1.0
+R-RNO-8964038	LDL clearance	0	37	15	8224	1.0		1.0
+R-RNO-6807878	COPI-mediated anterograde transport	0	37	81	8224	1.0		1.0
+R-RNO-6811438	Intra-Golgi traffic	0	37	34	8224	1.0		1.0
+R-RNO-6811440	Retrograde transport at the Trans-Golgi-Network	0	37	44	8224	1.0		1.0
+R-RNO-1632852	Macroautophagy	0	37	66	8224	1.0		1.0
+R-RNO-5205685	PINK1-PRKN Mediated Mitophagy	0	37	35	8224	1.0		1.0
+R-RNO-8934903	Receptor Mediated Mitophagy	0	37	12	8224	1.0		1.0
+R-RNO-1614558	Degradation of cysteine and homocysteine	0	37	5	8224	1.0		1.0
+R-RNO-9634600	Regulation of glycolysis by fructose 2,6-bisphosphate metabolism	0	37	5	8224	1.0		1.0
+R-RNO-9968297	Somatic hypermutation of immunoglobulin genes by error-prone base excision repair (BER)	0	37	16	8224	1.0		1.0
+R-RNO-189451	Heme biosynthesis	0	37	12	8224	1.0		1.0
+R-RNO-71288	Creatine metabolism	0	37	9	8224	1.0		1.0
+R-RNO-1614517	Sulfide oxidation to sulfate	0	37	6	8224	1.0		1.0
+R-RNO-9845614	Sphingolipid catabolism	0	37	11	8224	1.0		1.0
+R-RNO-1474228	Degradation of the extracellular matrix	0	37	48	8224	1.0		1.0
+R-RNO-211976	Endogenous sterols	0	37	22	8224	1.0		1.0
+R-RNO-156590	Glutathione conjugation	0	37	19	8224	1.0		1.0
+R-RNO-189483	Heme degradation	0	37	11	8224	1.0		1.0
+R-RNO-9748787	Azathioprine ADME	0	37	25	8224	1.0		1.0
+R-RNO-2672351	Stimuli-sensing channels	0	37	71	8224	1.0		1.0
+R-RNO-8963889	Assembly of active LPL and LIPC lipase complexes	0	37	11	8224	1.0		1.0
+R-RNO-420499	Class C/3 (Metabotropic glutamate/pheromone receptors)	0	37	14	8224	1.0		1.0
+R-RNO-72163	mRNA Splicing - Major Pathway	0	37	166	8224	1.0		1.0
+R-RNO-72165	mRNA Splicing - Minor Pathway	0	37	51	8224	1.0		1.0
+R-RNO-72203	Processing of Capped Intron-Containing Pre-mRNA	0	37	51	8224	1.0		1.0
+R-RNO-9770562	mRNA Polyadenylation	0	37	130	8224	1.0		1.0
+R-RNO-3214842	HDMs demethylate histones	0	37	23	8224	1.0		1.0
+R-RNO-9629569	Protein hydroxylation	0	37	19	8224	1.0		1.0
+R-RNO-4085001	Sialic acid metabolism	0	37	30	8224	1.0		1.0
+R-RNO-5626978	TNFR1-mediated ceramide production	0	37	6	8224	1.0		1.0
+R-RNO-1181150	Signaling by NODAL	0	37	6	8224	1.0		1.0
+R-RNO-198693	AKT phosphorylates targets in the nucleus	0	37	8	8224	1.0		1.0
+R-RNO-5687128	MAPK6/MAPK4 signaling	0	37	63	8224	1.0		1.0
+R-RNO-9607240	FLT3 Signaling	0	37	8	8224	1.0		1.0
+R-RNO-9614399	Regulation of localization of FOXO transcription factors	0	37	10	8224	1.0		1.0
+R-RNO-9617629	Regulation of FOXO transcriptional activity by acetylation	0	37	5	8224	1.0		1.0
+R-RNO-9617828	FOXO-mediated transcription of cell cycle genes	0	37	7	8224	1.0		1.0
+R-RNO-9634638	Estrogen-dependent nuclear events downstream of ESR-membrane signaling	0	37	7	8224	1.0		1.0
+R-RNO-9841251	Mitochondrial unfolded protein response (UPRmt)	0	37	7	8224	1.0		1.0
+R-RNO-9755511	KEAP1-NFE2L2 pathway	0	37	56	8224	1.0		1.0
+R-RNO-1660514	Synthesis of PIPs at the Golgi membrane	0	37	17	8224	1.0		1.0
+R-RNO-1660516	Synthesis of PIPs at the early endosome membrane	0	37	15	8224	1.0		1.0
+R-RNO-1660517	Synthesis of PIPs at the late endosome membrane	0	37	10	8224	1.0		1.0
+R-RNO-3000157	Laminin interactions	0	37	9	8224	1.0		1.0
+R-RNO-451308	Activation of Ca-permeable Kainate Receptor	0	37	8	8224	1.0		1.0
+R-RNO-174437	Removal of the Flap Intermediate from the C-strand	0	37	17	8224	1.0		1.0
+R-RNO-199220	Vitamin B5 (pantothenate) metabolism	0	37	8	8224	1.0		1.0
+R-RNO-5685938	HDR through Single Strand Annealing (SSA)	0	37	37	8224	1.0		1.0
+R-RNO-5685942	HDR through Homologous Recombination (HRR)	0	37	49	8224	1.0		1.0
+R-RNO-5693568	Resolution of D-loop Structures through Holliday Junction Intermediates	0	37	31	8224	1.0		1.0
+R-RNO-5693579	Homologous DNA Pairing and Strand Exchange	0	37	22	8224	1.0		1.0
+R-RNO-5693607	Processing of DNA double-strand break ends	0	37	63	8224	1.0		1.0
+R-RNO-5693616	Presynaptic phase of homologous DNA pairing and strand exchange	0	37	20	8224	1.0		1.0
+R-RNO-6804756	Regulation of TP53 Activity through Phosphorylation	0	37	84	8224	1.0		1.0
+R-RNO-69166	Removal of the Flap Intermediate	0	37	14	8224	1.0		1.0
+R-RNO-69473	G2/M DNA damage checkpoint	0	37	54	8224	1.0		1.0
+R-RNO-9013406	RHOQ GTPase cycle	0	37	59	8224	1.0		1.0
+R-RNO-446199	Synthesis of dolichyl-phosphate	0	37	7	8224	1.0		1.0
+R-RNO-5578775	Ion homeostasis	0	37	45	8224	1.0		1.0
+R-RNO-936837	Ion transport by P-type ATPases	0	37	51	8224	1.0		1.0
+R-RNO-2559584	Formation of Senescence-Associated Heterochromatin Foci (SAHF)	0	37	15	8224	1.0		1.0
+R-RNO-380320	Recruitment of NuMA to mitotic centrosomes	0	37	79	8224	1.0		1.0
+R-RNO-166663	Initial triggering of complement	0	37	5	8224	1.0		1.0
+R-RNO-174577	Activation of C3 and C5	0	37	7	8224	1.0		1.0
+R-RNO-977606	Regulation of Complement cascade	0	37	37	8224	1.0		1.0
+R-RNO-112382	Formation of RNA Pol II elongation complex 	0	37	59	8224	1.0		1.0
+R-RNO-113418	Formation of the Early Elongation Complex	0	37	33	8224	1.0		1.0
+R-RNO-674695	RNA Polymerase II Pre-transcription Events	0	37	81	8224	1.0		1.0
+R-RNO-6796648	TP53 Regulates Transcription of DNA Repair Genes	0	37	47	8224	1.0		1.0
+R-RNO-75955	RNA Polymerase II Transcription Elongation	0	37	56	8224	1.0		1.0
+R-RNO-429958	mRNA decay by 3' to 5' exoribonuclease	0	37	17	8224	1.0		1.0
+R-RNO-193993	Mineralocorticoid biosynthesis	0	37	5	8224	1.0		1.0
+R-RNO-194002	Glucocorticoid biosynthesis	0	37	7	8224	1.0		1.0
+R-RNO-8852276	The role of GTSE1 in G2/M progression after G2 checkpoint	0	37	55	8224	1.0		1.0
+R-RNO-75105	Fatty acyl-CoA biosynthesis	0	37	10	8224	1.0		1.0
+R-RNO-1483166	Synthesis of PA	0	37	36	8224	1.0		1.0
+R-RNO-382556	ABC-family protein mediated transport	0	37	65	8224	1.0		1.0
+R-RNO-9931269	AMPK-induced ERAD and lysosome mediated degradation of PD-L1(CD274)	0	37	52	8224	1.0		1.0
+R-RNO-445989	TAK1-dependent IKK and NF-kappa-B activation  	0	37	36	8224	1.0		1.0
+R-RNO-879415	Advanced glycosylation endproduct receptor signaling	0	37	8	8224	1.0		1.0
+R-RNO-933542	TRAF6 mediated NF-kB activation	0	37	16	8224	1.0		1.0
+R-RNO-350054	Notch-HLH transcription pathway	0	37	21	8224	1.0		1.0
+R-RNO-381426	Regulation of Insulin-like Growth Factor (IGF) transport and uptake by Insulin-like Growth Factor Binding Proteins (IGFBPs)	0	37	114	8224	1.0		1.0
+R-RNO-8957275	Post-translational protein phosphorylation	0	37	101	8224	1.0		1.0
+R-RNO-983170	Antigen Presentation: Folding, assembly and peptide loading of class I MHC	0	37	32	8224	1.0		1.0
+R-RNO-1236974	ER-Phagosome pathway	0	37	36	8224	1.0		1.0
+R-RNO-1236978	Cross-presentation of soluble exogenous antigens (endosomes)	0	37	41	8224	1.0		1.0
+R-RNO-9907900	Proteasome assembly	0	37	47	8224	1.0		1.0
+R-RNO-9912633	Antigen processing: Ub, ATP-independent proteasomal degradation	0	37	21	8224	1.0		1.0
+R-RNO-1650814	Collagen biosynthesis and modifying enzymes	0	37	60	8224	1.0		1.0
+R-RNO-3000171	Non-integrin membrane-ECM interactions	0	37	14	8224	1.0		1.0
+R-RNO-8874081	MET activates PTK2 signaling	0	37	17	8224	1.0		1.0
+R-RNO-8948216	Collagen chain trimerization	0	37	28	8224	1.0		1.0
+R-RNO-383280	Nuclear Receptor transcription pathway	0	37	47	8224	1.0		1.0
+R-RNO-5362517	Signaling by Retinoic Acid	0	37	19	8224	1.0		1.0
+R-RNO-9029569	NR1H3 & NR1H2 regulate gene expression linked to cholesterol transport and efflux	0	37	10	8224	1.0		1.0
+R-RNO-9623433	NR1H2 & NR1H3 regulate gene expression to control bile acid homeostasis	0	37	5	8224	1.0		1.0
+R-RNO-442380	Zinc influx into cells by the SLC39 gene family	0	37	7	8224	1.0		1.0
+R-RNO-2559580	Oxidative Stress Induced Senescence	0	37	69	8224	1.0		1.0
+R-RNO-3108214	SUMOylation of DNA damage response and repair proteins	0	37	72	8224	1.0		1.0
+R-RNO-3899300	SUMOylation of transcription cofactors	0	37	38	8224	1.0		1.0
+R-RNO-4551638	SUMOylation of chromatin organization proteins	0	37	54	8224	1.0		1.0
+R-RNO-4570464	SUMOylation of RNA binding proteins	0	37	45	8224	1.0		1.0
+R-RNO-8939243	RUNX1 interacts with co-factors whose precise effect on RUNX1 targets is not known	0	37	30	8224	1.0		1.0
+R-RNO-8943724	Regulation of PTEN gene transcription	0	37	41	8224	1.0		1.0
+R-RNO-8953750	Transcriptional Regulation by E2F6	0	37	24	8224	1.0		1.0
+R-RNO-156827	L13a-mediated translational silencing of Ceruloplasmin expression	0	37	161	8224	1.0		1.0
+R-RNO-6791226	Major pathway of rRNA processing in the nucleolus and cytosol	0	37	228	8224	1.0		1.0
+R-RNO-72649	Translation initiation complex formation	0	37	81	8224	1.0		1.0
+R-RNO-72689	Formation of a pool of free 40S subunits	0	37	150	8224	1.0		1.0
+R-RNO-72695	Formation of the ternary complex, and subsequently, the 43S complex	0	37	73	8224	1.0		1.0
+R-RNO-72702	Ribosomal scanning and start codon recognition	0	37	81	8224	1.0		1.0
+R-RNO-72706	GTP hydrolysis and joining of the 60S ribosomal subunit	0	37	136	8224	1.0		1.0
+R-RNO-9037629	Lewis blood group biosynthesis	0	37	12	8224	1.0		1.0
+R-RNO-975956	Nonsense Mediated Decay (NMD) independent of the Exon Junction Complex (EJC)	0	37	146	8224	1.0		1.0
+R-RNO-975957	Nonsense Mediated Decay (NMD) enhanced by the Exon Junction Complex (EJC)	0	37	166	8224	1.0		1.0
+R-RNO-9840309	Glycosphingolipid biosynthesis	0	37	17	8224	1.0		1.0
+R-RNO-9954714	PELO:HBS1L and ABCE1 dissociate a ribosome on a non-stop mRNA	0	37	138	8224	1.0		1.0
+R-RNO-9954716	ZNF598 and the Ribosome-associated Quality Trigger (RQT) complex dissociate a ribosome stalled on a no-go mRNA	0	37	146	8224	1.0		1.0
+R-RNO-9986646	Cotranslational targeting of proteins to the endoplasmic reticulum	0	37	172	8224	1.0		1.0
+R-RNO-6804757	Regulation of TP53 Degradation	0	37	34	8224	1.0		1.0
+R-RNO-6811434	COPI-dependent Golgi-to-ER retrograde traffic	0	37	85	8224	1.0		1.0
+R-RNO-983189	Kinesins	0	37	47	8224	1.0		1.0
+R-RNO-5658442	Regulation of RAS by GAPs	0	37	53	8224	1.0		1.0
+R-RNO-111457	Release of apoptotic factors from the mitochondria	0	37	8	8224	1.0		1.0
+R-RNO-5620971	Pyroptosis	0	37	24	8224	1.0		1.0
+R-RNO-8980692	RHOA GTPase cycle	0	37	138	8224	1.0		1.0
+R-RNO-9013148	CDC42 GTPase cycle	0	37	91	8224	1.0		1.0
+R-RNO-200425	Carnitine shuttle	0	37	11	8224	1.0		1.0
+R-RNO-6783310	Fanconi Anemia Pathway	0	37	39	8224	1.0		1.0
+R-RNO-9954709	Ribosome Quality Control (RQC) complex extracts and degrades nascent peptide	0	37	129	8224	1.0		1.0
+R-RNO-2032785	YAP1- and WWTR1 (TAZ)-stimulated gene expression	0	37	7	8224	1.0		1.0
+R-RNO-8951671	RUNX3 regulates YAP1-mediated transcription	0	37	5	8224	1.0		1.0
+R-RNO-168638	NOD1/2 Signaling Pathway	0	37	33	8224	1.0		1.0
+R-RNO-9013418	RHOBTB2 GTPase cycle	0	37	21	8224	1.0		1.0
+R-RNO-9013422	RHOBTB1 GTPase cycle	0	37	22	8224	1.0		1.0
+R-RNO-187577	SCF(Skp2)-mediated degradation of p27/p21	0	37	52	8224	1.0		1.0
+R-RNO-198323	AKT phosphorylates targets in the cytosol	0	37	9	8224	1.0		1.0
+R-RNO-2559582	Senescence-Associated Secretory Phenotype (SASP)	0	37	62	8224	1.0		1.0
+R-RNO-69202	Cyclin E associated events during G1/S transition 	0	37	13	8224	1.0		1.0
+R-RNO-69656	Cyclin A:Cdk2-associated events at S phase entry	0	37	16	8224	1.0		1.0
+R-RNO-9616222	Transcriptional regulation of granulopoiesis	0	37	5	8224	1.0		1.0
+R-RNO-193648	NRAGE signals death through JNK	0	37	53	8224	1.0		1.0
+R-RNO-416482	G alpha (12/13) signalling events	0	37	62	8224	1.0		1.0
+R-RNO-9968551	Regulation of GBP-mediated host defense	0	37	5	8224	1.0		1.0
+R-RNO-163125	Post-translational modification: synthesis of GPI-anchored proteins	0	37	45	8224	1.0		1.0
+R-RNO-70268	Pyruvate metabolism	0	37	14	8224	1.0		1.0
+R-RNO-8948751	Regulation of PTEN stability and activity	0	37	56	8224	1.0		1.0
+R-RNO-216083	Integrin cell surface interactions	0	37	57	8224	1.0		1.0
+R-RNO-389397	Orexin and neuropeptides FF and QRFP bind to their respective receptors	0	37	8	8224	1.0		1.0
+R-RNO-5173214	O-glycosylation of TSR domain-containing proteins	0	37	40	8224	1.0		1.0
+R-RNO-8964208	Phenylalanine metabolism	0	37	7	8224	1.0		1.0
+R-RNO-83936	Transport of nucleosides and free purine and pyrimidine bases across the plasma membrane	0	37	11	8224	1.0		1.0
+R-RNO-9755088	Ribavirin ADME	0	37	12	8224	1.0		1.0
+R-RNO-375276	Peptide ligand-binding receptors	0	37	68	8224	1.0		1.0
+R-RNO-2022854	Keratan sulfate biosynthesis	0	37	27	8224	1.0		1.0
+R-RNO-2022870	CS-GAG biosynthesis	0	37	20	8224	1.0		1.0
+R-RNO-141430	Inactivation of APC/C via direct inhibition of the APC/C complex	0	37	20	8224	1.0		1.0
+R-RNO-174048	APC/C:Cdc20 mediated degradation of Cyclin B	0	37	27	8224	1.0		1.0
+R-RNO-174084	Autodegradation of Cdh1 by Cdh1:APC/C	0	37	56	8224	1.0		1.0
+R-RNO-174154	APC/C:Cdc20 mediated degradation of Securin	0	37	57	8224	1.0		1.0
+R-RNO-174178	APC/C:Cdh1 mediated degradation of Cdc20 and other APC/C:Cdh1 targeted proteins in late mitosis/early G1	0	37	63	8224	1.0		1.0
+R-RNO-174184	Cdc20:Phospho-APC/C mediated degradation of Cyclin A	0	37	61	8224	1.0		1.0
+R-RNO-176407	Conversion from APC/C:Cdc20 to APC/C:Cdh1 in late anaphase	0	37	20	8224	1.0		1.0
+R-RNO-176408	Regulation of APC/C activators between G1/S and early anaphase	0	37	25	8224	1.0		1.0
+R-RNO-176412	Phosphorylation of the APC/C	0	37	20	8224	1.0		1.0
+R-RNO-179409	APC-Cdc20 mediated degradation of Nek2A	0	37	29	8224	1.0		1.0
+R-RNO-68867	Assembly of the pre-replicative complex	0	37	63	8224	1.0		1.0
+R-RNO-69017	CDK-mediated phosphorylation and removal of Cdc6	0	37	62	8224	1.0		1.0
+R-RNO-399997	Acetylcholine regulates insulin secretion	0	37	8	8224	1.0		1.0
+R-RNO-389661	Glyoxylate metabolism and glycine degradation	0	37	10	8224	1.0		1.0
+R-RNO-9033241	Peroxisomal protein import	0	37	68	8224	1.0		1.0
+R-RNO-351202	Metabolism of polyamines	0	37	9	8224	1.0		1.0
+R-RNO-76061	RNA Polymerase III Transcription Initiation From Type 1 Promoter	0	37	25	8224	1.0		1.0
+R-RNO-76066	RNA Polymerase III Transcription Initiation From Type 2 Promoter	0	37	24	8224	1.0		1.0
+R-RNO-352230	Amino acid transport across the plasma membrane	0	37	30	8224	1.0		1.0
+R-RNO-110312	Translesion synthesis by REV1	0	37	19	8224	1.0		1.0
+R-RNO-5655862	Translesion synthesis by POLK	0	37	20	8224	1.0		1.0
+R-RNO-5656121	Translesion synthesis by POLI	0	37	20	8224	1.0		1.0
+R-RNO-9968295	Somatic hypermutation of immunoglobulin genes by error-prone mismatch repair (MMR)	0	37	25	8224	1.0		1.0
+R-RNO-1227986	Signaling by ERBB2	0	37	11	8224	1.0		1.0
+R-RNO-373753	Nephrin family interactions	0	37	8	8224	1.0		1.0
+R-RNO-375165	NCAM signaling for neurite out-growth	0	37	13	8224	1.0		1.0
+R-RNO-389359	CD28 dependent Vav1 pathway	0	37	13	8224	1.0		1.0
+R-RNO-3928664	Ephrin signaling	0	37	19	8224	1.0		1.0
+R-RNO-399954	Sema3A PAK dependent Axon repulsion	0	37	15	8224	1.0		1.0
+R-RNO-399955	SEMA3A-Plexin repulsion signaling by inhibiting Integrin adhesion	0	37	10	8224	1.0		1.0
+R-RNO-399956	CRMPs in Sema3A signaling	0	37	13	8224	1.0		1.0
+R-RNO-418885	DCC mediated attractive signaling	0	37	6	8224	1.0		1.0
+R-RNO-8866376	Reelin signalling pathway	0	37	5	8224	1.0		1.0
+R-RNO-9032759	NTRK2 activates RAC1	0	37	5	8224	1.0		1.0
+R-RNO-9913351	Formation of the dystrophin-glycoprotein complex (DGC)	0	37	24	8224	1.0		1.0
+R-RNO-3214815	HDACs deacetylate histones	0	37	48	8224	1.0		1.0
+R-RNO-6804758	Regulation of TP53 Activity through Acetylation	0	37	20	8224	1.0		1.0
+R-RNO-73762	RNA Polymerase I Transcription Initiation	0	37	42	8224	1.0		1.0
+R-RNO-9764725	Negative Regulation of CDH1 Gene Transcription	0	37	40	8224	1.0		1.0
+R-RNO-983231	Factors involved in megakaryocyte development and platelet production	0	37	54	8224	1.0		1.0
+R-RNO-9937850	NuRD complex assembly	0	37	19	8224	1.0		1.0
+R-RNO-9940951	Interaction of NuRD complexes with transcription factors	0	37	49	8224	1.0		1.0
+R-RNO-1234176	Oxygen-dependent proline hydroxylation of Hypoxia-inducible Factor Alpha	0	37	56	8224	1.0		1.0
+R-RNO-2173795	Downregulation of SMAD2/3:SMAD4 transcriptional activity	0	37	27	8224	1.0		1.0
+R-RNO-5357905	Regulation of TNFR1 signaling	0	37	51	8224	1.0		1.0
+R-RNO-5607764	CLEC7A (Dectin-1) signaling	0	37	66	8224	1.0		1.0
+R-RNO-5689896	Ovarian tumor domain proteases	0	37	36	8224	1.0		1.0
+R-RNO-8866652	Synthesis of active ubiquitin: roles of E1 and E2 enzymes	0	37	33	8224	1.0		1.0
+R-RNO-8951664	Neddylation	0	37	210	8224	1.0		1.0
+R-RNO-9837999	Mitochondrial protein degradation	0	37	85	8224	1.0		1.0
+R-RNO-9985686	Mitochondrial transcription	0	37	5	8224	1.0		1.0
+R-RNO-9824594	Regulation of MITF-M-dependent genes involved in apoptosis	0	37	5	8224	1.0		1.0
+R-RNO-9825892	Regulation of MITF-M-dependent genes involved in cell cycle and proliferation	0	37	9	8224	1.0		1.0
+R-RNO-9856649	Transcriptional and post-translational regulation of MITF-M expression and activity	0	37	27	8224	1.0		1.0
+R-RNO-110056	MAPK3 (ERK1) activation	0	37	9	8224	1.0		1.0
+R-RNO-176417	Phosphorylation of Emi1	0	37	6	8224	1.0		1.0
+R-RNO-2299718	Condensation of Prophase Chromosomes	0	37	31	8224	1.0		1.0
+R-RNO-2565942	Regulation of PLK1 Activity at G2/M Transition	0	37	85	8224	1.0		1.0
+R-RNO-2980767	Activation of NIMA Kinases NEK9, NEK6, NEK7	0	37	5	8224	1.0		1.0
+R-RNO-2995383	Initiation of Nuclear Envelope (NE) Reformation	0	37	15	8224	1.0		1.0
+R-RNO-3301854	Nuclear Pore Complex (NPC) Disassembly	0	37	32	8224	1.0		1.0
+R-RNO-380259	Loss of Nlp from mitotic centrosomes	0	37	64	8224	1.0		1.0
+R-RNO-380270	Recruitment of mitotic centrosome proteins and complexes	0	37	74	8224	1.0		1.0
+R-RNO-380284	Loss of proteins required for interphase microtubule organization from the centrosome	0	37	64	8224	1.0		1.0
+R-RNO-4419969	Depolymerization of the Nuclear Lamina	0	37	12	8224	1.0		1.0
+R-RNO-5620912	Anchoring of the basal body to the plasma membrane	0	37	92	8224	1.0		1.0
+R-RNO-6804114	TP53 Regulates Transcription of Genes Involved in G2 Cell Cycle Arrest	0	37	7	8224	1.0		1.0
+R-RNO-69273	Cyclin A/B1/B2 associated events during G2/M transition	0	37	30	8224	1.0		1.0
+R-RNO-69478	G2/M DNA replication checkpoint	0	37	7	8224	1.0		1.0
+R-RNO-75035	Chk1/Chk2(Cds1) mediated inactivation of Cyclin B:Cdk1 complex	0	37	14	8224	1.0		1.0
+R-RNO-8854518	AURKA Activation by TPX2	0	37	66	8224	1.0		1.0
+R-RNO-9031628	NGF-stimulated transcription	0	37	6	8224	1.0		1.0
+R-RNO-4090294	SUMOylation of intracellular receptors	0	37	28	8224	1.0		1.0
+R-RNO-9018519	Estrogen-dependent gene expression	0	37	70	8224	1.0		1.0
+R-RNO-196780	Biotin transport and metabolism	0	37	11	8224	1.0		1.0
+R-RNO-156584	Cytosolic sulfonation of small molecules	0	37	13	8224	1.0		1.0
+R-RNO-163841	Gamma carboxylation, hypusinylation, hydroxylation, and arylsulfatase activation	0	37	7	8224	1.0		1.0
+R-RNO-110329	Cleavage of the damaged pyrimidine 	0	37	8	8224	1.0		1.0
+R-RNO-110357	Displacement of DNA glycosylase by APEX1	0	37	9	8224	1.0		1.0
+R-RNO-1362409	Mitochondrial iron-sulfur cluster biogenesis	0	37	10	8224	1.0		1.0
+R-RNO-9854311	Maturation of TCA enzymes and regulation of TCA cycle	0	37	17	8224	1.0		1.0
+R-RNO-9865881	Complex III assembly	0	37	18	8224	1.0		1.0
+R-RNO-373076	Class A/1 (Rhodopsin-like receptors)	0	37	15	8224	1.0		1.0
+R-RNO-390666	Serotonin receptors	0	37	8	8224	1.0		1.0
+R-RNO-1236977	Endosomal/Vacuolar pathway	0	37	15	8224	1.0		1.0
+R-RNO-1296041	Activation of G protein gated Potassium channels	0	37	26	8224	1.0		1.0
+R-RNO-997272	Inhibition  of voltage gated Ca2+ channels via Gbeta/gamma subunits	0	37	26	8224	1.0		1.0
+R-RNO-5250924	B-WICH complex positively regulates rRNA expression	0	37	48	8224	1.0		1.0
+R-RNO-73772	RNA Polymerase I Promoter Escape	0	37	50	8224	1.0		1.0
+R-RNO-73863	RNA Polymerase I Transcription Termination	0	37	28	8224	1.0		1.0
+R-RNO-159227	Transport of the SLBP independent Mature mRNA	0	37	35	8224	1.0		1.0
+R-RNO-159230	Transport of the SLBP Dependant Mature mRNA	0	37	36	8224	1.0		1.0
+R-RNO-159231	Transport of Mature mRNA Derived from an Intronless Transcript	0	37	41	8224	1.0		1.0
+R-RNO-170822	Regulation of Glucokinase by Glucokinase Regulatory Protein	0	37	31	8224	1.0		1.0
+R-RNO-1855170	IPs transport between nucleus and cytosol	0	37	29	8224	1.0		1.0
+R-RNO-1855196	IP3 and IP4 transport between cytosol and nucleus	0	37	29	8224	1.0		1.0
+R-RNO-1855229	IP6 and IP7 transport between cytosol and nucleus	0	37	29	8224	1.0		1.0
+R-RNO-191859	snRNP Assembly	0	37	51	8224	1.0		1.0
+R-RNO-3232142	SUMOylation of ubiquitinylation proteins	0	37	38	8224	1.0		1.0
+R-RNO-3371453	Regulation of HSF1-mediated heat shock response	0	37	63	8224	1.0		1.0
+R-RNO-4085377	SUMOylation of SUMOylation proteins	0	37	34	8224	1.0		1.0
+R-RNO-4615885	SUMOylation of DNA replication proteins	0	37	44	8224	1.0		1.0
+R-RNO-5389840	Mitochondrial translation elongation	0	37	86	8224	1.0		1.0
+R-RNO-5419276	Mitochondrial translation termination	0	37	102	8224	1.0		1.0
+R-RNO-9937383	Mitochondrial ribosome-associated quality control	0	37	88	8224	1.0		1.0
+R-RNO-190840	Microtubule-dependent trafficking of connexons from Golgi to the plasma membrane	0	37	8	8224	1.0		1.0
+R-RNO-190861	Gap junction assembly	0	37	9	8224	1.0		1.0
+R-RNO-190873	Gap junction degradation	0	37	9	8224	1.0		1.0
+R-RNO-196025	Formation of annular gap junctions	0	37	8	8224	1.0		1.0
+R-RNO-5620920	Cargo trafficking to the periciliary membrane	0	37	8	8224	1.0		1.0
+R-RNO-163560	Triglyceride catabolism	0	37	8	8224	1.0		1.0
+R-RNO-2022923	DS-GAG biosynthesis	0	37	11	8224	1.0		1.0
+R-RNO-5213460	RIPK1-mediated regulated necrosis	0	37	7	8224	1.0		1.0
+R-RNO-5675482	Regulation of necroptotic cell death	0	37	29	8224	1.0		1.0
+R-RNO-8849932	Synaptic adhesion-like molecules	0	37	15	8224	1.0		1.0
+R-RNO-9013026	RHOB GTPase cycle	0	37	64	8224	1.0		1.0
+R-RNO-9013106	RHOC GTPase cycle	0	37	68	8224	1.0		1.0
+R-RNO-5668541	TNFR2 non-canonical NF-kB pathway	0	37	57	8224	1.0		1.0
+R-RNO-5676594	TNF receptor superfamily (TNFSF) members mediating non-canonical NF-kB pathway	0	37	17	8224	1.0		1.0
+R-RNO-5357786	TNFR1-induced proapoptotic signaling	0	37	23	8224	1.0		1.0
+R-RNO-5357956	TNFR1-induced NF-kappa-B signaling pathway	0	37	37	8224	1.0		1.0
+R-RNO-75893	TNF signaling	0	37	7	8224	1.0		1.0
+R-RNO-5669034	TNFs bind their physiological receptors	0	37	24	8224	1.0		1.0
+R-RNO-1483191	Synthesis of PC	0	37	26	8224	1.0		1.0
+R-RNO-201688	WNT mediated activation of DVL	0	37	8	8224	1.0		1.0
+R-RNO-2514853	Condensation of Prometaphase Chromosomes	0	37	8	8224	1.0		1.0
+R-RNO-445144	Signal transduction by L1	0	37	18	8224	1.0		1.0
+R-RNO-6814122	Cooperation of PDCL (PhLP1) and TRiC/CCT in G-protein beta folding	0	37	20	8224	1.0		1.0
+R-RNO-9768727	Regulation of CDH1 posttranslational processing and trafficking to plasma membrane	0	37	31	8224	1.0		1.0
+R-RNO-9929491	SPOP-mediated proteasomal degradation of PD-L1(CD274)	0	37	48	8224	1.0		1.0
+R-RNO-9696264	RND3 GTPase cycle	0	37	37	8224	1.0		1.0
+R-RNO-9696270	RND2 GTPase cycle	0	37	36	8224	1.0		1.0
+R-RNO-9696273	RND1 GTPase cycle	0	37	36	8224	1.0		1.0
+R-RNO-446388	Regulation of cytoskeletal remodeling and cell spreading by IPP complex components	0	37	6	8224	1.0		1.0
+R-RNO-8964616	G beta:gamma signalling through CDC42	0	37	18	8224	1.0		1.0
+R-RNO-9013420	RHOU GTPase cycle	0	37	35	8224	1.0		1.0
+R-RNO-9958517	SLC-mediated bile acid transport	0	37	7	8224	1.0		1.0
+R-RNO-425986	Sodium/Proton exchangers	0	37	9	8224	1.0		1.0
+R-RNO-444821	Relaxin receptors	0	37	6	8224	1.0		1.0
+R-RNO-6806664	Metabolism of vitamin K	0	37	5	8224	1.0		1.0
+R-RNO-76071	RNA Polymerase III Transcription Initiation From Type 3 Promoter	0	37	23	8224	1.0		1.0
+R-RNO-70635	Urea cycle	0	37	10	8224	1.0		1.0
+R-RNO-2160916	Hyaluronan degradation	0	37	11	8224	1.0		1.0
+R-RNO-70221	Glycogen breakdown (glycogenolysis)	0	37	13	8224	1.0		1.0
+R-RNO-390471	Association of TriC/CCT with target proteins during biosynthesis	0	37	10	8224	1.0		1.0
+R-RNO-977347	Serine metabolism	0	37	11	8224	1.0		1.0
+R-RNO-1655829	Regulation of cholesterol biosynthesis by SREBP (SREBF)	0	37	6	8224	1.0		1.0
+R-RNO-5578749	Transcriptional regulation by small RNAs	0	37	37	8224	1.0		1.0
+R-RNO-9615933	Postmitotic nuclear pore complex (NPC) reformation	0	37	21	8224	1.0		1.0
+R-RNO-195399	VEGF binds to VEGFR leading to receptor dimerization	0	37	8	8224	1.0		1.0
+R-RNO-429947	Deadenylation of mRNA	0	37	11	8224	1.0		1.0
+R-RNO-9860276	SLC15A4:TASL-dependent IRF5 activation	0	37	6	8224	1.0		1.0
+R-RNO-77111	Synthesis of Ketone Bodies	0	37	8	8224	1.0		1.0
+R-RNO-211945	Phase I - Functionalization of compounds	0	37	22	8224	1.0		1.0
+R-RNO-211958	Miscellaneous substrates	0	37	12	8224	1.0		1.0
+R-RNO-211981	Xenobiotics	0	37	18	8224	1.0		1.0
+R-RNO-5423646	Aflatoxin activation and detoxification	0	37	17	8224	1.0		1.0
+R-RNO-9027307	Biosynthesis of maresin-like SPMs	0	37	7	8224	1.0		1.0
+R-RNO-9749641	Aspirin ADME	0	37	22	8224	1.0		1.0
+R-RNO-9754706	Atorvastatin ADME	0	37	11	8224	1.0		1.0
+R-RNO-9757110	Prednisone ADME	0	37	17	8224	1.0		1.0
+R-RNO-3295583	TRP channels	0	37	26	8224	1.0		1.0
+R-RNO-3000471	Scavenging by Class B Receptors	0	37	11	8224	1.0		1.0
+R-RNO-8964011	HDL clearance	0	37	5	8224	1.0		1.0
+R-RNO-212436	Generic Transcription Pathway	0	37	125	8224	1.0		1.0
+R-RNO-73856	RNA Polymerase II Transcription Termination	0	37	32	8224	1.0		1.0
+R-RNO-77595	Processing of Intronless Pre-mRNAs	0	37	20	8224	1.0		1.0
+R-RNO-6781823	Formation of TC-NER Pre-Incision Complex	0	37	54	8224	1.0		1.0
+R-RNO-6782135	Dual incision in TC-NER	0	37	67	8224	1.0		1.0
+R-RNO-6782210	Gap-filling DNA repair synthesis and ligation in TC-NER	0	37	66	8224	1.0		1.0
+R-RNO-2029482	Regulation of actin dynamics for phagocytic cup formation	0	37	55	8224	1.0		1.0
+R-RNO-5663213	RHO GTPases Activate WASPs and WAVEs	0	37	33	8224	1.0		1.0
+R-RNO-449836	Other interleukin signaling	0	37	15	8224	1.0		1.0
+R-RNO-2173791	TGF-beta receptor signaling in EMT (epithelial to mesenchymal transition)	0	37	18	8224	1.0		1.0
+R-RNO-4608870	Asymmetric localization of PCP proteins	0	37	50	8224	1.0		1.0
+R-RNO-5632684	Hedgehog 'on' state	0	37	58	8224	1.0		1.0
+R-RNO-8941858	Regulation of RUNX3 expression and activity	0	37	45	8224	1.0		1.0
+R-RNO-400206	Regulation of lipid metabolism by PPARalpha	0	37	14	8224	1.0		1.0
+R-RNO-9707564	Cytoprotection by HMOX1	0	37	45	8224	1.0		1.0
+R-RNO-9841922	MLL4 and MLL3 complexes regulate expression of PPARG target genes in adipogenesis and hepatic steatosis	0	37	54	8224	1.0		1.0
+R-RNO-9035034	RHOF GTPase cycle	0	37	35	8224	1.0		1.0
+R-RNO-5696395	Formation of Incision Complex in GG-NER	0	37	46	8224	1.0		1.0
+R-RNO-5696400	Dual Incision in GG-NER	0	37	44	8224	1.0		1.0
+R-RNO-72086	mRNA Capping	0	37	30	8224	1.0		1.0
+R-RNO-73776	RNA Polymerase II Promoter Escape	0	37	45	8224	1.0		1.0
+R-RNO-73779	RNA Polymerase II Transcription Pre-Initiation And Promoter Opening	0	37	45	8224	1.0		1.0
+R-RNO-75953	RNA Polymerase II Transcription Initiation	0	37	45	8224	1.0		1.0
+R-RNO-76042	RNA Polymerase II Transcription Initiation And Promoter Clearance	0	37	45	8224	1.0		1.0
+R-RNO-77075	RNA Pol II CTD phosphorylation and interaction with CE	0	37	27	8224	1.0		1.0
+R-RNO-72731	Recycling of eIF2:GDP	0	37	8	8224	1.0		1.0
+R-RNO-5358565	Mismatch repair (MMR) directed by MSH2:MSH6 (MutSalpha)	0	37	14	8224	1.0		1.0
+R-RNO-450321	JNK (c-Jun kinases) phosphorylation and  activation mediated by activated human TAK1	0	37	24	8224	1.0		1.0
+R-RNO-9840373	Cellular response to mitochondrial stress	0	37	10	8224	1.0		1.0
+R-RNO-6807505	RNA polymerase II transcribes snRNA genes	0	37	76	8224	1.0		1.0
+R-RNO-5689880	Ub-specific processing proteases	0	37	157	8224	1.0		1.0
+R-RNO-3214841	PKMTs methylate histone lysines	0	37	45	8224	1.0		1.0
+R-RNO-6804760	Regulation of TP53 Activity through Methylation	0	37	20	8224	1.0		1.0
+R-RNO-4086400	PCP/CE pathway	0	37	20	8224	1.0		1.0
+R-RNO-416550	Sema4D mediated inhibition of cell attachment and migration	0	37	8	8224	1.0		1.0
+R-RNO-5218920	VEGFR2 mediated vascular permeability	0	37	25	8224	1.0		1.0
+R-RNO-5625740	RHO GTPases activate PKNs	0	37	19	8224	1.0		1.0
+R-RNO-5625900	RHO GTPases activate CIT	0	37	7	8224	1.0		1.0
+R-RNO-5625970	RHO GTPases activate KTN1	0	37	11	8224	1.0		1.0
+R-RNO-5626467	RHO GTPases activate IQGAPs	0	37	20	8224	1.0		1.0
+R-RNO-5627123	RHO GTPases activate PAKs	0	37	13	8224	1.0		1.0
+R-RNO-8849471	PTK6 Regulates RHO GTPases, RAS GTPase and MAP kinases	0	37	9	8224	1.0		1.0
+R-RNO-8875555	MET activates RAP1 and RAC1	0	37	11	8224	1.0		1.0
+R-RNO-450520	HuR (ELAVL1) binds and stabilizes mRNA	0	37	8	8224	1.0		1.0
+R-RNO-1660661	Sphingolipid de novo biosynthesis	0	37	26	8224	1.0		1.0
+R-RNO-426048	Arachidonate production from DAG	0	37	5	8224	1.0		1.0
+R-RNO-917729	Endosomal Sorting Complex Required For Transport (ESCRT)	0	37	35	8224	1.0		1.0
+R-RNO-110314	Recognition of DNA damage by PCNA-containing replication complex	0	37	35	8224	1.0		1.0
+R-RNO-110320	Translesion Synthesis by POLH	0	37	22	8224	1.0		1.0
+R-RNO-174411	Polymerase switching on the C-strand of the telomere	0	37	26	8224	1.0		1.0
+R-RNO-176187	Activation of ATR in response to replication stress	0	37	36	8224	1.0		1.0
+R-RNO-5651801	PCNA-Dependent Long Patch Base Excision Repair	0	37	22	8224	1.0		1.0
+R-RNO-5656169	Termination of translesion DNA synthesis	0	37	36	8224	1.0		1.0
+R-RNO-5696397	Gap-filling DNA repair synthesis and ligation in GG-NER	0	37	26	8224	1.0		1.0
+R-RNO-69091	Polymerase switching	0	37	14	8224	1.0		1.0
+R-RNO-2468052	Establishment of Sister Chromatid Cohesion	0	37	12	8224	1.0		1.0
+R-RNO-2470946	Cohesin Loading onto Chromatin	0	37	10	8224	1.0		1.0
+R-RNO-5689603	UCH proteinases	0	37	75	8224	1.0		1.0
+R-RNO-5685939	HDR through MMEJ (alt-NHEJ)	0	37	12	8224	1.0		1.0
+R-RNO-5674135	MAP2K and MAPK activation	0	37	33	8224	1.0		1.0
+R-RNO-380972	Energy dependent regulation of mTOR by LKB1-AMPK	0	37	26	8224	1.0		1.0
+R-RNO-180292	GAB1 signalosome	0	37	14	8224	1.0		1.0
+R-RNO-445355	Smooth Muscle Contraction	0	37	27	8224	1.0		1.0
+R-RNO-204174	Regulation of pyruvate dehydrogenase (PDH) complex	0	37	16	8224	1.0		1.0
+R-RNO-2151201	Transcriptional activation of mitochondrial biogenesis	0	37	12	8224	1.0		1.0
+R-RNO-1482788	Acyl chain remodelling of PC	0	37	24	8224	1.0		1.0
+R-RNO-1482801	Acyl chain remodelling of PS	0	37	21	8224	1.0		1.0
+R-RNO-1482839	Acyl chain remodelling of PE	0	37	24	8224	1.0		1.0
+R-RNO-1482922	Acyl chain remodelling of PI	0	37	16	8224	1.0		1.0
+R-RNO-1482925	Acyl chain remodelling of PG	0	37	16	8224	1.0		1.0
+R-RNO-1369062	ABC transporters in lipid homeostasis	0	37	15	8224	1.0		1.0
+R-RNO-8964058	HDL remodeling	0	37	7	8224	1.0		1.0
+R-RNO-70263	Gluconeogenesis	0	37	26	8224	1.0		1.0
+R-RNO-611105	Respiratory electron transport	0	37	86	8224	1.0		1.0
+R-RNO-2142789	Ubiquinol biosynthesis	0	37	13	8224	1.0		1.0
+R-RNO-418457	cGMP effects	0	37	9	8224	1.0		1.0
+R-RNO-77350	Beta oxidation of hexanoyl-CoA to butanoyl-CoA	0	37	6	8224	1.0		1.0
+R-RNO-6799198	Complex I biogenesis	0	37	63	8224	1.0		1.0
+R-RNO-9013424	RHOV GTPase cycle	0	37	32	8224	1.0		1.0
+R-RNO-9845576	Glycosphingolipid transport	0	37	8	8224	1.0		1.0
+R-RNO-9856530	High laminar flow shear stress activates signaling by PIEZO1 and PECAM1:CDH5:KDR in endothelial cells	0	37	41	8224	1.0		1.0
+R-RNO-6811436	COPI-independent Golgi-to-ER retrograde traffic	0	37	36	8224	1.0		1.0
+R-RNO-70171	Glycolysis	0	37	29	8224	1.0		1.0
+R-RNO-1592389	Activation of Matrix Metalloproteinases	0	37	25	8224	1.0		1.0
+R-RNO-196757	Metabolism of folate and pterines	0	37	16	8224	1.0		1.0
+R-RNO-9930044	Nuclear RNA decay	0	37	31	8224	1.0		1.0
+R-RNO-2393930	Phosphate bond hydrolysis by NUDT proteins	0	37	7	8224	1.0		1.0
+R-RNO-70921	Histidine catabolism	0	37	7	8224	1.0		1.0
+R-RNO-1300642	Sperm Motility And Taxes	0	37	7	8224	1.0		1.0
+R-RNO-9646399	Aggrephagy	0	37	30	8224	1.0		1.0
+R-RNO-418359	Reduction of cytosolic Ca++ levels	0	37	12	8224	1.0		1.0
+R-RNO-5620924	Intraflagellar transport	0	37	47	8224	1.0		1.0
+R-RNO-139853	Elevation of cytosolic Ca2+ levels	0	37	8	8224	1.0		1.0
+R-RNO-418346	Platelet homeostasis	0	37	7	8224	1.0		1.0
+R-RNO-5683826	Surfactant metabolism	0	37	19	8224	1.0		1.0
+R-RNO-186763	Downstream signal transduction	0	37	19	8224	1.0		1.0
+R-RNO-186797	Signaling by PDGF	0	37	23	8224	1.0		1.0
+R-RNO-418597	G alpha (z) signalling events	0	37	28	8224	1.0		1.0
+R-RNO-209931	Serotonin and melatonin biosynthesis	0	37	5	8224	1.0		1.0
+R-RNO-5223345	Miscellaneous transport and binding events	0	37	23	8224	1.0		1.0
+R-RNO-8936459	RUNX1 regulates genes involved in megakaryocyte differentiation and platelet function	0	37	40	8224	1.0		1.0
+R-RNO-8963684	Tyrosine catabolism	0	37	5	8224	1.0		1.0
+R-RNO-71384	Ethanol oxidation	0	37	8	8224	1.0		1.0
+R-RNO-5696394	DNA Damage Recognition in GG-NER	0	37	41	8224	1.0		1.0
+R-RNO-68949	Orc1 removal from chromatin	0	37	59	8224	1.0		1.0
+R-RNO-68962	Activation of the pre-replicative complex	0	37	32	8224	1.0		1.0
+R-RNO-425561	Sodium/Calcium exchangers	0	37	12	8224	1.0		1.0
+R-RNO-8949215	Mitochondrial calcium ion transport	0	37	8	8224	1.0		1.0
+R-RNO-202040	G-protein activation	0	37	21	8224	1.0		1.0
+R-RNO-381676	Glucagon-like Peptide-1 (GLP1) regulates insulin secretion	0	37	25	8224	1.0		1.0
+R-RNO-392170	ADP signalling through P2Y purinoceptor 12	0	37	19	8224	1.0		1.0
+R-RNO-392451	G beta:gamma signalling through PI3Kgamma	0	37	21	8224	1.0		1.0
+R-RNO-400042	Adrenaline,noradrenaline inhibits insulin secretion	0	37	20	8224	1.0		1.0
+R-RNO-420092	Glucagon-type ligand receptors	0	37	30	8224	1.0		1.0
+R-RNO-428930	Thromboxane signalling through TP receptor	0	37	21	8224	1.0		1.0
+R-RNO-432040	Vasopressin regulates renal water homeostasis via Aquaporins	0	37	27	8224	1.0		1.0
+R-RNO-456926	Thrombin signalling through proteinase activated receptors (PARs)	0	37	27	8224	1.0		1.0
+R-RNO-3000178	ECM proteoglycans	0	37	29	8224	1.0		1.0
+R-RNO-75205	Dissolution of Fibrin Clot	0	37	13	8224	1.0		1.0
+R-RNO-9603798	Class I peroxisomal membrane protein import	0	37	18	8224	1.0		1.0
+R-RNO-6803529	FGFR2 alternative splicing	0	37	27	8224	1.0		1.0
+R-RNO-2122948	Activated NOTCH1 Transmits Signal to the Nucleus	0	37	11	8224	1.0		1.0
+R-RNO-111447	Activation of BAD and translocation to mitochondria 	0	37	9	8224	1.0		1.0
+R-RNO-71403	Citric acid cycle (TCA cycle)	0	37	17	8224	1.0		1.0
+R-RNO-9856872	Malate-aspartate shuttle	0	37	9	8224	1.0		1.0
+R-RNO-5693565	Recruitment and ATM-mediated phosphorylation of repair and signaling proteins at DNA double strand breaks	0	37	53	8224	1.0		1.0
+R-RNO-1566948	Elastic fibre formation	0	37	15	8224	1.0		1.0
+R-RNO-2129379	Molecules associated with elastic fibres	0	37	30	8224	1.0		1.0
+R-RNO-1169091	Activation of NF-kappaB in B cells	0	37	55	8224	1.0		1.0
+R-RNO-174113	SCF-beta-TrCP mediated degradation of Emi1	0	37	44	8224	1.0		1.0
+R-RNO-349425	Autodegradation of the E3 ubiquitin ligase COP1	0	37	41	8224	1.0		1.0
+R-RNO-350562	Regulation of ornithine decarboxylase (ODC)	0	37	37	8224	1.0		1.0
+R-RNO-450408	AUF1 (hnRNP D0) binds and destabilizes mRNA	0	37	46	8224	1.0		1.0
+R-RNO-4641257	Degradation of AXIN	0	37	43	8224	1.0		1.0
+R-RNO-4641258	Degradation of DVL	0	37	46	8224	1.0		1.0
+R-RNO-5358346	Hedgehog ligand biogenesis	0	37	48	8224	1.0		1.0
+R-RNO-5607761	Dectin-1 mediated noncanonical NF-kB signaling	0	37	49	8224	1.0		1.0
+R-RNO-5610780	Degradation of GLI1 by the proteasome	0	37	46	8224	1.0		1.0
+R-RNO-5610785	GLI3 is processed to GLI3R by the proteasome	0	37	45	8224	1.0		1.0
+R-RNO-5676590	NIK-->noncanonical NF-kB signaling	0	37	49	8224	1.0		1.0
+R-RNO-69481	G2/M Checkpoints	0	37	40	8224	1.0		1.0
+R-RNO-69601	Ubiquitin-Mediated Degradation of Phosphorylated Cdc25A	0	37	49	8224	1.0		1.0
+R-RNO-75815	Ubiquitin-dependent degradation of Cyclin D	0	37	40	8224	1.0		1.0
+R-RNO-8854050	FBXL7 down-regulates AURKA during mitotic entry and in early mitosis	0	37	43	8224	1.0		1.0
+R-RNO-8939236	RUNX1 regulates transcription of genes involved in differentiation of HSCs	0	37	56	8224	1.0		1.0
+R-RNO-9020702	Interleukin-1 signaling	0	37	74	8224	1.0		1.0
+R-RNO-9762114	GSK3B and BTRC:CUL1-mediated-degradation of NFE2L2	0	37	43	8224	1.0		1.0
+R-RNO-9929356	GSK3B-mediated proteasomal degradation of PD-L1(CD274)	0	37	46	8224	1.0		1.0
+R-RNO-9932298	Degradation of CRY and PER proteins	0	37	41	8224	1.0		1.0
+R-RNO-9974237	Negative Regulation of DNA Double Strand Break Response	0	37	44	8224	1.0		1.0
+R-RNO-8875656	MET receptor recycling	0	37	10	8224	1.0		1.0
+R-RNO-354192	Integrin signaling	0	37	16	8224	1.0		1.0
+R-RNO-392517	Rap1 signalling	0	37	13	8224	1.0		1.0
+R-RNO-422356	Regulation of insulin secretion	0	37	11	8224	1.0		1.0
+R-RNO-210991	Basigin interactions	0	37	22	8224	1.0		1.0
+R-RNO-446107	Type I hemidesmosome assembly	0	37	10	8224	1.0		1.0
+R-RNO-3214847	HATs acetylate histones	0	37	39	8224	1.0		1.0
+R-RNO-174403	Glutathione synthesis and recycling	0	37	11	8224	1.0		1.0
+R-RNO-9707616	Heme signaling	0	37	10	8224	1.0		1.0
+R-RNO-5620922	BBSome-mediated cargo-targeting to cilium	0	37	22	8224	1.0		1.0
+R-RNO-1268020	Mitochondrial protein import	0	37	10	8224	1.0		1.0
+R-RNO-450341	Activation of the AP-1 family of transcription factors	0	37	8	8224	1.0		1.0
+R-RNO-3065678	SUMO is transferred from E1 to E2 (UBE2I, UBC9)	0	37	5	8224	1.0		1.0
+R-RNO-3247509	Chromatin modifying enzymes	0	37	7	8224	1.0		1.0
+R-RNO-168928	DDX58/IFIH1-mediated induction of interferon-alpha/beta	0	37	5	8224	1.0		1.0
+R-RNO-2559585	Oncogene Induced Senescence	0	37	19	8224	1.0		1.0
+R-RNO-9917416	Sprouting angiogenesis	0	37	6	8224	1.0		1.0
+R-RNO-1538133	G0 and Early G1	0	37	19	8224	1.0		1.0
+R-RNO-977443	GABA receptor activation	0	37	11	8224	1.0		1.0
+R-RNO-549127	SLC-mediated transport of organic cations	0	37	13	8224	1.0		1.0
+R-RNO-8934593	Regulation of RUNX1 Expression and Activity	0	37	7	8224	1.0		1.0
+R-RNO-9013408	RHOG GTPase cycle	0	37	68	8224	1.0		1.0
+R-RNO-177504	Retrograde neurotrophin signalling	0	37	9	8224	1.0		1.0
+R-RNO-416993	Trafficking of GluR2-containing AMPA receptors	0	37	14	8224	1.0		1.0
+R-RNO-437239	Recycling pathway of L1	0	37	25	8224	1.0		1.0
+R-RNO-5099900	WNT5A-dependent internalization of FZD4	0	37	13	8224	1.0		1.0
+R-RNO-5140745	WNT5A-dependent internalization of FZD2, FZD5 and ROR2	0	37	10	8224	1.0		1.0
+R-RNO-8866427	VLDLR internalisation and degradation	0	37	17	8224	1.0		1.0
+R-RNO-446193	Biosynthesis of the N-glycan precursor (dolichol lipid-linked oligosaccharide, LLO) and transfer to a nascent protein	0	37	10	8224	1.0		1.0
+R-RNO-6785807	Interleukin-4 and Interleukin-13 signaling	0	37	15	8224	1.0		1.0
+R-RNO-166208	mTORC1-mediated signalling	0	37	25	8224	1.0		1.0
+R-RNO-72662	Activation of the mRNA upon binding of the cap-binding complex and eIFs, and subsequent binding to 43S	0	37	7	8224	1.0		1.0
+R-RNO-111367	SLBP independent Processing of Histone Pre-mRNAs	0	37	14	8224	1.0		1.0
+R-RNO-77588	SLBP Dependent Processing of Replication-Dependent Histone Pre-mRNAs	0	37	15	8224	1.0		1.0
+R-RNO-9013407	RHOH GTPase cycle	0	37	35	8224	1.0		1.0
+R-RNO-159418	Recycling of bile acids and salts	0	37	13	8224	1.0		1.0
+R-RNO-9842663	Signaling by LTK	0	37	7	8224	1.0		1.0
+R-RNO-390247	Beta-oxidation of very long chain fatty acids	0	37	10	8224	1.0		1.0
+R-RNO-3065679	SUMO is proteolytically processed	0	37	8	8224	1.0		1.0
+R-RNO-8851805	MET activates RAS signaling	0	37	7	8224	1.0		1.0
+R-RNO-913709	O-linked glycosylation of mucins	0	37	39	8224	1.0		1.0
+R-RNO-977068	Termination of O-glycan biosynthesis	0	37	14	8224	1.0		1.0
+R-RNO-2173789	TGF-beta receptor signaling activates SMADs	0	37	28	8224	1.0		1.0
+R-RNO-114508	Effects of PIP2 hydrolysis	0	37	15	8224	1.0		1.0
+R-RNO-9855719	Regulation of FXIIa and plasma kallikrein activity	0	37	6	8224	1.0		1.0
+R-RNO-975577	N-Glycan antennae elongation	0	37	14	8224	1.0		1.0
+R-RNO-6805567	Keratinization	0	37	37	8224	1.0		1.0
+R-RNO-6809371	Formation of the cornified envelope	0	37	45	8224	1.0		1.0
+R-RNO-5693571	Nonhomologous End-Joining (NHEJ)	0	37	40	8224	1.0		1.0
+R-RNO-112409	RAF-independent MAPK1/3 activation	0	37	13	8224	1.0		1.0
+R-RNO-112411	MAPK1 (ERK2) activation	0	37	8	8224	1.0		1.0
+R-RNO-1295596	Spry regulation of FGF signaling	0	37	17	8224	1.0		1.0
+R-RNO-1502540	Signaling by Activin	0	37	12	8224	1.0		1.0
+R-RNO-162658	Golgi Cisternae Pericentriolar Stack Reorganization	0	37	10	8224	1.0		1.0
+R-RNO-170968	Frs2-mediated activation	0	37	12	8224	1.0		1.0
+R-RNO-198753	ERK/MAPK targets	0	37	10	8224	1.0		1.0
+R-RNO-202670	ERKs are inactivated	0	37	11	8224	1.0		1.0
+R-RNO-2173796	SMAD2/SMAD3:SMAD4 heterotrimer regulates transcription	0	37	30	8224	1.0		1.0
+R-RNO-5674499	Negative feedback regulation of MAPK pathway	0	37	6	8224	1.0		1.0
+R-RNO-74749	Signal attenuation	0	37	7	8224	1.0		1.0
+R-RNO-877300	Interferon gamma signaling	0	37	14	8224	1.0		1.0
+R-RNO-881907	Gastrin-CREB signalling pathway via PKC and MAPK	0	37	8	8224	1.0		1.0
+R-RNO-8939211	ESR-mediated signaling	0	37	11	8224	1.0		1.0
+R-RNO-9627069	Regulation of the apoptosome activity	0	37	10	8224	1.0		1.0
+R-RNO-9732724	IFNG signaling activates MAPKs	0	37	8	8224	1.0		1.0
+R-RNO-9769733	Fibrin formation	0	37	8	8224	1.0		1.0
+R-RNO-9769743	Amplification and propagation of coagulation cascade	0	37	14	8224	1.0		1.0
+R-RNO-156581	Methylation	0	37	11	8224	1.0		1.0
+R-RNO-75876	Synthesis of very long-chain fatty acyl-CoAs	0	37	22	8224	1.0		1.0
+R-RNO-6804759	Regulation of TP53 Activity through Association with Co-factors	0	37	10	8224	1.0		1.0
+R-RNO-388844	Receptor-type tyrosine-protein phosphatases	0	37	18	8224	1.0		1.0
+R-RNO-9014826	Interleukin-36 pathway	0	37	5	8224	1.0		1.0
+R-RNO-9753281	Paracetamol ADME	0	37	21	8224	1.0		1.0
+R-RNO-5610787	Hedgehog 'off' state	0	37	42	8224	1.0		1.0
+R-RNO-1169408	ISG15 antiviral mechanism	0	37	20	8224	1.0		1.0
+R-RNO-156588	Glucuronidation	0	37	5	8224	1.0		1.0
+R-RNO-375281	Hormone ligand-binding receptors	0	37	7	8224	1.0		1.0
+R-RNO-2682334	EPH-Ephrin signaling	0	37	20	8224	1.0		1.0
+R-RNO-877312	Regulation of IFNG signaling	0	37	11	8224	1.0		1.0
+R-RNO-525793	Myogenesis	0	37	24	8224	1.0		1.0
+R-RNO-1855183	Synthesis of IP2, IP, and Ins in the cytosol	0	37	12	8224	1.0		1.0
+R-RNO-1855204	Synthesis of IP3 and IP4 in the cytosol	0	37	24	8224	1.0		1.0
+R-RNO-6804115	TP53 regulates transcription of additional cell cycle genes whose exact role in the p53 pathway remain uncertain	0	37	19	8224	1.0		1.0
+R-RNO-190370	FGFR1b ligand binding and activation	0	37	7	8224	1.0		1.0
+R-RNO-9839383	TGFBR3 PTM regulation	0	37	13	8224	1.0		1.0
+R-RNO-9839389	TGFBR3 regulates TGF-beta signaling	0	37	9	8224	1.0		1.0
+R-RNO-73817	Purine ribonucleoside monophosphate biosynthesis	0	37	12	8224	1.0		1.0
+R-RNO-1483226	Synthesis of PI	0	37	5	8224	1.0		1.0
+R-RNO-264876	Insulin processing	0	37	14	8224	1.0		1.0
+R-RNO-5620916	VxPx cargo-targeting to cilium	0	37	21	8224	1.0		1.0
+R-RNO-5689901	Metalloprotease DUBs	0	37	29	8224	1.0		1.0
+R-RNO-418990	Adherens junctions interactions	0	37	30	8224	1.0		1.0
+R-RNO-420597	Nectin/Necl  trans heterodimerization	0	37	7	8224	1.0		1.0
+R-RNO-71336	Pentose phosphate pathway	0	37	11	8224	1.0		1.0
+R-RNO-8964572	Lipid particle organization	0	37	5	8224	1.0		1.0
+R-RNO-193048	Androgen biosynthesis	0	37	9	8224	1.0		1.0
+R-RNO-163615	PKA activation	0	37	12	8224	1.0		1.0
+R-RNO-170660	Adenylate cyclase activating pathway	0	37	7	8224	1.0		1.0
+R-RNO-170670	Adenylate cyclase inhibitory pathway	0	37	10	8224	1.0		1.0
+R-RNO-9932451	SWI/SNF chromatin remodelers	0	37	21	8224	1.0		1.0
+R-RNO-5578768	Physiological factors	0	37	8	8224	1.0		1.0
+R-RNO-5576886	Phase 4 - resting membrane potential	0	37	17	8224	1.0		1.0
+R-RNO-426486	Small interfering RNA (siRNA) biogenesis	0	37	8	8224	1.0		1.0
+R-RNO-9909505	Modulation of host responses by IFN-stimulated genes	0	37	12	8224	1.0		1.0
+R-RNO-389599	Alpha-oxidation of phytanate	0	37	5	8224	1.0		1.0
+R-RNO-9609523	Insertion of tail-anchored proteins into the endoplasmic reticulum membrane	0	37	15	8224	1.0		1.0
+R-RNO-1474151	Tetrahydrobiopterin (BH4) synthesis, recycling, salvage and regulation	0	37	9	8224	1.0		1.0
+R-RNO-9648002	RAS processing	0	37	24	8224	1.0		1.0
+R-RNO-425410	Metal ion SLC transporters	0	37	9	8224	1.0		1.0
+R-RNO-77289	Mitochondrial Fatty Acid Beta-Oxidation	0	37	19	8224	1.0		1.0
+R-RNO-417957	P2Y receptors	0	37	9	8224	1.0		1.0
+R-RNO-209968	Thyroxine biosynthesis	0	37	9	8224	1.0		1.0
+R-RNO-629594	Highly calcium permeable postsynaptic nicotinic acetylcholine receptors	0	37	9	8224	1.0		1.0
+R-RNO-2142770	Synthesis of 15-eicosatetraenoic acid derivatives	0	37	6	8224	1.0		1.0
+R-RNO-2162123	Synthesis of Prostaglandins (PG) and Thromboxanes (TX)	0	37	18	8224	1.0		1.0
+R-RNO-6794361	Neurexins and neuroligins	0	37	28	8224	1.0		1.0
+R-RNO-909733	Interferon alpha/beta signaling	0	37	21	8224	1.0		1.0
+R-RNO-3769402	Deactivation of the beta-catenin transactivating complex	0	37	43	8224	1.0		1.0
+R-RNO-446205	Synthesis of GDP-mannose	0	37	5	8224	1.0		1.0
+R-RNO-189200	Cellular hexose transport	0	37	17	8224	1.0		1.0
+R-RNO-3371497	HSP90 chaperone cycle for steroid hormone receptors (SHR) in the presence of ligand	0	37	39	8224	1.0		1.0
+R-RNO-3371511	HSF1 activation	0	37	6	8224	1.0		1.0
+R-RNO-3371568	Attenuation phase	0	37	10	8224	1.0		1.0
+R-RNO-1482798	Acyl chain remodeling of CL	0	37	5	8224	1.0		1.0
+R-RNO-1483115	Hydrolysis of LPC	0	37	8	8224	1.0		1.0
+R-RNO-418592	ADP signalling through P2Y purinoceptor 1	0	37	6	8224	1.0		1.0
+R-RNO-8876725	Protein methylation	0	37	15	8224	1.0		1.0
+R-RNO-1236394	Signaling by ERBB4	0	37	7	8224	1.0		1.0
+R-RNO-1250196	SHC1 events in ERBB2 signaling	0	37	10	8224	1.0		1.0
+R-RNO-1250342	PI3K events in ERBB4 signaling	0	37	5	8224	1.0		1.0
+R-RNO-1250347	SHC1 events in ERBB4 signaling	0	37	6	8224	1.0		1.0
+R-RNO-177929	Signaling by EGFR	0	37	13	8224	1.0		1.0
+R-RNO-179812	GRB2 events in EGFR signaling	0	37	9	8224	1.0		1.0
+R-RNO-180336	SHC1 events in EGFR signaling	0	37	9	8224	1.0		1.0
+R-RNO-182971	EGFR downregulation	0	37	31	8224	1.0		1.0
+R-RNO-1963640	GRB2 events in ERBB2 signaling	0	37	6	8224	1.0		1.0
+R-RNO-1963642	PI3K events in ERBB2 signaling	0	37	10	8224	1.0		1.0
+R-RNO-212718	EGFR interacts with phospholipase C-gamma	0	37	7	8224	1.0		1.0
+R-RNO-6785631	ERBB2 Regulates Cell Motility	0	37	10	8224	1.0		1.0
+R-RNO-8847993	ERBB2 Activates PTK6 Signaling	0	37	7	8224	1.0		1.0
+R-RNO-8863795	Downregulation of ERBB2 signaling	0	37	21	8224	1.0		1.0
+R-RNO-1810476	RIP-mediated NFkB activation via ZBP1	0	37	12	8224	1.0		1.0
+R-RNO-3134963	DEx/H-box helicases activate type I IFN and inflammatory cytokines production 	0	37	7	8224	1.0		1.0
+R-RNO-5682910	LGI-ADAM interactions	0	37	13	8224	1.0		1.0
+R-RNO-9857492	Protein lipoylation	0	37	11	8224	1.0		1.0
+R-RNO-438066	Unblocking of NMDA receptors, glutamate binding and activation	0	37	13	8224	1.0		1.0
+R-RNO-446210	Synthesis of UDP-N-acetyl-glucosamine	0	37	9	8224	1.0		1.0
+R-RNO-199418	Negative regulation of the PI3K/AKT network	0	37	5	8224	1.0		1.0
+R-RNO-6807047	Cholesterol biosynthesis via desmosterol (Bloch pathway)	0	37	10	8224	1.0		1.0
+R-RNO-6807062	Zymostenol biosynthesis via lathosterol (Kandutsch-Russell pathway)	0	37	6	8224	1.0		1.0
+R-RNO-879518	Organic anion transport by SLCO transporters	0	37	10	8224	1.0		1.0
+R-RNO-196819	Vitamin B1 (thiamin) metabolism	0	37	5	8224	1.0		1.0
+R-RNO-9013419	RHOT2 GTPase cycle	0	37	6	8224	1.0		1.0
+R-RNO-112308	Presynaptic depolarization and calcium channel opening	0	37	9	8224	1.0		1.0
+R-RNO-1251985	Nuclear signaling by ERBB4	0	37	10	8224	1.0		1.0
+R-RNO-193692	Regulated proteolysis of p75NTR	0	37	11	8224	1.0		1.0
+R-RNO-205043	NRIF signals cell death from the nucleus	0	37	18	8224	1.0		1.0
+R-RNO-9013507	NOTCH3 Activation and Transmission of Signal to the Nucleus	0	37	22	8224	1.0		1.0
+R-RNO-9017802	Noncanonical activation of NOTCH3	0	37	9	8224	1.0		1.0
+R-RNO-9939291	Matriglycan biosynthesis on DAG1	0	37	12	8224	1.0		1.0
+R-RNO-2168880	Scavenging of heme from plasma	0	37	20	8224	1.0		1.0
+R-RNO-450604	KSRP (KHSRP) binds and destabilizes mRNA	0	37	16	8224	1.0		1.0
+R-RNO-1237044	Erythrocytes take up carbon dioxide and release oxygen	0	37	10	8224	1.0		1.0
+R-RNO-1247673	Erythrocytes take up oxygen and release carbon dioxide	0	37	6	8224	1.0		1.0
+R-RNO-1475029	Reversible hydration of carbon dioxide	0	37	11	8224	1.0		1.0
+R-RNO-8851680	Butyrophilin (BTN) family interactions	0	37	6	8224	1.0		1.0
+R-RNO-1059683	Interleukin-6 signaling	0	37	10	8224	1.0		1.0
+R-RNO-3371378	Regulation by c-FLIP	0	37	10	8224	1.0		1.0
+R-RNO-5218900	CASP8 activity is inhibited	0	37	10	8224	1.0		1.0
+R-RNO-69416	Dimerization of procaspase-8	0	37	10	8224	1.0		1.0
+R-RNO-5689877	Josephin domain DUBs	0	37	14	8224	1.0		1.0
+R-RNO-1482883	Acyl chain remodeling of DAG and TAG	0	37	8	8224	1.0		1.0
+R-RNO-70895	Branched-chain amino acid catabolism	0	37	22	8224	1.0		1.0
+R-RNO-196807	Nicotinate metabolism	0	37	22	8224	1.0		1.0
+R-RNO-110362	POLB-Dependent Long Patch Base Excision Repair	0	37	8	8224	1.0		1.0
+R-RNO-190377	FGFR2b ligand binding and activation	0	37	8	8224	1.0		1.0
+R-RNO-2022857	Keratan sulfate degradation	0	37	17	8224	1.0		1.0
+R-RNO-5358606	Mismatch repair (MMR) directed by MSH2:MSH3 (MutSbeta)	0	37	8	8224	1.0		1.0
+R-RNO-432047	Passive transport by Aquaporins	0	37	9	8224	1.0		1.0
+R-RNO-425381	Bicarbonate transporters	0	37	11	8224	1.0		1.0
+R-RNO-209543	p75NTR recruits signalling complexes	0	37	15	8224	1.0		1.0
+R-RNO-209560	NF-kB is activated and signals survival	0	37	15	8224	1.0		1.0
+R-RNO-9664873	Pexophagy	0	37	15	8224	1.0		1.0
+R-RNO-165159	MTOR signalling	0	37	18	8224	1.0		1.0
+R-RNO-844456	The NLRP3 inflammasome	0	37	8	8224	1.0		1.0
+R-RNO-8866907	Activation of the TFAP2 (AP-2) family of transcription factors	0	37	9	8224	1.0		1.0
+R-RNO-427359	SIRT1 negatively regulates rRNA expression	0	37	24	8224	1.0		1.0
+R-RNO-427413	NoRC negatively regulates rRNA expression	0	37	22	8224	1.0		1.0
+R-RNO-5625886	Activated PKN1 stimulates transcription of AR (androgen receptor) regulated genes KLK2 and KLK3	0	37	26	8224	1.0		1.0
+R-RNO-9843940	Regulation of endogenous retroelements by KRAB-ZFP proteins	0	37	39	8224	1.0		1.0
+R-RNO-9843970	Regulation of endogenous retroelements by the Human Silencing Hub (HUSH) complex	0	37	28	8224	1.0		1.0
+R-RNO-9909649	Regulation of PD-L1(CD274) transcription	0	37	31	8224	1.0		1.0
+R-RNO-9943411	CHD1 and CHD2 subfamily	0	37	60	8224	1.0		1.0
+R-RNO-9943962	CHD6, CHD7, CHD8, CHD9 subfamily	0	37	28	8224	1.0		1.0
+R-RNO-9970672	FXIIa activates plasma kallikrein-kinin system	0	37	24	8224	1.0		1.0
+R-RNO-9020933	Interleukin-23 signaling	0	37	8	8224	1.0		1.0
+R-RNO-201722	Formation of the beta-catenin:TCF transactivating complex	0	37	22	8224	1.0		1.0
+R-RNO-399719	Trafficking of AMPA receptors	0	37	13	8224	1.0		1.0
+R-RNO-5576892	Phase 0 - rapid depolarisation	0	37	5	8224	1.0		1.0
+R-RNO-5576893	Phase 2 - plateau phase	0	37	11	8224	1.0		1.0
+R-RNO-8964539	Glutamate and glutamine metabolism	0	37	15	8224	1.0		1.0
+R-RNO-8941856	RUNX3 regulates NOTCH signaling	0	37	8	8224	1.0		1.0
+R-RNO-73614	Pyrimidine salvage	0	37	9	8224	1.0		1.0
+R-RNO-74217	Purine salvage	0	37	13	8224	1.0		1.0
+R-RNO-71064	Lysine catabolism	0	37	10	8224	1.0		1.0
+R-RNO-73621	Pyrimidine catabolism	0	37	11	8224	1.0		1.0
+R-RNO-1566977	Fibronectin matrix formation	0	37	13	8224	1.0		1.0
+R-RNO-419037	NCAM1 interactions	0	37	9	8224	1.0		1.0
+R-RNO-159740	Gamma-carboxylation of protein precursors	0	37	8	8224	1.0		1.0
+R-RNO-159763	Transport of gamma-carboxylated protein precursors from the endoplasmic reticulum to the Golgi apparatus	0	37	8	8224	1.0		1.0
+R-RNO-159782	Removal of aminoterminal propeptides from gamma-carboxylated proteins	0	37	9	8224	1.0		1.0
+R-RNO-9935598	FXIIa, PKa-dependent activation of coagulation pathway	0	37	6	8224	1.0		1.0
+R-RNO-193634	Axonal growth inhibition (RHOA activation)	0	37	7	8224	1.0		1.0
+R-RNO-8983432	Interleukin-15 signaling	0	37	9	8224	1.0		1.0
+R-RNO-442660	SLC-mediated transport of neurotransmitters	0	37	17	8224	1.0		1.0
+R-RNO-114516	Disinhibition of SNARE formation	0	37	5	8224	1.0		1.0
+R-RNO-2179392	EGFR Transactivation by Gastrin	0	37	6	8224	1.0		1.0
+R-RNO-5218921	VEGFR2 mediated cell proliferation	0	37	9	8224	1.0		1.0
+R-RNO-8963888	Chylomicron assembly	0	37	9	8224	1.0		1.0
+R-RNO-8963901	Chylomicron remodeling	0	37	9	8224	1.0		1.0
+R-RNO-445095	Interaction between L1 and Ankyrins	0	37	8	8224	1.0		1.0
+R-RNO-9953170	GBP-mediated host defense	0	37	10	8224	1.0		1.0
+R-RNO-167826	The fatty acid cycling model	0	37	6	8224	1.0		1.0
+R-RNO-194313	VEGF ligand-receptor interactions	0	37	5	8224	1.0		1.0
+R-RNO-8955332	Carboxyterminal post-translational modifications of tubulin	0	37	18	8224	1.0		1.0
+R-RNO-9668328	Sealing of the nuclear envelope (NE) by ESCRT-III	0	37	19	8224	1.0		1.0
+R-RNO-450302	activated TAK1 mediates p38 MAPK activation	0	37	27	8224	1.0		1.0
+R-RNO-937042	IRAK2 mediated activation of TAK1 complex	0	37	14	8224	1.0		1.0
+R-RNO-9645460	Alpha-protein kinase 1 signaling pathway	0	37	15	8224	1.0		1.0
+R-RNO-74259	Purine catabolism	0	37	10	8224	1.0		1.0
+R-RNO-156711	Polo-like kinase mediated events	0	37	5	8224	1.0		1.0
+R-RNO-3232118	SUMOylation of transcription factors	0	37	16	8224	1.0		1.0
+R-RNO-4755510	SUMOylation of immune response proteins	0	37	12	8224	1.0		1.0
+R-RNO-111465	Apoptotic cleavage of cellular proteins	0	37	17	8224	1.0		1.0
+R-RNO-71240	Tryptophan catabolism	0	37	10	8224	1.0		1.0
+R-RNO-9861718	Regulation of pyruvate metabolism	0	37	21	8224	1.0		1.0
+R-RNO-629587	Highly sodium permeable postsynaptic acetylcholine nicotinic receptors	0	37	5	8224	1.0		1.0
+R-RNO-419771	Opsins	0	37	5	8224	1.0		1.0
+R-RNO-428643	Organic anion transport by SLC5/17/25 transporters	0	37	5	8224	1.0		1.0
+R-RNO-3371571	HSF1-dependent transactivation	0	37	15	8224	1.0		1.0
+R-RNO-1296072	Voltage gated Potassium channels	0	37	35	8224	1.0		1.0
+R-RNO-201681	TCF dependent signaling in response to WNT	0	37	17	8224	1.0		1.0
+R-RNO-9013409	RHOJ GTPase cycle	0	37	14	8224	1.0		1.0
+R-RNO-1483248	Synthesis of PIPs at the ER membrane	0	37	5	8224	1.0		1.0
+R-RNO-373080	Class B/2 (Secretin family receptors)	0	37	11	8224	1.0		1.0
+R-RNO-532668	N-glycan trimming in the ER and Calnexin/Calreticulin cycle	0	37	14	8224	1.0		1.0
+R-RNO-210993	Tie2 Signaling	0	37	10	8224	1.0		1.0
+R-RNO-2428933	SHC-related events triggered by IGF1R	0	37	5	8224	1.0		1.0
+R-RNO-354194	GRB2:SOS provides linkage to MAPK signaling for Integrins 	0	37	10	8224	1.0		1.0
+R-RNO-6807004	Negative regulation of MET activity	0	37	24	8224	1.0		1.0
+R-RNO-8851907	MET activates PI3K/AKT signaling	0	37	5	8224	1.0		1.0
+R-RNO-9028731	Activated NTRK2 signals through FRS2 and FRS3	0	37	6	8224	1.0		1.0
+R-RNO-983695	Antigen activates B Cell Receptor (BCR) leading to generation of second messengers	0	37	22	8224	1.0		1.0
+R-RNO-8857538	PTK6 promotes HIF1A stabilization	0	37	5	8224	1.0		1.0
+R-RNO-192105	Synthesis of bile acids and bile salts	0	37	13	8224	1.0		1.0
+R-RNO-193368	Synthesis of bile acids and bile salts via 7alpha-hydroxycholesterol	0	37	23	8224	1.0		1.0
+R-RNO-193807	Synthesis of bile acids and bile salts via 27-hydroxycholesterol	0	37	14	8224	1.0		1.0
+R-RNO-391908	Prostanoid ligand receptors	0	37	9	8224	1.0		1.0
+R-RNO-3772470	Negative regulation of TCF-dependent signaling by WNT ligand antagonists	0	37	5	8224	1.0		1.0
+R-RNO-4641263	Regulation of FZD by ubiquitination	0	37	21	8224	1.0		1.0
+R-RNO-380095	Tachykinin receptors bind tachykinins	0	37	5	8224	1.0		1.0
+R-RNO-975578	Reactions specific to the complex N-glycan synthesis pathway	0	37	6	8224	1.0		1.0
+R-RNO-68952	DNA replication initiation	0	37	9	8224	1.0		1.0
+R-RNO-171319	Telomere Extension By Telomerase	0	37	23	8224	1.0		1.0
+R-RNO-199920	CREB phosphorylation	0	37	6	8224	1.0		1.0
+R-RNO-1483213	Synthesis of PE	0	37	12	8224	1.0		1.0
+R-RNO-75109	Triglyceride biosynthesis	0	37	10	8224	1.0		1.0
+R-RNO-9020591	Interleukin-12 signaling	0	37	9	8224	1.0		1.0
+R-RNO-5365859	RA biosynthesis pathway	0	37	24	8224	1.0		1.0
+R-RNO-5684264	MAP3K8 (TPL2)-dependent MAPK1/3 activation	0	37	16	8224	1.0		1.0
+R-RNO-420029	Tight junction interactions	0	37	6	8224	1.0		1.0
+R-RNO-1253288	Downregulation of ERBB4 signaling	0	37	11	8224	1.0		1.0
+R-RNO-1358803	Downregulation of ERBB2:ERBB3 signaling	0	37	12	8224	1.0		1.0
+R-RNO-2173788	Downregulation of TGF-beta receptor signaling	0	37	21	8224	1.0		1.0
+R-RNO-3134975	Regulation of innate immune responses to cytosolic DNA	0	37	15	8224	1.0		1.0
+R-RNO-69541	Stabilization of p53	0	37	13	8224	1.0		1.0
+R-RNO-8849469	PTK6 Regulates RTKs and Their Effectors AKT1 and DOK1	0	37	11	8224	1.0		1.0
+R-RNO-8948747	Regulation of PTEN localization	0	37	12	8224	1.0		1.0
+R-RNO-901032	ER Quality Control Compartment (ERQC)	0	37	7	8224	1.0		1.0
+R-RNO-936440	Negative regulators of DDX58/IFIH1 signaling	0	37	17	8224	1.0		1.0
+R-RNO-937039	IRAK1 recruits IKK complex	0	37	17	8224	1.0		1.0
+R-RNO-975144	IRAK1 recruits IKK complex upon TLR7/8 or 9 stimulation	0	37	17	8224	1.0		1.0
+R-RNO-9758274	Regulation of NF-kappa B signaling	0	37	19	8224	1.0		1.0
+R-RNO-9931295	PD-L1(CD274) glycosylation and translocation to plasma membrane	0	37	24	8224	1.0		1.0
+R-RNO-6811555	PI5P Regulates TP53 Acetylation	0	37	8	8224	1.0		1.0
+R-RNO-8854691	Interleukin-20 family signaling	0	37	17	8224	1.0		1.0
+R-RNO-9018896	Biosynthesis of E-series 18(S)-resolvins	0	37	5	8224	1.0		1.0
+R-RNO-416572	Sema4D induced cell migration and growth-cone collapse	0	37	10	8224	1.0		1.0
+R-RNO-5627117	RHO GTPases Activate ROCKs	0	37	5	8224	1.0		1.0
+R-RNO-422085	Synthesis, secretion, and deacylation of Ghrelin	0	37	12	8224	1.0		1.0
+R-RNO-448706	Interleukin-1 processing	0	37	9	8224	1.0		1.0
+R-RNO-606279	Deposition of new CENPA-containing nucleosomes at the centromere	0	37	46	8224	1.0		1.0
+R-RNO-166058	MyD88:MAL(TIRAP) cascade initiated on plasma membrane	0	37	5	8224	1.0		1.0
+R-RNO-6783783	Interleukin-10 signaling	0	37	6	8224	1.0		1.0
+R-RNO-450385	Butyrate Response Factor 1 (BRF1) binds and destabilizes mRNA	0	37	18	8224	1.0		1.0
+R-RNO-450513	Tristetraprolin (TTP, ZFP36) binds and destabilizes mRNA	0	37	18	8224	1.0		1.0
+R-RNO-9759218	Cobalamin (Cbl) metabolism	0	37	7	8224	1.0		1.0
+R-RNO-211935	Fatty acids	0	37	12	8224	1.0		1.0
+R-RNO-211979	Eicosanoids	0	37	7	8224	1.0		1.0
+R-RNO-2142816	Synthesis of (16-20)-hydroxyeicosatetraenoic acids (HETE)	0	37	7	8224	1.0		1.0
+R-RNO-112043	PLC beta mediated events	0	37	7	8224	1.0		1.0
+R-RNO-434316	Fatty Acids bound to GPR40 (FFAR1) regulate insulin secretion	0	37	6	8224	1.0		1.0
+R-RNO-2142845	Hyaluronan metabolism	0	37	7	8224	1.0		1.0
+R-RNO-5658623	FGFRL1 modulation of FGFR1 signaling	0	37	10	8224	1.0		1.0
+R-RNO-209822	Glycoprotein hormones	0	37	8	8224	1.0		1.0
+R-RNO-9860927	Turbulent (oscillatory, disturbed) flow shear stress activates signaling by PIEZO1 and integrins in endothelial cells	0	37	23	8224	1.0		1.0
+R-RNO-180024	DARPP-32 events	0	37	14	8224	1.0		1.0
+R-RNO-8963896	HDL assembly	0	37	6	8224	1.0		1.0
+R-RNO-9634597	GPER1 signaling	0	37	6	8224	1.0		1.0
+R-RNO-68689	CDC6 association with the ORC:origin complex	0	37	8	8224	1.0		1.0
+R-RNO-6783984	Glycine degradation	0	37	8	8224	1.0		1.0
+R-RNO-9853506	OGDH complex synthesizes succinyl-CoA from 2-OG	0	37	5	8224	1.0		1.0
+R-RNO-196843	Vitamin B2 (riboflavin) metabolism	0	37	6	8224	1.0		1.0
+R-RNO-264870	Caspase-mediated cleavage of cytoskeletal proteins	0	37	12	8224	1.0		1.0
+R-RNO-201556	Signaling by ALK	0	37	9	8224	1.0		1.0
+R-RNO-426117	Cation-coupled Chloride cotransporters	0	37	7	8224	1.0		1.0
+R-RNO-8866904	Negative regulation of activity of TFAP2 (AP-2) family transcription factors	0	37	8	8224	1.0		1.0
+R-RNO-2028269	Signaling by Hippo	0	37	19	8224	1.0		1.0
+R-RNO-9717207	Sensory perception of sweet, bitter, and umami (glutamate) taste	0	37	5	8224	1.0		1.0
+R-RNO-2980766	Nuclear Envelope Breakdown	0	37	6	8224	1.0		1.0
+R-RNO-205025	NADE modulates death signalling	0	37	5	8224	1.0		1.0
+R-RNO-1170546	Prolactin receptor signaling	0	37	9	8224	1.0		1.0
+R-RNO-174430	Telomere C-strand synthesis initiation	0	37	13	8224	1.0		1.0
+R-RNO-5576894	Phase 1 - inactivation of fast Na+ channels	0	37	6	8224	1.0		1.0
+R-RNO-419408	Lysosphingolipid and LPA receptors	0	37	12	8224	1.0		1.0
+R-RNO-4641265	Repression of WNT target genes	0	37	10	8224	1.0		1.0
+R-RNO-1296052	Ca2+ activated K+ channels	0	37	8	8224	1.0		1.0
+R-RNO-8866423	VLDL assembly	0	37	5	8224	1.0		1.0
+R-RNO-8964046	VLDL clearance	0	37	5	8224	1.0		1.0
+R-RNO-9933946	Formation of the embryonic stem cell BAF (esBAF) complex	0	37	17	8224	1.0		1.0
+R-RNO-9934037	Formation of neuronal progenitor and neuronal BAF (npBAF and nBAF)	0	37	19	8224	1.0		1.0
+R-RNO-9764561	Regulation of CDH1 Function	0	37	12	8224	1.0		1.0
+R-RNO-8951430	RUNX3 regulates WNT signaling	0	37	6	8224	1.0		1.0
+R-RNO-8963693	Aspartate and asparagine metabolism	0	37	10	8224	1.0		1.0
+R-RNO-5362798	Release of Hh-Np from the secreting cell	0	37	5	8224	1.0		1.0
+R-RNO-5632681	Ligand-receptor interactions	0	37	5	8224	1.0		1.0
+R-RNO-9933937	Formation of the canonical BAF (cBAF) complex	0	37	16	8224	1.0		1.0
+R-RNO-912694	Regulation of IFNA/IFNB signaling	0	37	10	8224	1.0		1.0
+R-RNO-1483206	Glycerophospholipid biosynthesis	0	37	5	8224	1.0		1.0
+R-RNO-2046105	Linoleic acid (LA) metabolism	0	37	8	8224	1.0		1.0
+R-RNO-2046106	alpha-linolenic acid (ALA) metabolism	0	37	12	8224	1.0		1.0
+R-RNO-70370	Galactose catabolism	0	37	5	8224	1.0		1.0
+R-RNO-9861559	PDH complex synthesizes acetyl-CoA from PYR	0	37	7	8224	1.0		1.0
+R-RNO-111458	Formation of apoptosome	0	37	6	8224	1.0		1.0
+R-RNO-68911	G2 Phase	0	37	5	8224	1.0		1.0
+R-RNO-8849470	PTK6 Regulates Cell Cycle	0	37	5	8224	1.0		1.0
+R-RNO-2453902	The canonical retinoid cycle in rods (twilight vision)	0	37	12	8224	1.0		1.0
+R-RNO-389887	Beta-oxidation of pristanoyl-CoA	0	37	9	8224	1.0		1.0
+R-RNO-390522	Striated Muscle Contraction	0	37	32	8224	1.0		1.0
+R-RNO-70350	Fructose catabolism	0	37	5	8224	1.0		1.0
+R-RNO-6798163	Choline catabolism	0	37	8	8224	1.0		1.0
+R-RNO-111459	Activation of caspases through apoptosome-mediated cleavage	0	37	7	8224	1.0		1.0
+R-RNO-111469	SMAC, XIAP-regulated apoptotic response	0	37	5	8224	1.0		1.0
+R-RNO-199992	trans-Golgi Network Vesicle Budding	0	37	7	8224	1.0		1.0
+R-RNO-9945556	Transcriptional regulation of multiciliogenesis	0	37	9	8224	1.0		1.0
+R-RNO-6788467	IL-6-type cytokine receptor ligand interactions	0	37	17	8224	1.0		1.0
+R-RNO-6806942	MET Receptor Activation	0	37	6	8224	1.0		1.0
+R-RNO-372708	p130Cas linkage to MAPK signaling for integrins	0	37	10	8224	1.0		1.0
+R-RNO-193775	Synthesis of bile acids and bile salts via 24-hydroxycholesterol	0	37	15	8224	1.0		1.0
+R-RNO-446353	Cell-extracellular matrix interactions	0	37	7	8224	1.0		1.0
+R-RNO-196836	Vitamin C (ascorbate) metabolism	0	37	9	8224	1.0		1.0
+R-RNO-110330	Recognition and association of DNA glycosylase with site containing an affected purine	0	37	26	8224	1.0		1.0
+R-RNO-110331	Cleavage of the damaged purine	0	37	28	8224	1.0		1.0
+R-RNO-174414	Processive synthesis on the C-strand of the telomere	0	37	14	8224	1.0		1.0
+R-RNO-174417	Telomere C-strand (Lagging Strand) Synthesis	0	37	11	8224	1.0		1.0
+R-RNO-2559586	DNA Damage/Telomere Stress Induced Senescence	0	37	30	8224	1.0		1.0
+R-RNO-430039	mRNA decay by 5' to 3' exoribonuclease	0	37	16	8224	1.0		1.0
+R-RNO-9762292	Regulation of CDH11 function	0	37	8	8224	1.0		1.0
+R-RNO-196783	Coenzyme A biosynthesis	0	37	7	8224	1.0		1.0
+R-RNO-8850843	Phosphate bond hydrolysis by NTPDase proteins	0	37	8	8224	1.0		1.0
+R-RNO-2142712	Synthesis of 12-eicosatetraenoic acid derivatives	0	37	6	8224	1.0		1.0
+R-RNO-1461957	Beta defensins	0	37	9	8224	1.0		1.0
+R-RNO-1461973	Defensins	0	37	9	8224	1.0		1.0
+R-RNO-5666185	RHO GTPases Activate Rhotekin and Rhophilins	0	37	6	8224	1.0		1.0
+R-RNO-6787639	GDP-fucose biosynthesis	0	37	5	8224	1.0		1.0
+R-RNO-727802	Transport of nucleotide sugars	0	37	10	8224	1.0		1.0
+R-RNO-433692	Proton-coupled monocarboxylate transport	0	37	6	8224	1.0		1.0
+R-RNO-111453	BH3-only proteins associate with and inactivate anti-apoptotic BCL-2 members	0	37	5	8224	1.0		1.0
+R-RNO-196108	Pregnenolone biosynthesis	0	37	12	8224	1.0		1.0
+R-RNO-1855167	Synthesis of pyrophosphates in the cytosol	0	37	8	8224	1.0		1.0
+R-RNO-3322077	Glycogen synthesis	0	37	6	8224	1.0		1.0
+R-RNO-430116	GP1b-IX-V activation signalling	0	37	7	8224	1.0		1.0
+R-RNO-203615	eNOS activation	0	37	10	8224	1.0		1.0
+R-RNO-8949664	Processing of SMDT1	0	37	18	8224	1.0		1.0
+R-RNO-5693548	Sensing of DNA Double Strand Breaks	0	37	5	8224	1.0		1.0
+R-RNO-8941855	RUNX3 regulates CDKN1A transcription	0	37	6	8224	1.0		1.0
+R-RNO-2243919	Crosslinking of collagen fibrils	0	37	14	8224	1.0		1.0
+R-RNO-2025928	Calcineurin activates NFAT	0	37	6	8224	1.0		1.0
+R-RNO-5661270	Formation of xylulose-5-phosphate	0	37	5	8224	1.0		1.0
+R-RNO-9754119	Drug-mediated inhibition of CDK4/CDK6 activity	0	37	5	8224	1.0		1.0
+R-RNO-140342	Apoptosis induced DNA fragmentation	0	37	15	8224	1.0		1.0
+R-RNO-390696	Adrenoceptors	0	37	6	8224	1.0		1.0
+R-RNO-9969896	Lanosterol biosynthesis	0	37	13	8224	1.0		1.0
+R-RNO-9020558	Interleukin-2 signaling	0	37	7	8224	1.0		1.0
+R-RNO-6803204	TP53 Regulates Transcription of Genes Involved in Cytochrome C Release	0	37	6	8224	1.0		1.0
+R-RNO-77346	Beta oxidation of decanoyl-CoA to octanoyl-CoA-CoA	0	37	7	8224	1.0		1.0
+R-RNO-77348	Beta oxidation of octanoyl-CoA to hexanoyl-CoA	0	37	6	8224	1.0		1.0
+R-RNO-5576890	Phase 3 - rapid repolarisation	0	37	7	8224	1.0		1.0
+R-RNO-5607763	CLEC7A (Dectin-1) induces NFAT activation	0	37	5	8224	1.0		1.0
+R-RNO-419812	Calcitonin-like ligand receptors	0	37	10	8224	1.0		1.0
+R-RNO-351906	Apoptotic cleavage of cell adhesion  proteins	0	37	10	8224	1.0		1.0
+R-RNO-9933939	Formation of the polybromo-BAF (pBAF) complex	0	37	15	8224	1.0		1.0
+R-RNO-9933947	Formation of the non-canonical BAF (ncBAF) complex	0	37	16	8224	1.0		1.0
+R-RNO-9706019	RHOBTB3 ATPase cycle	0	37	9	8224	1.0		1.0
+R-RNO-418555	G alpha (s) signalling events	0	37	22	8224	1.0		1.0
+R-RNO-8932504	DAG1 core M2 glycosylations	0	37	5	8224	1.0		1.0
+R-RNO-8932505	DAG1 core M3 glycosylations	0	37	6	8224	1.0		1.0
+R-RNO-5649702	APEX1-Independent Resolution of AP Sites via the Single Nucleotide Replacement Pathway	0	37	7	8224	1.0		1.0
+R-RNO-77310	Beta oxidation of lauroyl-CoA to decanoyl-CoA-CoA	0	37	6	8224	1.0		1.0
+R-RNO-203927	MicroRNA (miRNA) biogenesis	0	37	6	8224	1.0		1.0
+R-RNO-8985947	Interleukin-9 signaling	0	37	5	8224	1.0		1.0
+R-RNO-9020958	Interleukin-21 signaling	0	37	6	8224	1.0		1.0
+R-RNO-1614635	Sulfur amino acid metabolism	0	37	5	8224	1.0		1.0
+R-RNO-629597	Highly calcium permeable nicotinic acetylcholine receptors	0	37	7	8224	1.0		1.0
+R-RNO-113501	Inhibition of replication initiation of damaged DNA by RB1/E2F1	0	37	8	8224	1.0		1.0
+R-RNO-162791	Attachment of GPI anchor to uPAR	0	37	7	8224	1.0		1.0
+R-RNO-168138	Toll Like Receptor 9 (TLR9) Cascade	0	37	5	8224	1.0		1.0
+R-RNO-71032	Propionyl-CoA catabolism	0	37	5	8224	1.0		1.0
+R-RNO-947581	Molybdenum cofactor biosynthesis	0	37	5	8224	1.0		1.0
+R-RNO-5676934	Protein repair	0	37	6	8224	1.0		1.0
+R-RNO-9913635	Strand-asynchronous mitochondrial DNA replication	0	37	5	8224	1.0		1.0
+R-RNO-75158	TRAIL  signaling	0	37	5	8224	1.0		1.0
+R-RNO-211999	CYP2E1 reactions	0	37	7	8224	1.0		1.0
+R-RNO-69183	Processive synthesis on the lagging strand	0	37	10	8224	1.0		1.0
+R-RNO-8852405	Signaling by MST1	0	37	5	8224	1.0		1.0
+R-RNO-198203	PI3K/AKT activation	0	37	5	8224	1.0		1.0
+R-RNO-804914	Transport of fatty acids	0	37	6	8224	1.0		1.0
+R-RNO-8951936	RUNX3 regulates p14-ARF	0	37	5	8224	1.0		1.0
+R-RNO-2029485	Role of phospholipids in phagocytosis	0	37	16	8224	1.0		1.0
+R-RNO-2142670	Synthesis of epoxy (EET) and dihydroxyeicosatrienoic acids (DHET)	0	37	6	8224	1.0		1.0
+R-RNO-1462054	Alpha-defensins	0	37	6	8224	1.0		1.0
+R-RNO-426496	Post-transcriptional silencing by small RNAs	0	37	6	8224	1.0		1.0

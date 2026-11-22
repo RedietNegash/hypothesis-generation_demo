@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "checks": [
+    "All 13 primary downloads match recorded SHA256 checksums",
+    "24 human samples match GEO accessions and exact rounded source counts; eight groups of three",
+    "All six DESeq2 outputs cover exactly the independently verified 17,790-gene filter and reconcile with summaries",
+    "Candidate-block sensitivity outputs reconcile across six contrasts, with unchanged source features",
+    "Rat S2/S5/S6 values and IDs match workbook verbatim; discrepancy audit retained",
+    "Single-cell dimensions, sample counts, QC thresholds, embedding, cluster counts and provisional annotations reconcile",
+    "31 enrichment analyses satisfy species, universe, overlap and BH correction checks"
+  ],
+  "scope": "Specific Objectives 1 and 2 only"
+}
