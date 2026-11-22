@@ -1,0 +1,7 @@
+contrast	tested	adjusted	significant	up	down
+basal_1_vs_0	17790	17790	0	0	0
+basal_3_vs_0	17790	17790	2	2	0
+basal_10_vs_0	17790	13996	587	414	173
+LPS_1_vs_0	17790	17790	1	0	1
+LPS_3_vs_0	17790	17790	5	2	3
+LPS_10_vs_0	17790	13651	595	280	315

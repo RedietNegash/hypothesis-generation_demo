@@ -1,0 +1,6 @@
+Input genes: 25240
+Retained genes: 17790
+Input: nearest-integer rounded Partek E/M estimated counts; not TMM-normalized expression.
+Filter: at least 10 counts in at least 3 samples. Design: ~group, eight groups, n=3 each.
+Six within-LPS-stratum peptide versus vehicle contrasts. BH FDR 0.05 within each contrast.
+Exploratory analysis; no MTD groups, no cross-species pooling, no inferred pairing.

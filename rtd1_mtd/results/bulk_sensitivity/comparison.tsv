@@ -1,0 +1,7 @@
+contrast	primary_FDR_genes	candidate_block_FDR_genes	shared_FDR_genes	shared_same_direction
+basal_1_vs_0	0	8	0	0
+basal_3_vs_0	2	40	2	2
+basal_10_vs_0	587	1411	574	574
+LPS_1_vs_0	1	5	1	1
+LPS_3_vs_0	5	44	4	4
+LPS_10_vs_0	595	1541	594	594
