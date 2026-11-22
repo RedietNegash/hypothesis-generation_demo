@@ -1,0 +1,10 @@
+.venv/
+.Rlib/
+.cache/
+__pycache__/
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*.h5ad
+results/*.rds
+results/singlecell/cluster_markers_descriptive.tsv
+results/install_*.log

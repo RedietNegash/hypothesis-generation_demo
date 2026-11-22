@@ -1,0 +1,5 @@
+-r requirements.lock.txt
+ipykernel==6.23.1
+nbformat==5.9.0
+nbclient==0.8.0
+jupyter-client==8.2.0
