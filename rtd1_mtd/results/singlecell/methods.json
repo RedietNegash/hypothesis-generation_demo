@@ -1,0 +1,12 @@
+{
+  "species": "Rattus norvegicus",
+  "peptide_treated": false,
+  "samples": 2,
+  "qc": "200\u20136000 detected genes; <=50000 UMIs; mitochondrial counts <15%; genes in >=3 cells",
+  "normalization": "10000 counts per cell, log1p",
+  "hvg": 2000,
+  "embedding": "40 PCs; exact sklearn 15 neighbors on 30 PCs; UMAP seed 0; Leiden resolution 0.6 seed 0",
+  "annotation": "Unlabeled clusters; marker panels and cluster markers for manual cell-type review.",
+  "limitations": "No replicate-based condition DE, no RTD-1/MTD response inference. Residual doublets and ambient RNA not corrected; upper QC bounds only flag potential multiplets.",
+  "sequenced_libraries_per_condition": 1
+}
