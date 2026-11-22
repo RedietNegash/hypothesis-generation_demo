@@ -1,0 +1,25 @@
+sample	accession	title	species	dose_ug_ml	lps	group	replicate_label
+1A	GSM8549051	THP-1, 20h, vehicle exp1	Homo sapiens	0	False	basal_0	1
+1C	GSM8549052	THP-1, 20h, vehicle exp2	Homo sapiens	0	False	basal_0	2
+1D	GSM8549053	THP-1, 20h, vehicle exp3	Homo sapiens	0	False	basal_0	3
+2B	GSM8549054	THP-1, 20h, 1 µg/ml RTD-1 exp1	Homo sapiens	1	False	basal_1	1
+2C	GSM8549055	THP-1, 20h, 1 µg/ml RTD-1 exp2	Homo sapiens	1	False	basal_1	2
+2D	GSM8549056	THP-1, 20h, 1 µg/ml RTD-1 exp3	Homo sapiens	1	False	basal_1	3
+3A	GSM8549057	THP-1, 20h, 3 µg/ml RTD-1 exp1	Homo sapiens	3	False	basal_3	1
+3B	GSM8549058	THP-1, 20h, 3 µg/ml RTD-1 exp2	Homo sapiens	3	False	basal_3	2
+3D	GSM8549059	THP-1, 20h, 3 µg/ml RTD-1 exp3	Homo sapiens	3	False	basal_3	3
+4A	GSM8549060	THP-1, 20h, 10 µg/ml RTD-1 exp1	Homo sapiens	10	False	basal_10	1
+4C	GSM8549061	THP-1, 20h, 10 µg/ml RTD-1 exp2	Homo sapiens	10	False	basal_10	2
+4D	GSM8549062	THP-1, 20h, 10 µg/ml RTD-1 exp3	Homo sapiens	10	False	basal_10	3
+5A	GSM8549063	THP-1, 20h, LPS exp1	Homo sapiens	0	True	LPS_0	1
+5B	GSM8549064	THP-1, 20h, LPS exp2	Homo sapiens	0	True	LPS_0	2
+5D	GSM8549065	THP-1, 20h, LPS exp3	Homo sapiens	0	True	LPS_0	3
+6A	GSM8549066	THP-1, 20h, 1 µg/ml RTD-1 LPS exp1	Homo sapiens	1	True	LPS_1	1
+6C	GSM8549067	THP-1, 20h, 1 µg/ml RTD-1 LPS exp2	Homo sapiens	1	True	LPS_1	2
+6D	GSM8549068	THP-1, 20h, 1 µg/ml RTD-1 LPS exp3	Homo sapiens	1	True	LPS_1	3
+7A	GSM8549069	THP-1, 20h, 3 µg/ml RTD-1 LPS exp1	Homo sapiens	3	True	LPS_3	1
+7C	GSM8549070	THP-1, 20h, 3 µg/ml RTD-1 LPS exp2	Homo sapiens	3	True	LPS_3	2
+7D	GSM8549071	THP-1, 20h, 3 µg/ml RTD-1 LPS exp3	Homo sapiens	3	True	LPS_3	3
+8A	GSM8549072	THP-1, 20h, 10 µg/ml RTD-1 LPS exp1	Homo sapiens	10	True	LPS_10	1
+8C	GSM8549073	THP-1, 20h, 10 µg/ml RTD-1 LPS exp2	Homo sapiens	10	True	LPS_10	2
+8D	GSM8549074	THP-1, 20h, 10 µg/ml RTD-1 LPS exp3	Homo sapiens	10	True	LPS_10	3

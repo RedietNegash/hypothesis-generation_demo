@@ -1,0 +1,18 @@
+{
+  "arthritis_genes_S2": 617,
+  "day3_genes_S5": 258,
+  "day5_genes_S6": 107,
+  "day3_day5_union": 329,
+  "day3_day5_overlap": 36,
+  "day1_gene_table_available": false,
+  "day3_genes_outside_S2": [
+    "ENSRNOG00000016957",
+    "ENSRNOG00000017237",
+    "ENSRNOG00000057880",
+    "ENSRNOG00000060179"
+  ],
+  "day5_genes_outside_S2": [
+    "ENSRNOG00000025108"
+  ],
+  "direction_caution": "S5 Ccl20 and Mmp9 have positive fold changes despite narrative suppression. Values retained verbatim; no reversal claim."
+}

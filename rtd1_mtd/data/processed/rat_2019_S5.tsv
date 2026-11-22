@@ -1,0 +1,259 @@
+symbol	ensembl_id	description	reported_signed_fold_change	species	source_table	comparison_as_reported
+Ibsp	ENSRNOG00000002158	integrin-binding sialoprotein [Source:RGD Symbol;Acc:2855]	6.65857057146674	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Ccl20	ENSRNOG00000015992	chemokine (C-C motif) ligand 20 [Source:RGD Symbol;Acc:3646]	3.204403002412445	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Lcn2	ENSRNOG00000013973	lipocalin 2 [Source:RGD Symbol;Acc:69408]	3.1242545446394585	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Mybpc1	ENSRNOG00000056493	myosin binding protein C, slow type [Source:RGD Symbol;Acc:735102]	2.8309967833145375	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Mmp9	ENSRNOG00000017539	matrix metallopeptidase 9 [Source:RGD Symbol;Acc:621320]	2.743962185709398	Rattus norvegicus	S5	RTD-1 vs saline day 3
+S100a8	ENSRNOG00000011557	S100 calcium binding protein A8 [Source:RGD Symbol;Acc:620265]	2.5651884207792475	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Cxcl6	ENSRNOG00000002843	chemokine (C-X-C motif) ligand 6 [Source:RGD Symbol;Acc:708540]	2.523031642623155	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Atp1a3	ENSRNOG00000020263	ATPase, Na+/K+ transporting, alpha 3 polypeptide [Source:RGD Symbol;Acc:2169]	2.382701789111564	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Fcar	ENSRNOG00000027855	Fc fragment of IgA receptor [Source:RGD Symbol;Acc:1303082]	2.3217161162637128	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Fcnb	ENSRNOG00000009342	ficolin B [Source:RGD Symbol;Acc:621222]	2.320212592144741	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Adamtsl2	ENSRNOG00000027742	ADAMTS-like 2 [Source:RGD Symbol;Acc:1305459]	2.2790452984705056	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Mcemp1	ENSRNOG00000028259	mast cell-expressed membrane protein 1 [Source:RGD Symbol;Acc:1565374]	2.272106721135943	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Hist1h1b	ENSRNOG00000060355	histone cluster 1, H1b [Source:RGD Symbol;Acc:1590638]	2.2203344395931537	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Grem1	ENSRNOG00000026053	gremlin 1 [Source:RGD Symbol;Acc:2359]	2.220082978201547	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Slfn3	ENSRNOG00000057092	schlafen 3 [Source:RGD Symbol;Acc:620455]	2.206789773506262	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Gbx2	ENSRNOG00000019495	gastrulation brain homeobox 2 [Source:RGD Symbol;Acc:621866]	2.1671492286451683	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Slc11a1	ENSRNOG00000014956	solute carrier family 11 (proton-coupled divalent metal ion transporter), member 1 [Source:RGD Symbol;Acc:1601463]	2.1621832500376676	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Il1rn	ENSRNOG00000005871	interleukin 1 receptor antagonist [Source:RGD Symbol;Acc:621159]	2.1597246643059917	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Ptx3	ENSRNOG00000012280	pentraxin 3, long [Source:RGD Symbol;Acc:1593476]	2.118540193279699	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Pappa2	ENSRNOG00000042860	pappalysin 2 [Source:RGD Symbol;Acc:1591785]	2.0607968594890003	Rattus norvegicus	S5	RTD-1 vs saline day 3
+S100a9	ENSRNOG00000011483	S100 calcium binding protein A9 [Source:RGD Symbol;Acc:620267]	2.001058022351701	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Csf3r	ENSRNOG00000008759	colony stimulating factor 3 receptor (granulocyte) [Source:RGD Symbol;Acc:1309114]	1.986297885001555	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Mt1m	ENSRNOG00000028841	metallothionein 1M [Source:RGD Symbol;Acc:2324335]	1.9818338265079967	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Ctnna3	ENSRNOG00000000373	catenin (cadherin associated protein), alpha 3 [Source:RGD Symbol;Acc:1562230]	1.9803171527069623	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Krt2	ENSRNOG00000009563	keratin 2, type II [Source:RGD Symbol;Acc:1303297]	1.977244580382445	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Itgb7	ENSRNOG00000012208	integrin, beta 7 [Source:RGD Symbol;Acc:2929]	1.9767999783789447	Rattus norvegicus	S5	RTD-1 vs saline day 3
+LOC24906	ENSRNOG00000002820	RoBo-1 [Source:RGD Symbol;Acc:3683]	1.9680081564928238	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Mmp13	ENSRNOG00000008478	matrix metallopeptidase 13 [Source:RGD Symbol;Acc:620196]	1.9473024808575716	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Oasl	ENSRNOG00000001187	2'-5'-oligoadenylate synthetase-like [Source:RGD Symbol;Acc:1308586]	1.9458046805864824	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Slc16a3	ENSRNOG00000036677	solute carrier family 16 (monocarboxylate transporter), member 3 [Source:RGD Symbol;Acc:620603]	1.9362582687142063	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Pappa	ENSRNOG00000033527	pregnancy-associated plasma protein A [Source:RGD Symbol;Acc:1307742]	1.9125363921829748	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Igsf6	ENSRNOG00000017277	immunoglobulin superfamily, member 6 [Source:RGD Symbol;Acc:620663]	1.9023513160574077	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Shroom1	ENSRNOG00000007431	shroom family member 1 [Source:RGD Symbol;Acc:1308066]	1.8644268568604985	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Cxcl1	ENSRNOG00000002802	chemokine (C-X-C motif) ligand 1 [Source:RGD Symbol;Acc:619869]	1.858138706286941	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Cxcr2	ENSRNOG00000014269	chemokine (C-X-C motif) receptor 2 [Source:RGD Symbol;Acc:2906]	1.8282778010287122	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Rasl11b	ENSRNOG00000002097	RAS-like family 11 member B [Source:RGD Symbol;Acc:1303099]	1.8222737456641807	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Ifit1bl	ENSRNOG00000036603	interferon-induced protein with tetratricopeptide repeats 1B-like [Source:RGD Symbol;Acc:1304872]	1.8141786106807571	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Lilrc2	ENSRNOG00000058087	leukocyte immunoglobulin-like receptor, subfamily C, member 2 [Source:RGD Symbol;Acc:1589872]	1.795692724517062	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Hist1h2ail1	ENSRNOG00000046144	histone cluster 1, H2ai-like1 [Source:RGD Symbol;Acc:1311554]	1.7925030826520696	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Hist1h2an	ENSRNOG00000058437	histone cluster 1, H2an [Source:RGD Symbol;Acc:1309078]	1.7860423629547952	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Cacng1	ENSRNOG00000003245	calcium channel, voltage-dependent, gamma subunit 1 [Source:RGD Symbol;Acc:2249]	1.7687505542219477	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Igfbp2	ENSRNOG00000016957	insulin-like growth factor binding protein 2 [Source:RGD Symbol;Acc:2873]	1.7646713219348173	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Galnt9	ENSRNOG00000037476	polypeptide N- acetylgalactosaminyltransferase 9 [Source:RGD Symbol;Acc:1311523]	1.749098455722649	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Clec4e	ENSRNOG00000061394	C-type lectin domain family 4, member E [Source:RGD Symbol;Acc:1359298]	1.736375173070426	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Sell	ENSRNOG00000002776	selectin L [Source:RGD Symbol;Acc:3655]	1.7308032081515055	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Ip6k3	ENSRNOG00000025883	inositol hexakisphosphate kinase 3 [Source:RGD Symbol;Acc:1584104]	1.7262138473799413	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Ifit3	ENSRNOG00000022839	interferon-induced protein with tetratricopeptide repeats 3 [Source:RGD Symbol;Acc:1359681]	1.725162665564025	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Kif26b	ENSRNOG00000028624	kinesin family member 26B [Source:RGD Symbol;Acc:1560022]	1.7174907154177337	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Cebpb	ENSRNOG00000057347	CCAAT/enhancer binding protein (C/EBP), beta [Source:RGD Symbol;Acc:2327]	1.7168151353677192	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Anlnl1	ENSRNOG00000018113	anillin, actin binding protein-like 1 [Source:RGD Symbol;Acc:1566097]	1.708098887773761	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Prdx5	ENSRNOG00000021125	peroxiredoxin 5 [Source:RGD Symbol;Acc:71007]	1.691620911599989	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Mt1	ENSRNOG00000038047	metallothionein 1 [Source:RGD Symbol;Acc:3117]	1.6900582831782864	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Snai1	ENSRNOG00000009594	snail family zinc finger 1 [Source:RGD Symbol;Acc:620758]	1.6779350818706331	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Tfpi2	ENSRNOG00000010513	tissue factor pathway inhibitor 2 [Source:RGD Symbol;Acc:628629]	1.6744571994456072	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Lama1	ENSRNOG00000017237	laminin, alpha 1 [Source:RGD Symbol;Acc:1307207]	1.656806134026884	Rattus norvegicus	S5	RTD-1 vs saline day 3
+LOC690171	ENSRNOG00000053155	similar to H3 histone, family 3B [Source:RGD Symbol;Acc:1584001]	1.6557985954485464	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Napsa	ENSRNOG00000019854	napsin A aspartic peptidase [Source:RGD Symbol;Acc:61940]	1.6438450318023197	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Nek6	ENSRNOG00000010897	NIMA-related kinase 6 [Source:RGD Symbol;Acc:727779]	1.6387718315384279	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Pram1	ENSRNOG00000039204	PML-RARA regulated adaptor molecule 1 [Source:RGD Symbol;Acc:1564330]	1.6340187067547358	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Timp1	ENSRNOG00000010208	TIMP metallopeptidase inhibitor 1 [Source:RGD Symbol;Acc:621675]	1.6288604403129963	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Clec5a	ENSRNOG00000026306	C-type lectin domain family 5, member A [Source:RGD Symbol;Acc:1584755]	1.6266418083605436	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Tlr10	ENSRNOG00000038722	toll-like receptor 10 [Source:RGD Symbol;Acc:1311569]	1.6221330987867049	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Arid3a	ENSRNOG00000026435	AT rich interactive domain 3A (Bright like) [Source:RGD Symbol;Acc:1305299]	1.6117428685121382	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Slc39a14	ENSRNOG00000009832	solute carrier family 39 (zinc transporter), member 14 [Source:RGD Symbol;Acc:1307026]	1.6082798882976086	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Slpi	ENSRNOG00000046699	secretory leukocyte peptidase inhibitor [Source:RGD Symbol;Acc:621768]	1.6069256731041806	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Cebpd	ENSRNOG00000050869	CCAAT/enhancer binding protein (C/EBP), delta [Source:RGD Symbol;Acc:2328]	1.6051005762126818	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Ccl2	ENSRNOG00000007159	chemokine (C-C motif) ligand 2 [Source:RGD Symbol;Acc:3645]	1.589549782063567	Rattus norvegicus	S5	RTD-1 vs saline day 3
+LOC691141	ENSRNOG00000033256	hypothetical protein LOC691141 [Source:RGD Symbol;Acc:1587445]	1.5889873066357907	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Pstpip1	ENSRNOG00000016413	proline-serine-threonine phosphatase- interacting protein 1 [Source:RGD Symbol;Acc:1307557]	1.5789472784962262	Rattus norvegicus	S5	RTD-1 vs saline day 3
+St8sia4	ENSRNOG00000019128	ST8 alpha-N-acetyl-neuraminide alpha-2,8- sialyltransferase 4 [Source:RGD Symbol;Acc:621845]	1.5784672194087892	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Gpr153	ENSRNOG00000010718	G protein-coupled receptor 153 [Source:RGD Symbol;Acc:1564170]	1.5711938633421403	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Lilrb4	ENSRNOG00000027811	leukocyte immunoglobulin-like receptor, subfamily B, member 4 [Source:RGD Symbol;Acc:1359090]	1.566117655494996	Rattus norvegicus	S5	RTD-1 vs saline day 3
+LOC500300	ENSRNOG00000023465	similar to hypothetical protein MGC6835 [Source:RGD Symbol;Acc:1565700]	1.5655809429889227	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Fgr	ENSRNOG00000009912	FGR proto-oncogene, Src family tyrosine kinase [Source:RGD Symbol;Acc:621319]	1.5650418108830615	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Pde7a	ENSRNOG00000013048	phosphodiesterase 7A [Source:RGD Symbol;Acc:68391]	1.550492986415609	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Rspo2	ENSRNOG00000037687	R-spondin 2 [Source:RGD Symbol;Acc:1562331]	1.5490674888765767	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Vcan	ENSRNOG00000029212	versican [Source:RGD Symbol;Acc:619940]	1.5463104546504547	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Il18rap	ENSRNOG00000054218	interleukin 18 receptor accessory protein [Source:RGD Symbol;Acc:727867]	1.546079173034627	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Socs3	ENSRNOG00000002946	suppressor of cytokine signaling 3 [Source:RGD Symbol;Acc:621087]	1.5396749424488543	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Clec4d	ENSRNOG00000010181	C-type lectin domain family 4, member D [Source:RGD Symbol;Acc:1303339]	1.5386682416414652	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Ifit1	ENSRNOG00000019050	interferon-induced protein with tetratricopeptide repeats 1 [Source:RGD Symbol;Acc:620599]	1.536616978938669	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Siglec8	ENSRNOG00000022640	sialic acid binding Ig-like lectin 8 [Source:RGD Symbol;Acc:1563073]	1.5319731370346206	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Mmp8	ENSRNOG00000009907	matrix metallopeptidase 8 [Source:RGD Symbol;Acc:631408]	1.5232970484234087	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Hk3	ENSRNOG00000026235	hexokinase 3 (white cell) [Source:RGD Symbol;Acc:2798]	1.5170718346000704	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Scimp	ENSRNOG00000037409	SLP adaptor and CSK interacting membrane protein [Source:RGD Symbol;Acc:1593299]	1.514694348110897	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Adamts4	ENSRNOG00000003538	ADAM metallopeptidase with thrombospondin type 1 motif, 4 [Source:RGD Symbol;Acc:621242]	1.5141975090484114	Rattus norvegicus	S5	RTD-1 vs saline day 3
+RT1-CE5	ENSRNOG00000000723	RT1 class I, locus CE5 [Source:RGD Symbol;Acc:1595868]	1.510843261892306	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Lyz2	ENSRNOG00000005825	lysozyme 2 [Source:RGD Symbol;Acc:3026]	1.508295391182745	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Bcl3	ENSRNOG00000043416	B-cell CLL/lymphoma 3 [Source:RGD Symbol;Acc:1589465]	1.5032591084035305	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Atp1a2	ENSRNOG00000007290	ATPase, Na+/K+ transporting, alpha 2 polypeptide [Source:RGD Symbol;Acc:2168]	-1.513109085079236	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Cdc42bpg	ENSRNOG00000027456	CDC42 binding protein kinase gamma (DMPK- like) [Source:RGD Symbol;Acc:1307260]	-1.5136124914229199	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Limch1	ENSRNOG00000002318	LIM and calponin homology domains 1 [Source:RGD Symbol;Acc:1305269]	-1.5143345880153436	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Apmap	ENSRNOG00000006795	adipocyte plasma membrane associated protein [Source:RGD Symbol;Acc:1308874]	-1.5266431772416966	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Col4a4	ENSRNOG00000014851	collagen, type IV, alpha 4 [Source:RGD Symbol;Acc:1305355]	-1.5364639314428572	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Mcpt1l1	ENSRNOG00000053494	mast cell protease 1-like 1 [Source:RGD Symbol;Acc:2321286]	-1.5401801411764753	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Ltbp1	ENSRNOG00000033090	latent transforming growth factor beta binding protein 1 [Source:RGD Symbol;Acc:68379]	-1.540302382966608	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Chrdl1	ENSRNOG00000004330	chordin-like 1 [Source:RGD Symbol;Acc:735215]	-1.5419471308140102	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Adgre1	ENSRNOG00000046254	adhesion G protein-coupled receptor E1 [Source:RGD Symbol;Acc:1359214]	-1.5451006282084108	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Angptl1	ENSRNOG00000004712	angiopoietin-like 1 [Source:RGD Symbol;Acc:1598128]	-1.5483601685524047	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Mgll	ENSRNOG00000014508	monoglyceride lipase [Source:RGD Symbol;Acc:71039]	-1.5498490405721017	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Parm1	ENSRNOG00000002579	prostate androgen-regulated mucin-like protein 1 [Source:RGD Symbol;Acc:708342]	-1.555008212808365	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Ar	ENSRNOG00000005639	androgen receptor [Source:RGD Symbol;Acc:2147]	-1.5610671534392944	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Lama3	ENSRNOG00000011300	laminin, alpha 3 [Source:MGI Symbol;Acc:MGI:99909]	-1.5682541713141658	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Myh11	ENSRNOG00000057880	myosin, heavy chain 11, smooth muscle [Source:RGD Symbol;Acc:3136]	-1.572203209463573	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Scaper	ENSRNOG00000006864	S-phase cyclin A-associated protein in the ER [Source:RGD Symbol;Acc:621585]	-1.5773143391747007	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Lrrn4cl	ENSRNOG00000026302	LRRN4 C-terminal like [Source:RGD Symbol;Acc:1597359]	-1.5859064814872734	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Stxbp6	ENSRNOG00000004198	syntaxin binding protein 6 (amisyn) [Source:RGD Symbol;Acc:1306117]	-1.5988020192914	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Cgnl1	ENSRNOG00000054080	cingulin-like 1 [Source:RGD Symbol;Acc:1304623]	-1.6019098943086136	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Rcan2	ENSRNOG00000010350	regulator of calcineurin 2 [Source:RGD Symbol;Acc:69198]	-1.6095593779648578	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Ntn1	ENSRNOG00000003947	netrin 1 [Source:RGD Symbol;Acc:619809]	-1.61050975580528	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Dagla	ENSRNOG00000027264	diacylglycerol lipase, alpha [Source:RGD Symbol;Acc:1359461]	-1.6210603482658892	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Smoc1	ENSRNOG00000005998	SPARC related modular calcium binding 1 [Source:RGD Symbol;Acc:1303126]	-1.6215519000305874	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Tppp3	ENSRNOG00000016890	tubulin polymerization-promoting protein family member 3 [Source:RGD Symbol;Acc:1305061]	-1.6221952780256057	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Cav2	ENSRNOG00000057713	caveolin 2 [Source:RGD Symbol;Acc:620348]	-1.6281191684532041	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Gucy1a3	ENSRNOG00000012302	guanylate cyclase 1, soluble, alpha 3 [Source:RGD Symbol;Acc:68436]	-1.6292624281560324	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Runx1t1	ENSRNOG00000005673	runt-related transcription factor 1; translocated to, 1 (cyclin D-related) [Source:RGD Symbol;Acc:1305490]	-1.6330034060324083	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Dact1	ENSRNOG00000008445	dishevelled-binding antagonist of beta- catenin 1 [Source:RGD Symbol;Acc:1564008]	-1.6345946299249392	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Irs3	ENSRNOG00000001389	insulin receptor substrate 3 [Source:RGD Symbol;Acc:69317]	-1.6525567319245311	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Afap1l2	ENSRNOG00000017164	actin filament associated protein 1-like 2 [Source:RGD Symbol;Acc:1310668]	-1.654993900531775	Rattus norvegicus	S5	RTD-1 vs saline day 3
+C1qtnf2	ENSRNOG00000003870	C1q and tumor necrosis factor related protein 2 [Source:RGD Symbol;Acc:1561041]	-1.6631606155555874	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Pdzd2	ENSRNOG00000013140	PDZ domain containing 2 [Source:RGD Symbol;Acc:619958]	-1.6736085186279888	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Pi16	ENSRNOG00000000525	peptidase inhibitor 16 [Source:RGD Symbol;Acc:1304760]	-1.6745898664572014	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Fxyd1	ENSRNOG00000021079	FXYD domain-containing ion transport regulator 1 [Source:RGD Symbol;Acc:69306]	-1.6754865438133084	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Plscr4	ENSRNOG00000008151	phospholipid scramblase 4 [Source:RGD Symbol;Acc:1311693]	-1.690999461124114	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Pde3a	ENSRNOG00000025042	phosphodiesterase 3A, cGMP inhibited [Source:RGD Symbol;Acc:61942]	-1.6953759185189083	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Retsat	ENSRNOG00000014090	retinol saturase (all trans retinol 13,14 reductase) [Source:RGD Symbol;Acc:628802]	-1.6956629132257814	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Dhrs7	ENSRNOG00000005589	dehydrogenase/reductase (SDR family) member 7 [Source:RGD Symbol;Acc:1565002]	-1.69973507288685	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Ebf2	ENSRNOG00000011548	early B-cell factor 2 [Source:RGD Symbol;Acc:1310805]	-1.7031811642519776	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Pparg	ENSRNOG00000008839	peroxisome proliferator-activated receptor gamma [Source:RGD Symbol;Acc:3371]	-1.7042838054342695	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Aig1	ENSRNOG00000010753	androgen-induced 1 [Source:RGD Symbol;Acc:1562920]	-1.7092560122925056	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Pex11a	ENSRNOG00000015003	peroxisomal biogenesis factor 11 alpha [Source:RGD Symbol;Acc:619842]	-1.711863061929153	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Scd1	ENSRNOG00000013552	stearoyl-Coenzyme A desaturase 1 [Source:RGD Symbol;Acc:621176]	-1.7209321280977041	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Dmrt2	ENSRNOG00000016301	doublesex and mab-3 related transcription factor 2 [Source:RGD Symbol;Acc:1309047]	-1.7243244997232048	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Sox5	ENSRNOG00000027869	SRY (sex determining region Y)-box 5 [Source:RGD Symbol;Acc:620471]	-1.7321472753111529	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Igfbp6	ENSRNOG00000010977	insulin-like growth factor binding protein 6 [Source:RGD Symbol;Acc:2877]	-1.7361490382048155	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Prkar2b	ENSRNOG00000009079	protein kinase, cAMP dependent regulatory, type II beta [Source:RGD Symbol;Acc:3394]	-1.7367918967714615	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Acad11	ENSRNOG00000010940	acyl-CoA dehydrogenase family, member 11 [Source:RGD Symbol;Acc:1306270]	-1.753008996408877	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Gsn	ENSRNOG00000018991	gelsolin [Source:RGD Symbol;Acc:1303089]	-1.7602334766060552	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Sox6	ENSRNOG00000020514	SRY (sex determining region Y)-box 6 [Source:RGD Symbol;Acc:1309000]	-1.7726597410375289	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Mest	ENSRNOG00000048088	mesoderm specific transcript [Source:RGD Symbol;Acc:1594589]	-1.7732978779553028	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Dnah11	ENSRNOG00000005451	dynein, axonemal, heavy chain 11 [Source:RGD Symbol;Acc:621088]	-1.7757539568117107	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Scara5	ENSRNOG00000014398	scavenger receptor class A, member 5 [Source:RGD Symbol;Acc:1306539]	-1.7865098892456945	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Tmeff2	ENSRNOG00000016623	transmembrane protein with EGF-like and two follistatin-like domains 2 [Source:RGD Symbol;Acc:1308839]	-1.7907520579369116	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Atp9a	ENSRNOG00000049484	ATPase, class II, type 9A [Source:RGD Symbol;Acc:621421]	-1.796718508709399	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Clic5	ENSRNOG00000047218	chloride intracellular channel 5 [Source:RGD Symbol;Acc:620659]	-1.798327775165063	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Pc	ENSRNOG00000019372	pyruvate carboxylase [Source:RGD Symbol;Acc:3262]	-1.802018846843236	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Dusp10	ENSRNOG00000004003	dual specificity phosphatase 10 [Source:RGD Symbol;Acc:1310844]	-1.8060676087407266	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Sema5a	ENSRNOG00000011977	sema domain, seven thrombospondin repeats (type 1 and type 1-like), transmembrane domain (TM) and short cytoplasmic domain, (semaphorin) 5A [Source:RGD Symbol;Acc:1308650]	-1.8112173710883632	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Map7d2	ENSRNOG00000005176	MAP7 domain containing 2 [Source:RGD Symbol;Acc:1564852]	-1.814027466343996	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Pkhd1l1	ENSRNOG00000004398	polycystic kidney and hepatic disease 1-like 1 [Source:RGD Symbol;Acc:1310406]	-1.8149638333120877	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Zfp704	ENSRNOG00000054426	zinc finger protein 704 [Source:RGD Symbol;Acc:1563869]	-1.8157379427515334	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Esr1	ENSRNOG00000019358	estrogen receptor 1 [Source:RGD Symbol;Acc:2581]	-1.8188115868487393	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Sult1a1	ENSRNOG00000019342	sulfotransferase family, cytosolic, 1A, phenol-preferring, member 1 [Source:RGD Symbol;Acc:3767]	-1.8317038915689947	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Lmod1	ENSRNOG00000051548	leiomodin 1 (smooth muscle) [Source:RGD Symbol;Acc:1307236]	-1.831800259809387	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Tmod2	ENSRNOG00000010447	tropomodulin 2 [Source:RGD Symbol;Acc:61948]	-1.8324531325911289	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Map7d3	ENSRNOG00000027831	MAP7 domain containing 3 [Source:RGD Symbol;Acc:1565514]	-1.8341499620054997	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Cd36	ENSRNOG00000040108	CD36 molecule (thrombospondin receptor) [Source:RGD Symbol;Acc:2301]	-1.8342885428508986	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Col4a5	ENSRNOG00000018951	collagen, type IV, alpha 5 [Source:RGD Symbol;Acc:1565499]	-1.8370203394163833	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Creb5	ENSRNOG00000008622	cAMP responsive element binding protein 5 [Source:RGD Symbol;Acc:1566107]	-1.8405934504905703	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Hibch	ENSRNOG00000028557	3-hydroxyisobutyryl-CoA hydrolase [Source:RGD Symbol;Acc:1308392]	-1.8406000846737627	Rattus norvegicus	S5	RTD-1 vs saline day 3
+LOC100912012	ENSRNOG00000004540	tetranectin-like [Source:RGD Symbol;Acc:6489383]	-1.8444881239172308	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Cyp27a1	ENSRNOG00000017188	cytochrome P450, family 27, subfamily a, polypeptide 1 [Source:RGD Symbol;Acc:727915]	-1.8447540714506878	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Aox1	ENSRNOG00000015354	aldehyde oxidase 1 [Source:RGD Symbol;Acc:620528]	-1.8468989067002828	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Dkk2	ENSRNOG00000011360	dickkopf WNT signaling pathway inhibitor 2 [Source:RGD Symbol;Acc:1308639]	-1.8598747901708332	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Lpl	ENSRNOG00000012181	lipoprotein lipase [Source:RGD Symbol;Acc:3017]	-1.8735508053902978	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Art3	ENSRNOG00000002256	ADP-ribosyltransferase 3 [Source:RGD Symbol;Acc:628833]	-1.900800604417158	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Kcna2	ENSRNOG00000018285	potassium channel, voltage gated shaker related subfamily A, member 2 [Source:RGD Symbol;Acc:2950]	-1.9155699779298327	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Ppl	ENSRNOG00000002930	periplakin [Source:RGD Symbol;Acc:1305511]	-1.9158691084656625	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Arhgap6	ENSRNOG00000003956	Rho GTPase activating protein 6 [Source:RGD Symbol;Acc:2323364]	-1.9350337105187945	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Gpc3	ENSRNOG00000060179	glypican 3 [Source:RGD Symbol;Acc:2725]	-1.9450858059678022	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Sdpr	ENSRNOG00000025895	serum deprivation response [Source:RGD Symbol;Acc:1359345]	-1.946623261497033	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Lamc3	ENSRNOG00000059507	laminin gamma 3 [Source:RGD Symbol;Acc:1309399]	-1.946649572955144	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Evpl	ENSRNOG00000009343	envoplakin [Source:RGD Symbol;Acc:1306141]	-1.9500214587410603	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Smpd3	ENSRNOG00000000257	sphingomyelin phosphodiesterase 3, neutral membrane [Source:RGD Symbol;Acc:619754]	-1.9614421693537138	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Akap12	ENSRNOG00000019549	A kinase (PRKA) anchor protein 12 [Source:RGD Symbol;Acc:70988]	-1.9695631844726131	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Trhde	ENSRNOG00000005278	thyrotropin-releasing hormone degrading enzyme [Source:RGD Symbol;Acc:728895]	-1.972758560343552	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Efhd1	ENSRNOG00000015596	EF-hand domain family, member D1 [Source:RGD Symbol;Acc:1559565]	-1.99715103355021	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Cyp2j4	ENSRNOG00000031004	cytochrome P450, family 2, subfamily j, polypeptide 4 [Source:RGD Symbol;Acc:620007]	-2.0159637957110985	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Epb41l4b	ENSRNOG00000056550	erythrocyte membrane protein band 4.1 like 4B [Source:RGD Symbol;Acc:1562988]	-2.0178344700114312	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Akr1cl	ENSRNOG00000021735	aldo-keto reductase family 1, member C-like [Source:RGD Symbol;Acc:1307514]	-2.020767441783169	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Ngfr	ENSRNOG00000005392	nerve growth factor receptor [Source:RGD Symbol;Acc:3177]	-2.0459535621332963	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Tnfrsf11b	ENSRNOG00000008336	tumor necrosis factor receptor superfamily, member 11b [Source:RGD Symbol;Acc:619802]	-2.0473937715760155	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Fcmr	ENSRNOG00000004441	Fc fragment of IgM receptor [Source:RGD Symbol;Acc:1359282]	-2.0606243117006326	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Tusc5	ENSRNOG00000022239	tumor suppressor candidate 5 [Source:RGD Symbol;Acc:1307639]	-2.0667405640330783	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Cyp21a1	ENSRNOG00000000428	cytochrome P450, family 21, subfamily a, polypeptide 1 [Source:RGD Symbol;Acc:2461]	-2.0668361176867642	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Cldn1	ENSRNOG00000001926	claudin 1 [Source:RGD Symbol;Acc:68422]	-2.074176307226385	Rattus norvegicus	S5	RTD-1 vs saline day 3
+F13a1	ENSRNOG00000015957	coagulation factor XIII, A1 polypeptide [Source:RGD Symbol;Acc:621495]	-2.080289337674549	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Kcnd3	ENSRNOG00000014686	potassium channel, voltage-gated Shal- related subfamily D, member 3 [Source:RGD Symbol;Acc:68394]	-2.0810409295114924	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Kcnk3	ENSRNOG00000009790	potassium channel, two pore domain subfamily K, member 3 [Source:RGD Symbol;Acc:61997]	-2.0896328760541025	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Mamdc2	ENSRNOG00000024620	MAM domain containing 2 [Source:MGI Symbol;Acc:MGI:1918988]	-2.089730502053932	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Cdo1	ENSRNOG00000000158	cysteine dioxygenase type 1 [Source:RGD Symbol;Acc:69262]	-2.0919828145152124	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Lpo	ENSRNOG00000008422	lactoperoxidase [Source:RGD Symbol;Acc:1310051]	-2.1134717668127747	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Adam23	ENSRNOG00000012424	ADAM metallopeptidase domain 23 [Source:RGD Symbol;Acc:1305739]	-2.116112458571149	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Nr3c2	ENSRNOG00000034007	nuclear receptor subfamily 3, group C, member 2 [Source:RGD Symbol;Acc:3094]	-2.1204913531713245	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Prr32	ENSRNOG00000049388	proline rich 32 [Source:RGD Symbol;Acc:1583341]	-2.141115763668973	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Adam33	ENSRNOG00000021242	ADAM metallopeptidase domain 33 [Source:RGD Symbol;Acc:1305278]	-2.1529304286976543	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Ntn4	ENSRNOG00000005573	netrin 4 [Source:RGD Symbol;Acc:1565947]	-2.171463194725216	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Tox	ENSRNOG00000010777	thymocyte selection-associated high mobility group box [Source:RGD Symbol;Acc:1310455]	-2.1771830961469676	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Ephx1	ENSRNOG00000003515	epoxide hydrolase 1, microsomal (xenobiotic) [Source:RGD Symbol;Acc:2557]	-2.18711472671099	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Acsl1	ENSRNOG00000010633	acyl-CoA synthetase long-chain family member 1 [Source:RGD Symbol;Acc:2015]	-2.193766383801577	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Cidea	ENSRNOG00000018505	cell death-inducing DFFA-like effector a [Source:RGD Symbol;Acc:1305106]	-2.1961727643468203	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Pde1b	ENSRNOG00000036828	phosphodiesterase 1B, calmodulin-dependent [Source:RGD Symbol;Acc:3278]	-2.214681507077061	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Calr4	ENSRNOG00000037710	calreticulin 4 [Source:RGD Symbol;Acc:1591090]	-2.2152582118552924	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Slc27a6	ENSRNOG00000058193	solute carrier family 27 (fatty acid transporter), member 6 [Source:RGD Symbol;Acc:1311977]	-2.231894447938154	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Car3	ENSRNOG00000010079	carbonic anhydrase 3 [Source:RGD Symbol;Acc:2241]	-2.268281195249079	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Chmp4c	ENSRNOG00000010238	charged multivesicular body protein 4C [Source:RGD Symbol;Acc:1564543]	-2.2813035748792054	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Ccl24	ENSRNOG00000031162	chemokine (C-C motif) ligand 24 [Source:RGD Symbol;Acc:1310245]	-2.2853586125286895	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Cilp	ENSRNOG00000029911	cartilage intermediate layer protein, nucleotide pyrophosphohydrolase [Source:RGD Symbol;Acc:1305124]	-2.289999050279124	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Sncg	ENSRNOG00000058006	synuclein, gamma [Source:RGD Symbol;Acc:70996]	-2.3084044223778637	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Fabp4	ENSRNOG00000010805	fatty acid binding protein 4, adipocyte [Source:RGD Symbol;Acc:69309]	-2.3221312216977346	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Prdm16	ENSRNOG00000045913	PR domain containing 16 [Source:RGD Symbol;Acc:2324431]	-2.3480209812181783	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Serpina1	ENSRNOG00000032669	serpin peptidase inhibitor, clade A (alpha-1 antiproteinase, antitrypsin), member 1 [Source:RGD Symbol;Acc:3326]	-2.349803275419229	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Calml3	ENSRNOG00000031955	calmodulin-like 3 [Source:RGD Symbol;Acc:1305499]	-2.367736769719301	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Tmem45b	ENSRNOG00000008515	transmembrane protein 45b [Source:RGD Symbol;Acc:1305586]	-2.3799563272700137	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Itih5	ENSRNOG00000049614	inter-alpha (globulin) inhibitor H5 [Source:MGI Symbol;Acc:MGI:1925751]	-2.3842755875774033	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Cyp39a1	ENSRNOG00000010519	cytochrome P450, family 39, subfamily a, polypeptide 1 [Source:RGD Symbol;Acc:1307471]	-2.399589393943506	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Cd209f	ENSRNOG00000042317	CD209f antigen [Source:RGD Symbol;Acc:1585258]	-2.4088066900160046	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Aldh3a1	ENSRNOG00000002331	aldehyde dehydrogenase 3 family, member A1 [Source:RGD Symbol;Acc:2088]	-2.4275592697448154	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Col28a1	ENSRNOG00000033618	collagen, type XXVIII, alpha 1 [Source:RGD Symbol;Acc:1564680]	-2.429111620483915	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Fgf1	ENSRNOG00000013867	fibroblast growth factor 1 (acidic) [Source:RGD Symbol;Acc:2605]	-2.4338318538212707	Rattus norvegicus	S5	RTD-1 vs saline day 3
+RGD1310049	ENSRNOG00000042309	similar to KIAA0408 gene product [Source:RGD Symbol;Acc:1310049]	-2.438963858694134	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Fez1	ENSRNOG00000006075	fasciculation and elongation protein zeta 1 (zygin I) [Source:RGD Symbol;Acc:619708]	-2.4469688398652267	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Agt	ENSRNOG00000018445	angiotensinogen (serpin peptidase inhibitor, clade A, member 8) [Source:RGD Symbol;Acc:2069]	-2.448551770968359	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Htra4	ENSRNOG00000061160	HtrA serine peptidase 4 [Source:RGD Symbol;Acc:1306242]	-2.463605475920543	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Adgrg2	ENSRNOG00000032472	adhesion G protein-coupled receptor G2 [Source:RGD Symbol;Acc:628618]	-2.4693999708994983	Rattus norvegicus	S5	RTD-1 vs saline day 3
+B3galt1	ENSRNOG00000007625	UDP-Gal:betaGlcNAc beta 1,3- galactosyltransferase, polypeptide 1 [Source:RGD Symbol;Acc:1311898]	-2.4954639456544836	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Col22a1	ENSRNOG00000024824	collagen, type XXII, alpha 1 [Source:RGD Symbol;Acc:1309081]	-2.5027666760202845	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Ptch2	ENSRNOG00000057616	patched 2 [Source:RGD Symbol;Acc:1309039]	-2.503095786497848	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Sema3d	ENSRNOG00000007202	sema domain, immunoglobulin domain (Ig), short basic domain, secreted, (semaphorin) 3D [Source:RGD Symbol;Acc:727939]	-2.596337621267289	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Ces2g	ENSRNOG00000013808	carboxylesterase 2G [Source:RGD Symbol;Acc:1308358]	-2.6099790020672082	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Lep	ENSRNOG00000045797	leptin [Source:RGD Symbol;Acc:3000]	-2.6359188757792427	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Tmem196	ENSRNOG00000037435	transmembrane protein 196 [Source:RGD Symbol;Acc:1562527]	-2.6488842817435385	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Retn	ENSRNOG00000001001	resistin [Source:RGD Symbol;Acc:628781]	-2.6837530022625957	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Ankef1	ENSRNOG00000005792	ankyrin repeat and EF-hand domain containing 1 [Source:RGD Symbol;Acc:1304809]	-2.690055839141688	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Plin4	ENSRNOG00000047046	perilipin 4 [Source:MGI Symbol;Acc:MGI:1929709]	-2.690875606923417	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Cd300lg	ENSRNOG00000020837	Cd300 molecule-like family member G [Source:RGD Symbol;Acc:1584376]	-2.73619471509588	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Rbp7	ENSRNOG00000015850	retinol binding protein 7, cellular [Source:RGD Symbol;Acc:1562168]	-2.740003241623168	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Ces1d	ENSRNOG00000015519	carboxylesterase 1D [Source:RGD Symbol;Acc:70896]	-2.803143302852329	Rattus norvegicus	S5	RTD-1 vs saline day 3
+LOC501110	ENSRNOG00000033402	similar to Glutathione S-transferase A1 (GTH1) (HA subunit 1) (GST-epsilon) (GSTA1-1) (GST class- alpha) [Source:RGD Symbol;Acc:1565402]	-2.824375426983338	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Adipoq	ENSRNOG00000001821	adiponectin, C1Q and collagen domain containing [Source:RGD Symbol;Acc:628748]	-2.888973559277073	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Phkg1	ENSRNOG00000000920	phosphorylase kinase, gamma 1 [Source:RGD Symbol;Acc:3325]	-2.8916104312094344	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Gpd1	ENSRNOG00000056457	glycerol-3-phosphate dehydrogenase 1 (soluble) [Source:RGD Symbol;Acc:621381]	-2.91672708270342	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Gstt3	ENSRNOG00000001242	glutathione S-transferase, theta 3 [Source:RGD Symbol;Acc:1562732]	-2.946806499989205	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Tshr	ENSRNOG00000003972	thyroid stimulating hormone receptor [Source:RGD Symbol;Acc:3911]	-3.0067049245470168	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Nckap5	ENSRNOG00000021553	NCK-associated protein 5 [Source:RGD Symbol;Acc:1564507]	-3.02558106582352	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Abcd2	ENSRNOG00000015538	ATP-binding cassette, subfamily D (ALD), member 2 [Source:RGD Symbol;Acc:69244]	-3.108961756238134	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Dhrs7l1	ENSRNOG00000025648	dehydrogenase/reductase (SDR family) member 7-like 1 [Source:RGD Symbol;Acc:1308036]	-3.130730969738367	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Gdf10	ENSRNOG00000051993	growth differentiation factor 10 [Source:RGD Symbol;Acc:621512]	-3.2252918210755652	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Plin1	ENSRNOG00000015086	perilipin 1 [Source:RGD Symbol;Acc:3351]	-3.285629942470791	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Col6a6	ENSRNOG00000023007	collagen, type VI, alpha 6 [Source:RGD Symbol;Acc:1309172]	-3.291088449342251	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Hcar1	ENSRNOG00000026661	hydroxycarboxylic acid receptor 1 [Source:RGD Symbol;Acc:1586364]	-3.291783264780119	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Thrsp	ENSRNOG00000012404	thyroid hormone responsive [Source:RGD Symbol;Acc:3859]	-3.296014295949243	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Cidec	ENSRNOG00000009153	cell death-inducing DFFA-like effector c [Source:RGD Symbol;Acc:1562113]	-3.3042650122689565	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Tmem179	ENSRNOG00000013128	transmembrane protein 179 [Source:RGD Symbol;Acc:1310269]	-3.505499174242936	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Cytl1	ENSRNOG00000028108	cytokine like 1 [Source:RGD Symbol;Acc:1561846]	-3.5416850405902913	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Bche	ENSRNOG00000009826	butyrylcholinesterase [Source:RGD Symbol;Acc:619996]	-4.196914288270075	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Acvr1c	ENSRNOG00000004828	activin A receptor, type IC [Source:RGD Symbol;Acc:621789]	-4.3457955384103055	Rattus norvegicus	S5	RTD-1 vs saline day 3
+Pck1	ENSRNOG00000028616	phosphoenolpyruvate carboxykinase 1 (soluble) [Source:RGD Symbol;Acc:3267]	-4.8542819277769045	Rattus norvegicus	S5	RTD-1 vs saline day 3

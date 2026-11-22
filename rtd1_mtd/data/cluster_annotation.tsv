@@ -1,0 +1,18 @@
+cluster	provisional_cell_type	marker_evidence	caution
+0	fibroblast	Col1a1;Dcn;Lum;Pdgfra;Htra3;Igfbp5	broad identity; not a validated subtype
+1	fibroblast	Col1a1;Dcn;Lum;Mfap5;Dpp4	heat-shock signature Hspa1b/Hspb1; stress may drive clustering
+2	fibroblast	Col1a1;Dcn;Lum;Pdgfra;Tnfaip6;Tfpi2	broad identity; not a validated subtype
+3	fibroblast	Col1a1;Dcn;Fmod;Thbs4;Tnmd	stromal/tendon-associated markers; subtype unresolved
+4	fibroblast	Col1a1;Dcn;Lum;Pdgfra;Prg4;Ccn3	broad identity; not a validated subtype
+5	fibroblast	Col1a1;Dcn;Lum;Pdgfra	heat-shock/immediate-early signature Hspa1b/Fos; stress may drive clustering
+6	fibroblast	Col1a1;Dcn;Lum;Pdgfra;Fn1;Tnn;Mmp3	broad identity; not a validated subtype
+7	unresolved	Cfl1;Tmsb4x;Myl12a;Actb;Rpl35	low-specificity markers; do not assign a cell type
+8	fibroblast	Col1a1;Col3a1;Dcn;Lum;Pdgfra;Cthrc1	broad identity; not a validated subtype
+9	endothelial	Pecam1;Cdh5;Kdr;Emcn;Vwf;Flt1	provisional marker-based annotation
+10	B_cell	Cd79a;Cd79b;Ms4a1;Cd19;Ighm	provisional marker-based annotation
+11	mural	Rgs5;Pdgfrb;Acta2;Tagln;Myl9	pericyte/smooth-muscle subtypes unresolved
+12	unresolved_mixed	Cd3d;Cd3e;Lck with Col1a1;Dcn;Lum;Pdgfra	mixed lineage; potential doublets or ambient RNA; not used as a pure cell type
+13	monocyte_macrophage	Cd68;Csf1r;Adgre1;Lyz2;C1qa;Tyrobp	monocyte/macrophage subtypes unresolved
+14	neutrophil	S100a8;S100a9;Csf3r;Retnlg;Lyz2	provisional marker-based annotation
+15	T_cell	Cd3d;Cd3e;Lck;Ptprc;Skap1	T-cell subtypes unresolved
+16	antigen_presenting_myeloid	Cd74;RT1-Da;RT1-Db1;RT1-Ba;RT1-Bb;Lyz2;Cd68	dendritic versus macrophage identity unresolved

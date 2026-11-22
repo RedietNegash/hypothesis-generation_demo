@@ -1,0 +1,93 @@
+[
+  {
+    "file": "data/raw/figshare_8855588.json",
+    "url": "https://api.figshare.com/v2/articles/8855588",
+    "bytes": 5929,
+    "sha256": "0f0c04f54de5f4625a94dca1809cf3a68270a47b0b38bbd998ea1e91880209d9",
+    "local_mtime_utc": "2026-11-22T12:02:32.273041+00:00"
+  },
+  {
+    "file": "data/raw/PhysiolGen_SupplementaryTables_2019.xls",
+    "url": "https://ndownloader.figshare.com/files/16224056",
+    "bytes": 326656,
+    "sha256": "f41ba1d43f4dc2fd2878026c1c57d544aa227900fc3b30bd7e7196f601d00185",
+    "local_mtime_utc": "2026-11-22T12:03:15.392616+00:00"
+  },
+  {
+    "file": "data/raw/PhysiolGen_SupplementaryFigures_2019.pdf",
+    "url": "https://ndownloader.figshare.com/files/16224050",
+    "bytes": 549119,
+    "sha256": "ea7574dfd8dc30bd4c4f6f13cf0f8fc734b2db9e50123b51105787e75727bf57",
+    "local_mtime_utc": "2026-11-22T12:14:44.893544+00:00"
+  },
+  {
+    "file": "data/raw/paper_2019.html",
+    "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6962595/",
+    "bytes": 215044,
+    "sha256": "1999e0b689eca08db9bc7190b63fda46544a49bcd3fc7a6d0ddab699c868729d",
+    "local_mtime_utc": "2026-11-22T12:03:21.876552+00:00"
+  },
+  {
+    "file": "data/raw/GSE278567_Partek_THP1_Gene_counts.txt.gz",
+    "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE278nnn/GSE278567/suppl/GSE278567_Partek_THP1_Gene_counts.txt.gz",
+    "bytes": 2287627,
+    "sha256": "8110749bc2464808d09af876792686a9b23a8cb094fdd0578343efc3813dff60",
+    "local_mtime_utc": "2026-11-22T12:03:25.448516+00:00"
+  },
+  {
+    "file": "data/raw/GSE278567_family.soft.gz",
+    "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE278nnn/GSE278567/soft/GSE278567_family.soft.gz",
+    "bytes": 3494,
+    "sha256": "349c654f7f7aa5b7379740197a0314fd4e96dbf29a9c0a2439d086fe29af20e0",
+    "local_mtime_utc": "2026-11-22T12:04:02.308150+00:00"
+  },
+  {
+    "file": "data/raw/GSE269120_family.soft.gz",
+    "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE269nnn/GSE269120/soft/GSE269120_family.soft.gz",
+    "bytes": 1841,
+    "sha256": "e814cac3c142926add3ac50e4d4e42ac2de603fdb3ea9412eb657a35fdfca4d7",
+    "local_mtime_utc": "2026-11-22T12:04:02.356150+00:00"
+  },
+  {
+    "file": "data/raw/GSE269120_RAW.tar",
+    "url": "https://ftp.ncbi.nlm.nih.gov/geo/series/GSE269nnn/GSE269120/suppl/GSE269120_RAW.tar",
+    "bytes": 77824000,
+    "sha256": "cc822084f55447c6406fda7dd9940c458c0a6066c4c7b2b4a7d69090e2c34832",
+    "local_mtime_utc": "2026-11-22T12:03:28.064490+00:00"
+  },
+  {
+    "file": "data/raw/Ensembl2Reactome.txt",
+    "url": "https://reactome.org/download/current/Ensembl2Reactome.txt",
+    "bytes": 191313718,
+    "sha256": "2244396a5aa7e7e16a217cc941cd8dbef68bb1539025eb205590502ac3589b33",
+    "local_mtime_utc": "2026-11-22T12:06:17.926788+00:00"
+  },
+  {
+    "file": "data/raw/reactome_version.txt",
+    "url": "https://reactome.org/ContentService/data/database/version",
+    "bytes": 2,
+    "sha256": "29db0c6782dbd5000559ef4d9e953e300e2b479eed26d887ef3f92b921c06a67",
+    "local_mtime_utc": "2026-11-22T12:09:26.380861+00:00"
+  },
+  {
+    "file": "data/raw/paper_2017.html",
+    "url": "https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0187868",
+    "bytes": 248699,
+    "sha256": "7ae6579f24000088476141f3e02690f228a0220a0ed34d14bff6e33db08553ec",
+    "local_mtime_utc": "2026-11-22T12:11:16.331722+00:00"
+  },
+  {
+    "file": "data/raw/paper_mtd_2021.html",
+    "url": "https://www.nature.com/articles/s41598-021-02619-y",
+    "bytes": 479999,
+    "sha256": "cdc2b292d31b5f14795db164c1fd574bbdef93cede88bf30acf83fd7d750abdc",
+    "local_mtime_utc": "2026-11-22T12:11:17.079715+00:00"
+  },
+  {
+    "file": "data/raw/MTD12813_2021_supplement.pdf",
+    "url": "https://static-content.springer.com/esm/art%3A10.1038%2Fs41598-021-02619-y/MediaObjects/41598_2021_2619_MOESM1_ESM.pdf",
+    "bytes": 676489,
+    "sha256": "70a7f6283df9af8cb4a43de756d5a0cc98a386c1915e0129a390bca178e2f8cf",
+    "local_mtime_utc": "2026-11-22T12:14:45.369539+00:00"
+  }
+]

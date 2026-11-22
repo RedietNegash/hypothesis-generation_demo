@@ -1,0 +1,618 @@
+symbol	ensembl_id	description	reported_signed_fold_change	species	source_table	comparison_as_reported
+Scd1	ENSRNOG00000013552	stearoyl-Coenzyme A desaturase 1 [Source:RGD Symbol;Acc:621176]	-90.2525663001996	Rattus norvegicus	S2	PIA vs naive
+Htra4	ENSRNOG00000061160	HtrA serine peptidase 4 [Source:RGD Symbol;Acc:1306242]	-81.09996153092577	Rattus norvegicus	S2	PIA vs naive
+Ces2g	ENSRNOG00000013808	carboxylesterase 2G [Source:RGD Symbol;Acc:1308358]	-79.86632982340312	Rattus norvegicus	S2	PIA vs naive
+Lpo	ENSRNOG00000008422	lactoperoxidase [Source:RGD Symbol;Acc:1310051]	-78.57325338971712	Rattus norvegicus	S2	PIA vs naive
+Mlxipl	ENSRNOG00000046171	MLX interacting protein-like [Source:RGD Symbol;Acc:620400]	-78.32388313947928	Rattus norvegicus	S2	PIA vs naive
+Ces1d	ENSRNOG00000015519	carboxylesterase 1D [Source:RGD Symbol;Acc:70896]	-77.42266188632888	Rattus norvegicus	S2	PIA vs naive
+Prr32	ENSRNOG00000049388	proline rich 32 [Source:RGD Symbol;Acc:1583341]	-74.78917556272563	Rattus norvegicus	S2	PIA vs naive
+Lep	ENSRNOG00000045797	leptin [Source:RGD Symbol;Acc:3000]	-72.59426179736015	Rattus norvegicus	S2	PIA vs naive
+Abcd2	ENSRNOG00000015538	ATP-binding cassette, subfamily D (ALD), member 2 [Source:RGD Symbol;Acc:69244]	-68.74096609143818	Rattus norvegicus	S2	PIA vs naive
+Pck1	ENSRNOG00000028616	phosphoenolpyruvate carboxykinase 1 (soluble) [Source:RGD Symbol;Acc:3267]	-67.2522054653961	Rattus norvegicus	S2	PIA vs naive
+Kcnn3	ENSRNOG00000020706	potassium channel, calcium activated intermediate/small conductance subfamily N alpha, member 3 [Source:RGD Symbol;Acc:2964]	-66.44760232221273	Rattus norvegicus	S2	PIA vs naive
+Acvr1c	ENSRNOG00000004828	activin A receptor, type IC [Source:RGD Symbol;Acc:621789]	-63.11448527269691	Rattus norvegicus	S2	PIA vs naive
+Thrsp	ENSRNOG00000012404	thyroid hormone responsive [Source:RGD Symbol;Acc:3859]	-51.77572158696121	Rattus norvegicus	S2	PIA vs naive
+Gstt3	ENSRNOG00000001242	glutathione S-transferase, theta 3 [Source:RGD Symbol;Acc:1562732]	-50.95653150997342	Rattus norvegicus	S2	PIA vs naive
+Slc7a15	ENSRNOG00000006119	solute carrier family 7 (cationic amino acid transporter, y+ system), member 15 [Source:RGD Symbol;Acc:1560726]	-47.87071004635695	Rattus norvegicus	S2	PIA vs naive
+Mamdc2	ENSRNOG00000024620	MAM domain containing 2 [Source:MGI Symbol;Acc:MGI:1918988]	-47.22692343256536	Rattus norvegicus	S2	PIA vs naive
+Aqp7	ENSRNOG00000009686	aquaporin 7 [Source:RGD Symbol;Acc:2145]	-47.0980242399122	Rattus norvegicus	S2	PIA vs naive
+Krt2	ENSRNOG00000009563	keratin 2, type II [Source:RGD Symbol;Acc:1303297]	-45.96425094982614	Rattus norvegicus	S2	PIA vs naive
+Cytl1	ENSRNOG00000028108	cytokine like 1 [Source:RGD Symbol;Acc:1561846]	-45.45904070398892	Rattus norvegicus	S2	PIA vs naive
+Npr3	ENSRNOG00000019184	natriuretic peptide receptor 3 [Source:RGD Symbol;Acc:3196]	-44.26381886371795	Rattus norvegicus	S2	PIA vs naive
+Ccl24	ENSRNOG00000031162	chemokine (C-C motif) ligand 24 [Source:RGD Symbol;Acc:1310245]	-43.769732899916676	Rattus norvegicus	S2	PIA vs naive
+Slc2a4	ENSRNOG00000017226	solute carrier family 2 (facilitated glucose transporter), member 4 [Source:RGD Symbol;Acc:2711]	-42.79658686326612	Rattus norvegicus	S2	PIA vs naive
+Bmp3	ENSRNOG00000002381	bone morphogenetic protein 3 [Source:RGD Symbol;Acc:2212]	-42.657768123813156	Rattus norvegicus	S2	PIA vs naive
+LOC100912373	ENSRNOG00000047537	uncharacterized LOC100912373 [Source:RGD Symbol;Acc:6487307]	-41.92796944173145	Rattus norvegicus	S2	PIA vs naive
+Nnat	ENSRNOG00000024923	neuronatin [Source:RGD Symbol;Acc:620155]	-40.91171824743286	Rattus norvegicus	S2	PIA vs naive
+LOC691485	ENSRNOG00000013097	hypothetical protein LOC691485 [Source:RGD Symbol;Acc:1583888]	-40.36657002131909	Rattus norvegicus	S2	PIA vs naive
+Ntf3	ENSRNOG00000019716	neurotrophin 3 [Source:RGD Symbol;Acc:619728]	-39.59284711653024	Rattus norvegicus	S2	PIA vs naive
+Rgs6	ENSRNOG00000008082	regulator of G-protein signaling 6 [Source:RGD Symbol;Acc:3569]	-39.31202056754995	Rattus norvegicus	S2	PIA vs naive
+LOC681458	ENSRNOG00000013279	similar to stearoyl-coenzyme A desaturase 3 [Source:RGD Symbol;Acc:1595370]	-38.82724462693384	Rattus norvegicus	S2	PIA vs naive
+Tshr	ENSRNOG00000003972	thyroid stimulating hormone receptor [Source:RGD Symbol;Acc:3911]	-38.66889262708125	Rattus norvegicus	S2	PIA vs naive
+Tmem179	ENSRNOG00000013128	transmembrane protein 179 [Source:RGD Symbol;Acc:1310269]	-37.155470547219664	Rattus norvegicus	S2	PIA vs naive
+Cpa4	ENSRNOG00000010463	carboxypeptidase A4 [Source:RGD Symbol;Acc:1563619]	-37.007023544862385	Rattus norvegicus	S2	PIA vs naive
+Lamc3	ENSRNOG00000059507	laminin gamma 3 [Source:RGD Symbol;Acc:1309399]	-36.18121560823648	Rattus norvegicus	S2	PIA vs naive
+Tmeff1	ENSRNOG00000008034	transmembrane protein with EGF-like and two follistatin-like domains 1 [Source:RGD Symbol;Acc:62005]	-35.239521875243845	Rattus norvegicus	S2	PIA vs naive
+Akr1c19	ENSRNOG00000038319	aldo-keto reductase family 1, member C19 [Source:RGD Symbol;Acc:1562954]	-35.052645461373615	Rattus norvegicus	S2	PIA vs naive
+Clic5	ENSRNOG00000047218	chloride intracellular channel 5 [Source:RGD Symbol;Acc:620659]	-34.78445773074854	Rattus norvegicus	S2	PIA vs naive
+Slc36a2	ENSRNOG00000011892	solute carrier family 36 (proton/amino acid symporter), member 2 [Source:RGD Symbol;Acc:620492]	-34.62868624498949	Rattus norvegicus	S2	PIA vs naive
+B3galt1	ENSRNOG00000007625	UDP-Gal:betaGlcNAc beta 1,3- galactosyltransferase, polypeptide 1 [Source:RGD Symbol;Acc:1311898]	-34.179115315686126	Rattus norvegicus	S2	PIA vs naive
+Aldh1a3	ENSRNOG00000052070	aldehyde dehydrogenase 1 family, member A3 [Source:RGD Symbol;Acc:628662]	-33.96364122066284	Rattus norvegicus	S2	PIA vs naive
+Bche	ENSRNOG00000009826	butyrylcholinesterase [Source:RGD Symbol;Acc:619996]	-33.76722498778251	Rattus norvegicus	S2	PIA vs naive
+Plin1	ENSRNOG00000015086	perilipin 1 [Source:RGD Symbol;Acc:3351]	-31.532934381517666	Rattus norvegicus	S2	PIA vs naive
+Gria2	ENSRNOG00000054204	glutamate receptor, ionotropic, AMPA 2 [Source:RGD Symbol;Acc:61862]	-31.415921323635246	Rattus norvegicus	S2	PIA vs naive
+Agt	ENSRNOG00000018445	angiotensinogen (serpin peptidase inhibitor, clade A, member 8) [Source:RGD Symbol;Acc:2069]	-31.397082746114016	Rattus norvegicus	S2	PIA vs naive
+Col6a6	ENSRNOG00000023007	collagen, type VI, alpha 6 [Source:RGD Symbol;Acc:1309172]	-31.361399805846396	Rattus norvegicus	S2	PIA vs naive
+Lgals12	ENSRNOG00000021207	lectin, galactoside-binding, soluble, 12 [Source:RGD Symbol;Acc:1306914]	-30.02195185195339	Rattus norvegicus	S2	PIA vs naive
+Tst	ENSRNOG00000000186	thiosulfate sulfurtransferase [Source:RGD Symbol;Acc:3913]	-29.566677452840786	Rattus norvegicus	S2	PIA vs naive
+Cidea	ENSRNOG00000018505	cell death-inducing DFFA-like effector a [Source:RGD Symbol;Acc:1305106]	-29.455973423004842	Rattus norvegicus	S2	PIA vs naive
+Hcar1	ENSRNOG00000026661	hydroxycarboxylic acid receptor 1 [Source:RGD Symbol;Acc:1586364]	-27.2441433840267	Rattus norvegicus	S2	PIA vs naive
+Atp1a2	ENSRNOG00000007290	ATPase, Na+/K+ transporting, alpha 2 polypeptide [Source:RGD Symbol;Acc:2168]	-26.829167335591574	Rattus norvegicus	S2	PIA vs naive
+Ppp1r1a	ENSRNOG00000036827	protein phosphatase 1, regulatory (inhibitor) subunit 1A [Source:RGD Symbol;Acc:62018]	-25.78164718376136	Rattus norvegicus	S2	PIA vs naive
+Adamts19	ENSRNOG00000019577	ADAM metallopeptidase with thrombospondin type 1 motif, 19 [Source:RGD Symbol;Acc:1308359]	-25.438599034963357	Rattus norvegicus	S2	PIA vs naive
+Acsl1	ENSRNOG00000010633	acyl-CoA synthetase long-chain family member 1 [Source:RGD Symbol;Acc:2015]	-25.03261147644109	Rattus norvegicus	S2	PIA vs naive
+Sult1a1	ENSRNOG00000019342	sulfotransferase family, cytosolic, 1A, phenol-preferring, member 1 [Source:RGD Symbol;Acc:3767]	-25.00631294563498	Rattus norvegicus	S2	PIA vs naive
+Gpd1	ENSRNOG00000056457	glycerol-3-phosphate dehydrogenase 1 (soluble) [Source:RGD Symbol;Acc:621381]	-24.6373870134241	Rattus norvegicus	S2	PIA vs naive
+Adipoq	ENSRNOG00000001821	adiponectin, C1Q and collagen domain containing [Source:RGD Symbol;Acc:628748]	-24.41461080593783	Rattus norvegicus	S2	PIA vs naive
+Cdh19	ENSRNOG00000029841	cadherin 19, type 2 [Source:RGD Symbol;Acc:1307169]	-24.2059781288347	Rattus norvegicus	S2	PIA vs naive
+Nat8l	ENSRNOG00000049351	N-acetyltransferase 8-like [Source:RGD Symbol;Acc:1305719]	-24.05974505150614	Rattus norvegicus	S2	PIA vs naive
+Tmem182	ENSRNOG00000028945	transmembrane protein 182 [Source:RGD Symbol;Acc:1563696]	-23.96709029012107	Rattus norvegicus	S2	PIA vs naive
+Acsm5	ENSRNOG00000031211	acyl-CoA synthetase medium-chain family member 5 [Source:RGD Symbol;Acc:1309578]	-23.654997036565607	Rattus norvegicus	S2	PIA vs naive
+Csmd1	ENSRNOG00000030719	CUB and Sushi multiple domains 1 [Source:RGD Symbol;Acc:1305103]	-23.15414505087953	Rattus norvegicus	S2	PIA vs naive
+Ppl	ENSRNOG00000002930	periplakin [Source:RGD Symbol;Acc:1305511]	-22.978616763026697	Rattus norvegicus	S2	PIA vs naive
+Pxmp2	ENSRNOG00000037446	peroxisomal membrane protein 2 [Source:RGD Symbol;Acc:61812]	-22.921371298127855	Rattus norvegicus	S2	PIA vs naive
+S100b	ENSRNOG00000001295	S100 calcium binding protein B [Source:RGD Symbol;Acc:3615]	-22.798414238700868	Rattus norvegicus	S2	PIA vs naive
+Adora1	ENSRNOG00000003442	adenosine A1 receptor [Source:RGD Symbol;Acc:2048]	-22.530914246509983	Rattus norvegicus	S2	PIA vs naive
+Gsn	ENSRNOG00000018991	gelsolin [Source:RGD Symbol;Acc:1303089]	-22.374982129347007	Rattus norvegicus	S2	PIA vs naive
+Car3	ENSRNOG00000010079	carbonic anhydrase 3 [Source:RGD Symbol;Acc:2241]	-22.15073322513725	Rattus norvegicus	S2	PIA vs naive
+Necab1	ENSRNOG00000007256	N-terminal EF-hand calcium binding protein 1 [Source:RGD Symbol;Acc:708548]	-22.097904682110048	Rattus norvegicus	S2	PIA vs naive
+Pnpla3	ENSRNOG00000022268	patatin-like phospholipase domain containing 3 [Source:RGD Symbol;Acc:1595843]	-21.342181510898325	Rattus norvegicus	S2	PIA vs naive
+Cidec	ENSRNOG00000009153	cell death-inducing DFFA-like effector c [Source:RGD Symbol;Acc:1562113]	-21.235523213611994	Rattus norvegicus	S2	PIA vs naive
+Pcp4l1	ENSRNOG00000003209	Purkinje cell protein 4-like 1 [Source:RGD Symbol;Acc:1593809]	-21.12053573691769	Rattus norvegicus	S2	PIA vs naive
+Sncg	ENSRNOG00000058006	synuclein, gamma [Source:RGD Symbol;Acc:70996]	-21.089180796348295	Rattus norvegicus	S2	PIA vs naive
+Pfkfb1	ENSRNOG00000000165	6-phosphofructo-2-kinase/fructose-2,6- biphosphatase 1 [Source:RGD Symbol;Acc:3307]	-20.96236140254898	Rattus norvegicus	S2	PIA vs naive
+Col28a1	ENSRNOG00000033618	collagen, type XXVIII, alpha 1 [Source:RGD Symbol;Acc:1564680]	-20.678038904388924	Rattus norvegicus	S2	PIA vs naive
+Plin4	ENSRNOG00000047046	perilipin 4 [Source:MGI Symbol;Acc:MGI:1929709]	-20.314923828046194	Rattus norvegicus	S2	PIA vs naive
+Vit	ENSRNOG00000004706	vitrin [Source:RGD Symbol;Acc:1564128]	-19.84140384949607	Rattus norvegicus	S2	PIA vs naive
+Galnt9	ENSRNOG00000037476	polypeptide N- acetylgalactosaminyltransferase 9 [Source:RGD Symbol;Acc:1311523]	-19.80847142647925	Rattus norvegicus	S2	PIA vs naive
+Adgrg2	ENSRNOG00000032472	adhesion G protein-coupled receptor G2 [Source:RGD Symbol;Acc:628618]	-19.802426467532822	Rattus norvegicus	S2	PIA vs naive
+Adam33	ENSRNOG00000021242	ADAM metallopeptidase domain 33 [Source:RGD Symbol;Acc:1305278]	-19.652213329834826	Rattus norvegicus	S2	PIA vs naive
+Ppp1r9a	ENSRNOG00000008869	protein phosphatase 1, regulatory subunit 9A [Source:RGD Symbol;Acc:632280]	-19.6467851489632	Rattus norvegicus	S2	PIA vs naive
+Itih5	ENSRNOG00000049614	inter-alpha (globulin) inhibitor H5 [Source:MGI Symbol;Acc:MGI:1925751]	-19.469108584390444	Rattus norvegicus	S2	PIA vs naive
+Rn50_20_0066.11	ENSRNOG00000052039	No description	-19.187520476720376	Rattus norvegicus	S2	PIA vs naive
+Phex	ENSRNOG00000023440	phosphate regulating endopeptidase homolog, X-linked [Source:RGD Symbol;Acc:3323]	-18.73369507030341	Rattus norvegicus	S2	PIA vs naive
+Dgkb	ENSRNOG00000030771	diacylglycerol kinase, beta [Source:RGD Symbol;Acc:2488]	-18.64077852828786	Rattus norvegicus	S2	PIA vs naive
+Hba-a1	ENSRNOG00000045989	hemoglobin alpha, adult chain 1 [Source:RGD Symbol;Acc:1359209]	-18.54336942200765	Rattus norvegicus	S2	PIA vs naive
+C1qtnf9	ENSRNOG00000013793	C1q and tumor necrosis factor related protein 9 [Source:RGD Symbol;Acc:1560876]	-18.416322242821952	Rattus norvegicus	S2	PIA vs naive
+Cpa2	ENSRNOG00000028092	carboxypeptidase A2 (pancreatic) [Source:RGD Symbol;Acc:1305563]	-18.3112206033805	Rattus norvegicus	S2	PIA vs naive
+Cyp21a1	ENSRNOG00000000428	cytochrome P450, family 21, subfamily a, polypeptide 1 [Source:RGD Symbol;Acc:2461]	-18.08731355069965	Rattus norvegicus	S2	PIA vs naive
+Cacng1	ENSRNOG00000003245	calcium channel, voltage-dependent, gamma subunit 1 [Source:RGD Symbol;Acc:2249]	-17.628691822208523	Rattus norvegicus	S2	PIA vs naive
+Smpd3	ENSRNOG00000000257	sphingomyelin phosphodiesterase 3, neutral membrane [Source:RGD Symbol;Acc:619754]	-17.551953698960702	Rattus norvegicus	S2	PIA vs naive
+Ankef1	ENSRNOG00000005792	ankyrin repeat and EF-hand domain containing 1 [Source:RGD Symbol;Acc:1304809]	-17.475916044587283	Rattus norvegicus	S2	PIA vs naive
+Cd300lg	ENSRNOG00000020837	Cd300 molecule-like family member G [Source:RGD Symbol;Acc:1584376]	-17.097169550517158	Rattus norvegicus	S2	PIA vs naive
+Gdf10	ENSRNOG00000051993	growth differentiation factor 10 [Source:RGD Symbol;Acc:621512]	-16.53360276345358	Rattus norvegicus	S2	PIA vs naive
+Dsg1	ENSRNOG00000016853	desmoglein 1 [Source:RGD Symbol;Acc:1309925]	-16.526863235944184	Rattus norvegicus	S2	PIA vs naive
+Exph5	ENSRNOG00000025115	exophilin 5 [Source:RGD Symbol;Acc:1560308]	-15.789889965961184	Rattus norvegicus	S2	PIA vs naive
+Evpl	ENSRNOG00000009343	envoplakin [Source:RGD Symbol;Acc:1306141]	-15.752816986461767	Rattus norvegicus	S2	PIA vs naive
+Timp4	ENSRNOG00000007955	tissue inhibitor of metalloproteinase 4 [Source:RGD Symbol;Acc:69077]	-15.74319668657563	Rattus norvegicus	S2	PIA vs naive
+Myh14	ENSRNOG00000020014	myosin, heavy chain 14, non-muscle [Source:RGD Symbol;Acc:1306821]	-15.578097390807976	Rattus norvegicus	S2	PIA vs naive
+Cdo1	ENSRNOG00000000158	cysteine dioxygenase type 1 [Source:RGD Symbol;Acc:69262]	-15.544875424934931	Rattus norvegicus	S2	PIA vs naive
+Phkg1	ENSRNOG00000000920	phosphorylase kinase, gamma 1 [Source:RGD Symbol;Acc:3325]	-15.416983031695136	Rattus norvegicus	S2	PIA vs naive
+Ptger3	ENSRNOG00000010325	prostaglandin E receptor 3 (subtype EP3) [Source:RGD Symbol;Acc:3435]	-15.269820521871335	Rattus norvegicus	S2	PIA vs naive
+Galnt15	ENSRNOG00000019718	polypeptide N- acetylgalactosaminyltransferase 15 [Source:RGD Symbol;Acc:2322081]	-15.2386937106557	Rattus norvegicus	S2	PIA vs naive
+Nr3c2	ENSRNOG00000034007	nuclear receptor subfamily 3, group C, member 2 [Source:RGD Symbol;Acc:3094]	-15.225376377834486	Rattus norvegicus	S2	PIA vs naive
+Mybpc1	ENSRNOG00000056493	myosin binding protein C, slow type [Source:RGD Symbol;Acc:735102]	-15.148076688351338	Rattus norvegicus	S2	PIA vs naive
+Prodh	ENSRNOG00000000281	proline dehydrogenase (oxidase) 1 [Source:RGD Symbol;Acc:1590932]	-14.963976056823878	Rattus norvegicus	S2	PIA vs naive
+RGD1310049	ENSRNOG00000042309	similar to KIAA0408 gene product [Source:RGD Symbol;Acc:1310049]	-14.449296769209273	Rattus norvegicus	S2	PIA vs naive
+Pparg	ENSRNOG00000008839	peroxisome proliferator-activated receptor gamma [Source:RGD Symbol;Acc:3371]	-14.415227246197865	Rattus norvegicus	S2	PIA vs naive
+Calr4	ENSRNOG00000037710	calreticulin 4 [Source:RGD Symbol;Acc:1591090]	-14.09687303762875	Rattus norvegicus	S2	PIA vs naive
+Ephx1	ENSRNOG00000003515	epoxide hydrolase 1, microsomal (xenobiotic) [Source:RGD Symbol;Acc:2557]	-13.976663040001664	Rattus norvegicus	S2	PIA vs naive
+Fam26e	ENSRNOG00000000825	family with sequence similarity 26, member E [Source:RGD Symbol;Acc:1310405]	-13.917258076870283	Rattus norvegicus	S2	PIA vs naive
+Mc2r	ENSRNOG00000016681	melanocortin 2 receptor (adrenocorticotropic hormone) [Source:RGD Symbol;Acc:628649]	-13.79023591306012	Rattus norvegicus	S2	PIA vs naive
+Pla2g16	ENSRNOG00000021206	phospholipase A2, group XVI [Source:RGD Symbol;Acc:2829]	-13.784355172260561	Rattus norvegicus	S2	PIA vs naive
+Rasgrf2	ENSRNOG00000056151	RAS protein-specific guanine nucleotide- releasing factor 2 [Source:MGI Symbol;Acc:MGI:109137]	-13.57076919668598	Rattus norvegicus	S2	PIA vs naive
+Pkhd1l1	ENSRNOG00000004398	polycystic kidney and hepatic disease 1-like 1 [Source:RGD Symbol;Acc:1310406]	-13.30796087732918	Rattus norvegicus	S2	PIA vs naive
+Trhde	ENSRNOG00000005278	thyrotropin-releasing hormone degrading enzyme [Source:RGD Symbol;Acc:728895]	-13.253289232952378	Rattus norvegicus	S2	PIA vs naive
+Fmo2	ENSRNOG00000003510	flavin containing monooxygenase 2 [Source:RGD Symbol;Acc:628600]	-13.239830180022771	Rattus norvegicus	S2	PIA vs naive
+Sox6	ENSRNOG00000020514	SRY (sex determining region Y)-box 6 [Source:RGD Symbol;Acc:1309000]	-12.972737969166463	Rattus norvegicus	S2	PIA vs naive
+Pygm	ENSRNOG00000021090	phosphorylase, glycogen, muscle [Source:RGD Symbol;Acc:3461]	-12.918653012803079	Rattus norvegicus	S2	PIA vs naive
+Sdpr	ENSRNOG00000025895	serum deprivation response [Source:RGD Symbol;Acc:1359345]	-12.801019642477698	Rattus norvegicus	S2	PIA vs naive
+Cyp2j4	ENSRNOG00000031004	cytochrome P450, family 2, subfamily j, polypeptide 4 [Source:RGD Symbol;Acc:620007]	-12.673684619642067	Rattus norvegicus	S2	PIA vs naive
+Zfp536	ENSRNOG00000014163	zinc finger protein 536 [Source:RGD Symbol;Acc:1563363]	-12.566945166403784	Rattus norvegicus	S2	PIA vs naive
+Kcna1	ENSRNOG00000019750	potassium channel, voltage gated shaker related subfamily A, member 1 [Source:RGD Symbol;Acc:2949]	-12.501795620376608	Rattus norvegicus	S2	PIA vs naive
+Retn	ENSRNOG00000001001	resistin [Source:RGD Symbol;Acc:628781]	-12.474412575242987	Rattus norvegicus	S2	PIA vs naive
+Ccdc30	ENSRNOG00000008560	coiled-coil domain containing 30 [Source:RGD Symbol;Acc:1305604]	-12.469777840779896	Rattus norvegicus	S2	PIA vs naive
+Tmod2	ENSRNOG00000010447	tropomodulin 2 [Source:RGD Symbol;Acc:61948]	-12.468744069202017	Rattus norvegicus	S2	PIA vs naive
+Kcnk3	ENSRNOG00000009790	potassium channel, two pore domain subfamily K, member 3 [Source:RGD Symbol;Acc:61997]	-12.414077262799317	Rattus norvegicus	S2	PIA vs naive
+Serpina1	ENSRNOG00000032669	serpin peptidase inhibitor, clade A (alpha-1 antiproteinase, antitrypsin), member 1 [Source:RGD Symbol;Acc:3326]	-12.350794948197656	Rattus norvegicus	S2	PIA vs naive
+Fabp4	ENSRNOG00000010805	fatty acid binding protein 4, adipocyte [Source:RGD Symbol;Acc:69309]	-12.22286154560335	Rattus norvegicus	S2	PIA vs naive
+Cryab	ENSRNOG00000010524	crystallin, alpha B [Source:RGD Symbol;Acc:2414]	-12.118614396466072	Rattus norvegicus	S2	PIA vs naive
+Tusc5	ENSRNOG00000022239	tumor suppressor candidate 5 [Source:RGD Symbol;Acc:1307639]	-12.105073633779837	Rattus norvegicus	S2	PIA vs naive
+Slc7a10	ENSRNOG00000010938	solute carrier family 7 (neutral amino acid transporter light chain, asc system), member 10 [Source:RGD Symbol;Acc:621672]	-12.074156831740071	Rattus norvegicus	S2	PIA vs naive
+Scn7a	ENSRNOG00000029342	sodium channel, voltage-gated, type VII, alpha subunit [Source:RGD Symbol;Acc:61922]	-12.069475123313927	Rattus norvegicus	S2	PIA vs naive
+Slc27a6	ENSRNOG00000058193	solute carrier family 27 (fatty acid transporter), member 6 [Source:RGD Symbol;Acc:1311977]	-11.986284978987573	Rattus norvegicus	S2	PIA vs naive
+Fgf1	ENSRNOG00000013867	fibroblast growth factor 1 (acidic) [Source:RGD Symbol;Acc:2605]	-11.979242496109526	Rattus norvegicus	S2	PIA vs naive
+Ptch2	ENSRNOG00000057616	patched 2 [Source:RGD Symbol;Acc:1309039]	-11.808969790413396	Rattus norvegicus	S2	PIA vs naive
+Myrip	ENSRNOG00000018797	myosin VIIA and Rab interacting protein [Source:RGD Symbol;Acc:727731]	-11.595610008441819	Rattus norvegicus	S2	PIA vs naive
+Fam124a	ENSRNOG00000009802	family with sequence similarity 124A [Source:RGD Symbol;Acc:1593344]	-11.321981960565777	Rattus norvegicus	S2	PIA vs naive
+Stmn4	ENSRNOG00000053334	stathmin-like 4 [Source:RGD Symbol;Acc:69349]	-11.21784928398023	Rattus norvegicus	S2	PIA vs naive
+Pmfbp1	ENSRNOG00000014505	polyamine modulated factor 1 binding protein 1 [Source:RGD Symbol;Acc:621677]	-11.180544151311581	Rattus norvegicus	S2	PIA vs naive
+Tdrp	ENSRNOG00000027245	testis development related protein [Source:RGD Symbol;Acc:1559733]	-11.09131061610004	Rattus norvegicus	S2	PIA vs naive
+Aox3	ENSRNOG00000014555	aldehyde oxidase 3 [Source:RGD Symbol;Acc:1359328]	-11.04974862920802	Rattus norvegicus	S2	PIA vs naive
+Ffar4	ENSRNOG00000021763	free fatty acid receptor 4 [Source:RGD Symbol;Acc:1308252]	-11.028181108760462	Rattus norvegicus	S2	PIA vs naive
+Lipe	ENSRNOG00000020546	lipase, hormone sensitive [Source:RGD Symbol;Acc:3010]	-10.97437500550269	Rattus norvegicus	S2	PIA vs naive
+Cldn1	ENSRNOG00000001926	claudin 1 [Source:RGD Symbol;Acc:68422]	-10.89902310599484	Rattus norvegicus	S2	PIA vs naive
+Ltbp4	ENSRNOG00000020871	latent transforming growth factor beta binding protein 4 [Source:RGD Symbol;Acc:1307033]	-10.896840415070947	Rattus norvegicus	S2	PIA vs naive
+Dnah11	ENSRNOG00000005451	dynein, axonemal, heavy chain 11 [Source:RGD Symbol;Acc:621088]	-10.828741276813103	Rattus norvegicus	S2	PIA vs naive
+Zbtb16	ENSRNOG00000029980	zinc finger and BTB domain containing 16 [Source:RGD Symbol;Acc:727921]	-10.788460473089307	Rattus norvegicus	S2	PIA vs naive
+Mpz	ENSRNOG00000003171	myelin protein zero [Source:RGD Symbol;Acc:3109]	-10.748019583310086	Rattus norvegicus	S2	PIA vs naive
+Tenm2	ENSRNOG00000027341	teneurin transmembrane protein 2 [Source:RGD Symbol;Acc:727907]	-10.695035009750342	Rattus norvegicus	S2	PIA vs naive
+Kif19	ENSRNOG00000003105	kinesin family member 19 [Source:RGD Symbol;Acc:1559936]	-10.685712930699589	Rattus norvegicus	S2	PIA vs naive
+Efhd1	ENSRNOG00000015596	EF-hand domain family, member D1 [Source:RGD Symbol;Acc:1559565]	-10.643233576097977	Rattus norvegicus	S2	PIA vs naive
+Timp3	ENSRNOG00000004303	TIMP metallopeptidase inhibitor 3 [Source:RGD Symbol;Acc:3865]	-10.584922490899128	Rattus norvegicus	S2	PIA vs naive
+Col4a3	ENSRNOG00000015365	collagen, type IV, alpha 3 [Source:RGD Symbol;Acc:71085]	-10.577401530599422	Rattus norvegicus	S2	PIA vs naive
+Lpl	ENSRNOG00000012181	lipoprotein lipase [Source:RGD Symbol;Acc:3017]	-10.376505943219282	Rattus norvegicus	S2	PIA vs naive
+Kcnd3	ENSRNOG00000014686	potassium channel, voltage-gated Shal- related subfamily D, member 3 [Source:RGD Symbol;Acc:68394]	-10.35013815842285	Rattus norvegicus	S2	PIA vs naive
+Mustn1	ENSRNOG00000017369	musculoskeletal, embryonic nuclear protein 1 [Source:RGD Symbol;Acc:727804]	-10.296422276292613	Rattus norvegicus	S2	PIA vs naive
+Gpt	ENSRNOG00000033915	glutamic-pyruvate transaminase (alanine aminotransferase) [Source:RGD Symbol;Acc:621720]	-10.284947788979943	Rattus norvegicus	S2	PIA vs naive
+Dhrs7l1	ENSRNOG00000025648	dehydrogenase/reductase (SDR family) member 7-like 1 [Source:RGD Symbol;Acc:1308036]	-10.218227631364712	Rattus norvegicus	S2	PIA vs naive
+Cyp39a1	ENSRNOG00000010519	cytochrome P450, family 39, subfamily a, polypeptide 1 [Source:RGD Symbol;Acc:1307471]	-10.199627362385995	Rattus norvegicus	S2	PIA vs naive
+Myoc	ENSRNOG00000003221	myocilin, trabecular meshwork inducible glucocorticoid response [Source:RGD Symbol;Acc:620430]	-10.09132528735807	Rattus norvegicus	S2	PIA vs naive
+Tecta	ENSRNOG00000031126	tectorin alpha [Source:RGD Symbol;Acc:1309824]	-10.008962630212023	Rattus norvegicus	S2	PIA vs naive
+Pc	ENSRNOG00000019372	pyruvate carboxylase [Source:RGD Symbol;Acc:3262]	-9.841720191496659	Rattus norvegicus	S2	PIA vs naive
+Kcnb1	ENSRNOG00000046949	potassium channel, voltage gated Shab- related subfamily B, member 1 [Source:RGD Symbol;Acc:2954]	-9.809865117590782	Rattus norvegicus	S2	PIA vs naive
+Fst	ENSRNOG00000011631	follistatin [Source:RGD Symbol;Acc:2633]	-9.74554501650124	Rattus norvegicus	S2	PIA vs naive
+Aoc3	ENSRNOG00000051307	amine oxidase, copper containing 3 [Source:RGD Symbol;Acc:62058]	-9.710930223320677	Rattus norvegicus	S2	PIA vs naive
+Calml3	ENSRNOG00000031955	calmodulin-like 3 [Source:RGD Symbol;Acc:1305499]	-9.6860832320346	Rattus norvegicus	S2	PIA vs naive
+Prkar2b	ENSRNOG00000009079	protein kinase, cAMP dependent regulatory, type II beta [Source:RGD Symbol;Acc:3394]	-9.610980197424368	Rattus norvegicus	S2	PIA vs naive
+Apcdd1	ENSRNOG00000043304	adenomatosis polyposis coli down-regulated 1 [Source:RGD Symbol;Acc:1589962]	-9.594496010165782	Rattus norvegicus	S2	PIA vs naive
+Arl4d	ENSRNOG00000020770	ADP-ribosylation factor-like 4D [Source:RGD Symbol;Acc:1306875]	-9.538737791553185	Rattus norvegicus	S2	PIA vs naive
+Nckap5	ENSRNOG00000021553	NCK-associated protein 5 [Source:RGD Symbol;Acc:1564507]	-9.535657577502024	Rattus norvegicus	S2	PIA vs naive
+Lgi4	ENSRNOG00000021087	leucine-rich repeat LGI family, member 4 [Source:RGD Symbol;Acc:735035]	-9.500361231708066	Rattus norvegicus	S2	PIA vs naive
+Mlip	ENSRNOG00000005934	muscular LMNA-interacting protein [Source:RGD Symbol;Acc:1590513]	-9.461262234535944	Rattus norvegicus	S2	PIA vs naive
+Tchh	ENSRNOG00000056746	trichohyalin [Source:MGI Symbol;Acc:MGI:2177944]	-9.414272463884869	Rattus norvegicus	S2	PIA vs naive
+Fasn	ENSRNOG00000045636	fatty acid synthase [Source:RGD Symbol;Acc:620665]	-9.410626032544005	Rattus norvegicus	S2	PIA vs naive
+Fez1	ENSRNOG00000006075	fasciculation and elongation protein zeta 1 (zygin I) [Source:RGD Symbol;Acc:619708]	-9.398589893797594	Rattus norvegicus	S2	PIA vs naive
+Pdzd2	ENSRNOG00000013140	PDZ domain containing 2 [Source:RGD Symbol;Acc:619958]	-9.39788458386269	Rattus norvegicus	S2	PIA vs naive
+Ntrk3	ENSRNOG00000018674	neurotrophic tyrosine kinase, receptor, type 3 [Source:RGD Symbol;Acc:3214]	-9.365229864031944	Rattus norvegicus	S2	PIA vs naive
+Ctnna3	ENSRNOG00000000373	catenin (cadherin associated protein), alpha 3 [Source:RGD Symbol;Acc:1562230]	-9.344465420959159	Rattus norvegicus	S2	PIA vs naive
+Ntn1	ENSRNOG00000003947	netrin 1 [Source:RGD Symbol;Acc:619809]	-9.308276395018117	Rattus norvegicus	S2	PIA vs naive
+Chmp4c	ENSRNOG00000010238	charged multivesicular body protein 4C [Source:RGD Symbol;Acc:1564543]	-9.204369498459592	Rattus norvegicus	S2	PIA vs naive
+Tbx5	ENSRNOG00000001399	T-box 5 [Source:RGD Symbol;Acc:1305702]	-9.187825107984343	Rattus norvegicus	S2	PIA vs naive
+Cbx7	ENSRNOG00000016875	chromobox homolog 7 [Source:RGD Symbol;Acc:735027]	-9.146998455720912	Rattus norvegicus	S2	PIA vs naive
+Col22a1	ENSRNOG00000024824	collagen, type XXII, alpha 1 [Source:RGD Symbol;Acc:1309081]	-9.096321511453718	Rattus norvegicus	S2	PIA vs naive
+Bcas1	ENSRNOG00000012906	breast carcinoma amplified sequence 1 [Source:RGD Symbol;Acc:628644]	-9.017781959214085	Rattus norvegicus	S2	PIA vs naive
+Klf15	ENSRNOG00000017808	Kruppel-like factor 15 [Source:RGD Symbol;Acc:70918]	-8.995983718266729	Rattus norvegicus	S2	PIA vs naive
+Hba-a3	ENSRNOG00000029886	hemoglobin alpha, adult chain 3 [Source:RGD Symbol;Acc:2782]	-8.967257337418845	Rattus norvegicus	S2	PIA vs naive
+Ldhb	ENSRNOG00000013000	lactate dehydrogenase B [Source:RGD Symbol;Acc:2997]	-8.940708585105481	Rattus norvegicus	S2	PIA vs naive
+Nr1d1	ENSRNOG00000009329	nuclear receptor subfamily 1, group D, member 1 [Source:RGD Symbol;Acc:628827]	-8.880676620609837	Rattus norvegicus	S2	PIA vs naive
+Ramp1	ENSRNOG00000019926	receptor (G protein-coupled) activity modifying protein 1 [Source:RGD Symbol;Acc:61870]	-8.845334581599717	Rattus norvegicus	S2	PIA vs naive
+Pde1b	ENSRNOG00000036828	phosphodiesterase 1B, calmodulin-dependent [Source:RGD Symbol;Acc:3278]	-8.84176220981088	Rattus norvegicus	S2	PIA vs naive
+Dgat2	ENSRNOG00000016573	diacylglycerol O-acyltransferase 2 [Source:RGD Symbol;Acc:620329]	-8.801826903450493	Rattus norvegicus	S2	PIA vs naive
+Sema3d	ENSRNOG00000007202	sema domain, immunoglobulin domain (Ig), short basic domain, secreted, (semaphorin) 3D [Source:RGD Symbol;Acc:727939]	-8.790523747325826	Rattus norvegicus	S2	PIA vs naive
+Aldh3a1	ENSRNOG00000002331	aldehyde dehydrogenase 3 family, member A1 [Source:RGD Symbol;Acc:2088]	-8.765873897777729	Rattus norvegicus	S2	PIA vs naive
+Tppp3	ENSRNOG00000016890	tubulin polymerization-promoting protein family member 3 [Source:RGD Symbol;Acc:1305061]	-8.720819879704752	Rattus norvegicus	S2	PIA vs naive
+F13a1	ENSRNOG00000015957	coagulation factor XIII, A1 polypeptide [Source:RGD Symbol;Acc:621495]	-8.660322198766519	Rattus norvegicus	S2	PIA vs naive
+Adcy1	ENSRNOG00000059479	adenylate cyclase 1 (brain) [Source:RGD Symbol;Acc:1309318]	-8.65219517632855	Rattus norvegicus	S2	PIA vs naive
+Dhcr7	ENSRNOG00000020776	7-dehydrocholesterol reductase [Source:RGD Symbol;Acc:621769]	-8.63620108253549	Rattus norvegicus	S2	PIA vs naive
+Snca	ENSRNOG00000008656	synuclein, alpha (non A4 component of amyloid precursor) [Source:RGD Symbol;Acc:3729]	-8.58950812004536	Rattus norvegicus	S2	PIA vs naive
+Syde2	ENSRNOG00000026186	synapse defective 1, Rho GTPase, homolog 2 (C. elegans) [Source:RGD Symbol;Acc:1564206]	-8.558137450628951	Rattus norvegicus	S2	PIA vs naive
+Ano1	ENSRNOG00000020865	anoctamin 1, calcium activated chloride channel [Source:RGD Symbol;Acc:1310786]	-8.530554856965315	Rattus norvegicus	S2	PIA vs naive
+Hba-a2	ENSRNOG00000047321	hemoglobin alpha, adult chain 2 [Source:RGD Symbol;Acc:1359364]	-8.507014569936326	Rattus norvegicus	S2	PIA vs naive
+G0s2	ENSRNOG00000006019	G0/G1switch 2 [Source:RGD Symbol;Acc:1311675]	-8.489561864254469	Rattus norvegicus	S2	PIA vs naive
+Tox	ENSRNOG00000010777	thymocyte selection-associated high mobility group box [Source:RGD Symbol;Acc:1310455]	-8.448687273117855	Rattus norvegicus	S2	PIA vs naive
+Smoc1	ENSRNOG00000005998	SPARC related modular calcium binding 1 [Source:RGD Symbol;Acc:1303126]	-8.443725714362039	Rattus norvegicus	S2	PIA vs naive
+Tmem196	ENSRNOG00000037435	transmembrane protein 196 [Source:RGD Symbol;Acc:1562527]	-8.414959409087285	Rattus norvegicus	S2	PIA vs naive
+Mbp	ENSRNOG00000016516	myelin basic protein [Source:RGD Symbol;Acc:3054]	-8.330098038259475	Rattus norvegicus	S2	PIA vs naive
+Cav2	ENSRNOG00000057713	caveolin 2 [Source:RGD Symbol;Acc:620348]	-8.237996852532635	Rattus norvegicus	S2	PIA vs naive
+Epb41l4b	ENSRNOG00000056550	erythrocyte membrane protein band 4.1 like 4B [Source:RGD Symbol;Acc:1562988]	-8.119663910234479	Rattus norvegicus	S2	PIA vs naive
+Lifr	ENSRNOG00000011696	leukemia inhibitory factor receptor alpha [Source:RGD Symbol;Acc:621431]	-8.0921748894391	Rattus norvegicus	S2	PIA vs naive
+Acacb	ENSRNOG00000000658	acetyl-CoA carboxylase beta [Source:RGD Symbol;Acc:620500]	-8.01524729422149	Rattus norvegicus	S2	PIA vs naive
+Hbb	ENSRNOG00000058105	hemoglobin, beta [Source:RGD Symbol;Acc:2783]	-8.001171920452416	Rattus norvegicus	S2	PIA vs naive
+Etv1	ENSRNOG00000006867	ets variant 1 [Source:RGD Symbol;Acc:1312007]	-7.968023349022101	Rattus norvegicus	S2	PIA vs naive
+Akr1e2	ENSRNOG00000017165	aldo-keto reductase family 1, member E2 [Source:RGD Symbol;Acc:1309599]	-7.948766439617027	Rattus norvegicus	S2	PIA vs naive
+Ip6k3	ENSRNOG00000025883	inositol hexakisphosphate kinase 3 [Source:RGD Symbol;Acc:1584104]	-7.9322169279029895	Rattus norvegicus	S2	PIA vs naive
+Pcbd1	ENSRNOG00000000566	pterin-4 alpha-carbinolamine dehydratase/dimerization cofactor of hepatocyte nuclear factor 1 alpha [Source:RGD Symbol;Acc:3263]	-7.868041474726006	Rattus norvegicus	S2	PIA vs naive
+Enpp2	ENSRNOG00000004089	ectonucleotide pyrophosphatase/phosphodiesterase 2 [Source:RGD Symbol;Acc:69298]	-7.85387752231547	Rattus norvegicus	S2	PIA vs naive
+Rcan2	ENSRNOG00000010350	regulator of calcineurin 2 [Source:RGD Symbol;Acc:69198]	-7.742804550200068	Rattus norvegicus	S2	PIA vs naive
+Sptb	ENSRNOG00000006911	spectrin, beta, erythrocytic [Source:RGD Symbol;Acc:1303243]	-7.702637974725349	Rattus norvegicus	S2	PIA vs naive
+Srebf1	ENSRNOG00000003463	sterol regulatory element binding transcription factor 1 [Source:RGD Symbol;Acc:69423]	-7.64683622128207	Rattus norvegicus	S2	PIA vs naive
+Ablim1	ENSRNOG00000046333	actin-binding LIM protein 1 [Source:RGD Symbol;Acc:1565768]	-7.6115233776078	Rattus norvegicus	S2	PIA vs naive
+Synpo2	ENSRNOG00000014867	synaptopodin 2 [Source:RGD Symbol;Acc:1564779]	-7.592629222490261	Rattus norvegicus	S2	PIA vs naive
+Col4a4	ENSRNOG00000014851	collagen, type IV, alpha 4 [Source:RGD Symbol;Acc:1305355]	-7.47323401913047	Rattus norvegicus	S2	PIA vs naive
+Dact2	ENSRNOG00000022921	dishevelled-binding antagonist of beta- catenin 2 [Source:RGD Symbol;Acc:1310742]	-7.433315780117306	Rattus norvegicus	S2	PIA vs naive
+Mrvi1	ENSRNOG00000017767	murine retrovirus integration site 1 homolog [Source:RGD Symbol;Acc:1309828]	-7.415415721409304	Rattus norvegicus	S2	PIA vs naive
+Npy1r	ENSRNOG00000014149	neuropeptide Y receptor Y1 [Source:RGD Symbol;Acc:3198]	-7.396043576841111	Rattus norvegicus	S2	PIA vs naive
+Akap6	ENSRNOG00000004841	A kinase (PRKA) anchor protein 6 [Source:RGD Symbol;Acc:69412]	-7.357456717021984	Rattus norvegicus	S2	PIA vs naive
+Dhrs7	ENSRNOG00000005589	dehydrogenase/reductase (SDR family) member 7 [Source:RGD Symbol;Acc:1565002]	-7.35523252035721	Rattus norvegicus	S2	PIA vs naive
+Sorbs1	ENSRNOG00000015658	sorbin and SH3 domain containing 1 [Source:RGD Symbol;Acc:1586598]	-7.336900906533996	Rattus norvegicus	S2	PIA vs naive
+Arhgap6	ENSRNOG00000003956	Rho GTPase activating protein 6 [Source:RGD Symbol;Acc:2323364]	-7.244448070439081	Rattus norvegicus	S2	PIA vs naive
+Aox1	ENSRNOG00000015354	aldehyde oxidase 1 [Source:RGD Symbol;Acc:620528]	-7.218873008850483	Rattus norvegicus	S2	PIA vs naive
+Ank3	ENSRNOG00000053288	ankyrin 3, node of Ranvier (ankyrin G) [Source:RGD Symbol;Acc:620157]	-7.205753039099796	Rattus norvegicus	S2	PIA vs naive
+Art3	ENSRNOG00000002256	ADP-ribosyltransferase 3 [Source:RGD Symbol;Acc:628833]	-7.1652942429285655	Rattus norvegicus	S2	PIA vs naive
+LOC501110	ENSRNOG00000033402	similar to Glutathione S-transferase A1 (GTH1) (HA subunit 1) (GST-epsilon) (GSTA1-1) (GST class- alpha) [Source:RGD Symbol;Acc:1565402]	-7.111461865505174	Rattus norvegicus	S2	PIA vs naive
+Fxyd1	ENSRNOG00000021079	FXYD domain-containing ion transport regulator 1 [Source:RGD Symbol;Acc:69306]	-7.091646446122736	Rattus norvegicus	S2	PIA vs naive
+Ghr	ENSRNOG00000015654	growth hormone receptor [Source:RGD Symbol;Acc:2687]	-7.042945896155453	Rattus norvegicus	S2	PIA vs naive
+Cd55	ENSRNOG00000003927	CD55 molecule, decay accelerating factor for complement [Source:RGD Symbol;Acc:620651]	-7.03739003951741	Rattus norvegicus	S2	PIA vs naive
+Gucy1a3	ENSRNOG00000012302	guanylate cyclase 1, soluble, alpha 3 [Source:RGD Symbol;Acc:68436]	-6.978948931969909	Rattus norvegicus	S2	PIA vs naive
+Esr1	ENSRNOG00000019358	estrogen receptor 1 [Source:RGD Symbol;Acc:2581]	-6.951941779261189	Rattus norvegicus	S2	PIA vs naive
+Shroom1	ENSRNOG00000007431	shroom family member 1 [Source:RGD Symbol;Acc:1308066]	-6.946066474445412	Rattus norvegicus	S2	PIA vs naive
+Pvalb	ENSRNOG00000006471	parvalbumin [Source:RGD Symbol;Acc:3457]	-6.910747138566307	Rattus norvegicus	S2	PIA vs naive
+Itga7	ENSRNOG00000007905	integrin, alpha 7 [Source:RGD Symbol;Acc:71022]	-6.872426155479434	Rattus norvegicus	S2	PIA vs naive
+Ngfr	ENSRNOG00000005392	nerve growth factor receptor [Source:RGD Symbol;Acc:3177]	-6.846986509900689	Rattus norvegicus	S2	PIA vs naive
+LOC100134871	ENSRNOG00000061299	beta globin minor gene [Source:RGD Symbol;Acc:2290038]	-6.830329017851516	Rattus norvegicus	S2	PIA vs naive
+Lmod1	ENSRNOG00000051548	leiomodin 1 (smooth muscle) [Source:RGD Symbol;Acc:1307236]	-6.715871877847967	Rattus norvegicus	S2	PIA vs naive
+Akr1c14	ENSRNOG00000017672	aldo-keto reductase family 1, member C14 [Source:RGD Symbol;Acc:708361]	-6.702508761054748	Rattus norvegicus	S2	PIA vs naive
+Ar	ENSRNOG00000005639	androgen receptor [Source:RGD Symbol;Acc:2147]	-6.697767399928174	Rattus norvegicus	S2	PIA vs naive
+Mgll	ENSRNOG00000014508	monoglyceride lipase [Source:RGD Symbol;Acc:71039]	-6.6710927517442915	Rattus norvegicus	S2	PIA vs naive
+Rn50_10_0892.1	ENSRNOG00000053448	No description	-6.669537749680128	Rattus norvegicus	S2	PIA vs naive
+Acaca	ENSRNOG00000034013	acetyl-CoA carboxylase alpha [Source:RGD Symbol;Acc:621248]	-6.6201007578504045	Rattus norvegicus	S2	PIA vs naive
+Prx	ENSRNOG00000018369	periaxin [Source:RGD Symbol;Acc:619960]	-6.608366152601248	Rattus norvegicus	S2	PIA vs naive
+Ntn4	ENSRNOG00000005573	netrin 4 [Source:RGD Symbol;Acc:1565947]	-6.581597043261965	Rattus norvegicus	S2	PIA vs naive
+Cilp	ENSRNOG00000029911	cartilage intermediate layer protein, nucleotide pyrophosphohydrolase [Source:RGD Symbol;Acc:1305124]	-6.576772881818879	Rattus norvegicus	S2	PIA vs naive
+AABR07058464.1	ENSRNOG00000052981	No description	-6.5477326321300096	Rattus norvegicus	S2	PIA vs naive
+Fmo1	ENSRNOG00000034191	flavin containing monooxygenase 1 [Source:RGD Symbol;Acc:2622]	-6.463355520278947	Rattus norvegicus	S2	PIA vs naive
+Agpat2	ENSRNOG00000019466	1-acylglycerol-3-phosphate O-acyltransferase 2 [Source:RGD Symbol;Acc:1309229]	-6.4605198186532204	Rattus norvegicus	S2	PIA vs naive
+Ugt8	ENSRNOG00000009345	UDP glycosyltransferase 8 [Source:RGD Symbol;Acc:3938]	-6.421653835481853	Rattus norvegicus	S2	PIA vs naive
+Akap12	ENSRNOG00000019549	A kinase (PRKA) anchor protein 12 [Source:RGD Symbol;Acc:70988]	-6.366099142621467	Rattus norvegicus	S2	PIA vs naive
+LOC100912012	ENSRNOG00000004540	tetranectin-like [Source:RGD Symbol;Acc:6489383]	-6.328732544532471	Rattus norvegicus	S2	PIA vs naive
+Prdm16	ENSRNOG00000045913	PR domain containing 16 [Source:RGD Symbol;Acc:2324431]	-6.307370463881214	Rattus norvegicus	S2	PIA vs naive
+Fam212b	ENSRNOG00000015691	family with sequence similarity 212, member B [Source:RGD Symbol;Acc:1306526]	-6.228332748856368	Rattus norvegicus	S2	PIA vs naive
+Cttnbp2	ENSRNOG00000061845	cortactin binding protein 2 [Source:RGD Symbol;Acc:628691]	-6.208262890010741	Rattus norvegicus	S2	PIA vs naive
+AABR07053509.2	ENSRNOG00000059260	No description	-6.204138110035596	Rattus norvegicus	S2	PIA vs naive
+Fhl1	ENSRNOG00000000875	four and a half LIM domains 1 [Source:RGD Symbol;Acc:2615]	-6.188375222468194	Rattus norvegicus	S2	PIA vs naive
+Il17d	ENSRNOG00000051120	interleukin 17D [Source:RGD Symbol;Acc:1595926]	-6.184317870965084	Rattus norvegicus	S2	PIA vs naive
+Sfrp5	ENSRNOG00000014940	secreted frizzled-related protein 5 [Source:RGD Symbol;Acc:1310369]	-6.084317438129551	Rattus norvegicus	S2	PIA vs naive
+Ccdc141	ENSRNOG00000012580	coiled-coil domain containing 141 [Source:RGD Symbol;Acc:1593250]	-6.028929461765813	Rattus norvegicus	S2	PIA vs naive
+Map7d3	ENSRNOG00000027831	MAP7 domain containing 3 [Source:RGD Symbol;Acc:1565514]	-6.016068108496857	Rattus norvegicus	S2	PIA vs naive
+Sema5a	ENSRNOG00000011977	sema domain, seven thrombospondin repeats (type 1 and type 1-like), transmembrane domain (TM) and short cytoplasmic domain, (semaphorin) 5A [Source:RGD Symbol;Acc:1308650]	-6.011254912098139	Rattus norvegicus	S2	PIA vs naive
+Creb5	ENSRNOG00000008622	cAMP responsive element binding protein 5 [Source:RGD Symbol;Acc:1566107]	-6.008574977421592	Rattus norvegicus	S2	PIA vs naive
+Igfbp6	ENSRNOG00000010977	insulin-like growth factor binding protein 6 [Source:RGD Symbol;Acc:2877]	-5.994385949527696	Rattus norvegicus	S2	PIA vs naive
+Pcsk6	ENSRNOG00000011526	proprotein convertase subtilisin/kexin type 6 [Source:RGD Symbol;Acc:3246]	-5.956853898167972	Rattus norvegicus	S2	PIA vs naive
+Fam13a	ENSRNOG00000007947	family with sequence similarity 13, member A [Source:RGD Symbol;Acc:1309807]	-5.949057406910283	Rattus norvegicus	S2	PIA vs naive
+Abca8a	ENSRNOG00000004147	ATP-binding cassette, subfamily A (ABC1), member 8a [Source:RGD Symbol;Acc:1307333]	-5.925443339649322	Rattus norvegicus	S2	PIA vs naive
+Atp2a3	ENSRNOG00000017912	ATPase, Ca++ transporting, ubiquitous [Source:RGD Symbol;Acc:2175]	-5.89254174863371	Rattus norvegicus	S2	PIA vs naive
+Fam214a	ENSRNOG00000058522	family with sequence similarity 214, member A [Source:RGD Symbol;Acc:1310552]	-5.835054577196943	Rattus norvegicus	S2	PIA vs naive
+Drp2	ENSRNOG00000026704	dystrophin related protein 2 [Source:RGD Symbol;Acc:621750]	-5.8331659761752785	Rattus norvegicus	S2	PIA vs naive
+Mest	ENSRNOG00000048088	mesoderm specific transcript [Source:RGD Symbol;Acc:1594589]	-5.780048306352504	Rattus norvegicus	S2	PIA vs naive
+Ebf2	ENSRNOG00000011548	early B-cell factor 2 [Source:RGD Symbol;Acc:1310805]	-5.778959462829334	Rattus norvegicus	S2	PIA vs naive
+Sema3b	ENSRNOG00000016512	sema domain, immunoglobulin domain (Ig), short basic domain, secreted, (semaphorin) 3B [Source:RGD Symbol;Acc:1310079]	-5.753716649013788	Rattus norvegicus	S2	PIA vs naive
+Synm	ENSRNOG00000014030	synemin, intermediate filament protein [Source:RGD Symbol;Acc:727872]	-5.729282892887712	Rattus norvegicus	S2	PIA vs naive
+Etl4	ENSRNOG00000008666	enhancer trap locus 4 [Source:RGD Symbol;Acc:1563437]	-5.705042069033945	Rattus norvegicus	S2	PIA vs naive
+Col4a5	ENSRNOG00000018951	collagen, type IV, alpha 5 [Source:RGD Symbol;Acc:1565499]	-5.702294004153167	Rattus norvegicus	S2	PIA vs naive
+Tnfrsf11b	ENSRNOG00000008336	tumor necrosis factor receptor superfamily, member 11b [Source:RGD Symbol;Acc:619802]	-5.647936525775033	Rattus norvegicus	S2	PIA vs naive
+Zfp423	ENSRNOG00000014658	zinc finger protein 423 [Source:RGD Symbol;Acc:621664]	-5.41417473766088	Rattus norvegicus	S2	PIA vs naive
+Dkk2	ENSRNOG00000011360	dickkopf WNT signaling pathway inhibitor 2 [Source:RGD Symbol;Acc:1308639]	-5.404633541299377	Rattus norvegicus	S2	PIA vs naive
+Kcna2	ENSRNOG00000018285	potassium channel, voltage gated shaker related subfamily A, member 2 [Source:RGD Symbol;Acc:2950]	-5.375231211606375	Rattus norvegicus	S2	PIA vs naive
+Fitm2	ENSRNOG00000027434	fat storage-inducing transmembrane protein 2 [Source:RGD Symbol;Acc:1307696]	-5.365389659512611	Rattus norvegicus	S2	PIA vs naive
+Hbegf	ENSRNOG00000018646	heparin-binding EGF-like growth factor [Source:RGD Symbol;Acc:2526]	-5.304446062716725	Rattus norvegicus	S2	PIA vs naive
+Thrb	ENSRNOG00000006649	thyroid hormone receptor beta [Source:RGD Symbol;Acc:3858]	-5.302234032636232	Rattus norvegicus	S2	PIA vs naive
+Cpe	ENSRNOG00000043387	carboxypeptidase E [Source:RGD Symbol;Acc:2394]	-5.272786657725766	Rattus norvegicus	S2	PIA vs naive
+Rbp7	ENSRNOG00000015850	retinol binding protein 7, cellular [Source:RGD Symbol;Acc:1562168]	-5.233234655163625	Rattus norvegicus	S2	PIA vs naive
+Rgs4	ENSRNOG00000002773	regulator of G-protein signaling 4 [Source:RGD Symbol;Acc:3567]	-5.220331958413246	Rattus norvegicus	S2	PIA vs naive
+Rilp	ENSRNOG00000003784	Rab interacting lysosomal protein [Source:RGD Symbol;Acc:1307691]	-5.207200020430956	Rattus norvegicus	S2	PIA vs naive
+Mcf2l	ENSRNOG00000028426	MCF.2 cell line derived transforming sequence-like [Source:RGD Symbol;Acc:619782]	-5.19257122414733	Rattus norvegicus	S2	PIA vs naive
+Lama3	ENSRNOG00000011300	laminin, alpha 3 [Source:MGI Symbol;Acc:MGI:99909]	-5.1505511663595405	Rattus norvegicus	S2	PIA vs naive
+Dmpk	ENSRNOG00000015085	dystrophia myotonica-protein kinase [Source:RGD Symbol;Acc:1309825]	-5.135043240314249	Rattus norvegicus	S2	PIA vs naive
+Fcmr	ENSRNOG00000004441	Fc fragment of IgM receptor [Source:RGD Symbol;Acc:1359282]	-5.132409114174193	Rattus norvegicus	S2	PIA vs naive
+Ttll7	ENSRNOG00000031997	tubulin tyrosine ligase-like family, member 7 [Source:RGD Symbol;Acc:1566117]	-5.113257372593912	Rattus norvegicus	S2	PIA vs naive
+Dmd	ENSRNOG00000046366	dystrophin [Source:RGD Symbol;Acc:2507]	-5.100168193114387	Rattus norvegicus	S2	PIA vs naive
+Limch1	ENSRNOG00000002318	LIM and calponin homology domains 1 [Source:RGD Symbol;Acc:1305269]	-5.076384773753241	Rattus norvegicus	S2	PIA vs naive
+Igf2	ENSRNOG00000020369	insulin-like growth factor 2 [Source:RGD Symbol;Acc:2870]	-5.062637634533011	Rattus norvegicus	S2	PIA vs naive
+Aif1l	ENSRNOG00000009951	allograft inflammatory factor 1-like [Source:RGD Symbol;Acc:1305081]	-5.033736681413118	Rattus norvegicus	S2	PIA vs naive
+Acad11	ENSRNOG00000010940	acyl-CoA dehydrogenase family, member 11 [Source:RGD Symbol;Acc:1306270]	-5.014446105868092	Rattus norvegicus	S2	PIA vs naive
+Slc1a5	ENSRNOG00000015948	solute carrier family 1 (neutral amino acid transporter), member 5 [Source:RGD Symbol;Acc:708512]	-5.007316769117032	Rattus norvegicus	S2	PIA vs naive
+Plekha4	ENSRNOG00000020942	pleckstrin homology domain containing, family A (phosphoinositide binding specific) member 4 [Source:RGD Symbol;Acc:735133]	-4.987392602613088	Rattus norvegicus	S2	PIA vs naive
+Gucy1a2	ENSRNOG00000029876	guanylate cyclase 1, soluble, alpha 2 [Source:RGD Symbol;Acc:621655]	-4.945261718927469	Rattus norvegicus	S2	PIA vs naive
+Gnai1	ENSRNOG00000057096	guanine nucleotide binding protein (G protein), alpha inhibiting activity polypeptide 1 [Source:RGD Symbol;Acc:2713]	-4.926681048047368	Rattus norvegicus	S2	PIA vs naive
+Sik2	ENSRNOG00000043498	salt inducible kinase 2 [Source:MGI Symbol;Acc:MGI:2445031]	-4.924783574485356	Rattus norvegicus	S2	PIA vs naive
+Tnfsf10	ENSRNOG00000013269	tumor necrosis factor (ligand) superfamily, member 10 [Source:RGD Symbol;Acc:628734]	-4.915302052465059	Rattus norvegicus	S2	PIA vs naive
+Cd36	ENSRNOG00000040108	CD36 molecule (thrombospondin receptor) [Source:RGD Symbol;Acc:2301]	-4.888399608720183	Rattus norvegicus	S2	PIA vs naive
+Bnip3	ENSRNOG00000017243	BCL2/adenovirus E1B interacting protein 3 [Source:RGD Symbol;Acc:620800]	-4.855013054939469	Rattus norvegicus	S2	PIA vs naive
+Retsat	ENSRNOG00000014090	retinol saturase (all trans retinol 13,14 reductase) [Source:RGD Symbol;Acc:628802]	-4.83464321091624	Rattus norvegicus	S2	PIA vs naive
+Cyp26b1	ENSRNOG00000015076	cytochrome P450, family 26, subfamily b, polypeptide 1 [Source:RGD Symbol;Acc:631379]	-4.8329654291118125	Rattus norvegicus	S2	PIA vs naive
+Dusp10	ENSRNOG00000004003	dual specificity phosphatase 10 [Source:RGD Symbol;Acc:1310844]	-4.8263338033183505	Rattus norvegicus	S2	PIA vs naive
+Lpin1	ENSRNOG00000004377	lipin 1 [Source:RGD Symbol;Acc:1307646]	-4.750536161332476	Rattus norvegicus	S2	PIA vs naive
+Pex11a	ENSRNOG00000015003	peroxisomal biogenesis factor 11 alpha [Source:RGD Symbol;Acc:619842]	-4.736742020984229	Rattus norvegicus	S2	PIA vs naive
+Tmem45b	ENSRNOG00000008515	transmembrane protein 45b [Source:RGD Symbol;Acc:1305586]	-4.717264635833563	Rattus norvegicus	S2	PIA vs naive
+C1qtnf2	ENSRNOG00000003870	C1q and tumor necrosis factor related protein 2 [Source:RGD Symbol;Acc:1561041]	-4.694581812091664	Rattus norvegicus	S2	PIA vs naive
+Myh7b	ENSRNOG00000018997	myosin, heavy chain 7B, cardiac muscle, beta [Source:RGD Symbol;Acc:1307994]	-4.53267886001369	Rattus norvegicus	S2	PIA vs naive
+Cgnl1	ENSRNOG00000054080	cingulin-like 1 [Source:RGD Symbol;Acc:1304623]	-4.499387745593632	Rattus norvegicus	S2	PIA vs naive
+Plp1	ENSRNOG00000002419	proteolipid protein 1 [Source:RGD Symbol;Acc:3354]	-4.492219351155931	Rattus norvegicus	S2	PIA vs naive
+Apmap	ENSRNOG00000006795	adipocyte plasma membrane associated protein [Source:RGD Symbol;Acc:1308874]	-4.448282844859628	Rattus norvegicus	S2	PIA vs naive
+Atp9a	ENSRNOG00000049484	ATPase, class II, type 9A [Source:RGD Symbol;Acc:621421]	-4.4403318853854055	Rattus norvegicus	S2	PIA vs naive
+Sox5	ENSRNOG00000027869	SRY (sex determining region Y)-box 5 [Source:RGD Symbol;Acc:620471]	-4.419915075934042	Rattus norvegicus	S2	PIA vs naive
+Lrrn4cl	ENSRNOG00000026302	LRRN4 C-terminal like [Source:RGD Symbol;Acc:1597359]	-4.415203318551749	Rattus norvegicus	S2	PIA vs naive
+Cyp27a1	ENSRNOG00000017188	cytochrome P450, family 27, subfamily a, polypeptide 1 [Source:RGD Symbol;Acc:727915]	-4.3702760926036195	Rattus norvegicus	S2	PIA vs naive
+Plscr4	ENSRNOG00000008151	phospholipid scramblase 4 [Source:RGD Symbol;Acc:1311693]	-4.322908424988846	Rattus norvegicus	S2	PIA vs naive
+Nexn	ENSRNOG00000012512	nexilin (F actin binding protein) [Source:RGD Symbol;Acc:708354]	-4.3004019889075185	Rattus norvegicus	S2	PIA vs naive
+Phgdh	ENSRNOG00000019328	phosphoglycerate dehydrogenase [Source:RGD Symbol;Acc:61987]	-4.2971918103920625	Rattus norvegicus	S2	PIA vs naive
+Stxbp6	ENSRNOG00000004198	syntaxin binding protein 6 (amisyn) [Source:RGD Symbol;Acc:1306117]	-4.297032146235023	Rattus norvegicus	S2	PIA vs naive
+Mal	ENSRNOG00000015445	mal, T-cell differentiation protein [Source:RGD Symbol;Acc:3037]	-4.244231721660011	Rattus norvegicus	S2	PIA vs naive
+Akr1cl	ENSRNOG00000021735	aldo-keto reductase family 1, member C-like [Source:RGD Symbol;Acc:1307514]	-4.209354311763955	Rattus norvegicus	S2	PIA vs naive
+Per3	ENSRNOG00000018413	period circadian clock 3 [Source:RGD Symbol;Acc:621581]	-4.191115630051317	Rattus norvegicus	S2	PIA vs naive
+Mctp1	ENSRNOG00000013282	multiple C2 domains, transmembrane 1 [Source:RGD Symbol;Acc:1305199]	-4.18353984293044	Rattus norvegicus	S2	PIA vs naive
+LOC500300	ENSRNOG00000023465	similar to hypothetical protein MGC6835 [Source:RGD Symbol;Acc:1565700]	-4.179225486138988	Rattus norvegicus	S2	PIA vs naive
+Ctnnal1	ENSRNOG00000010593	catenin (cadherin associated protein), alpha- like 1 [Source:RGD Symbol;Acc:1311434]	-4.159253449052599	Rattus norvegicus	S2	PIA vs naive
+Afap1l2	ENSRNOG00000017164	actin filament associated protein 1-like 2 [Source:RGD Symbol;Acc:1310668]	-4.137335280139855	Rattus norvegicus	S2	PIA vs naive
+Plxna4	ENSRNOG00000013072	plexin A4 [Source:RGD Symbol;Acc:1308074]	-4.103450286265108	Rattus norvegicus	S2	PIA vs naive
+Chrdl1	ENSRNOG00000004330	chordin-like 1 [Source:RGD Symbol;Acc:735215]	-4.09766686533659	Rattus norvegicus	S2	PIA vs naive
+Frem1	ENSRNOG00000022309	Fras1 related extracellular matrix 1 [Source:RGD Symbol;Acc:1306981]	-4.0872644070620225	Rattus norvegicus	S2	PIA vs naive
+Adcy6	ENSRNOG00000054757	adenylate cyclase 6 [Source:RGD Symbol;Acc:2035]	-4.08249176314087	Rattus norvegicus	S2	PIA vs naive
+Nova1	ENSRNOG00000031440	neuro-oncological ventral antigen 1 [Source:RGD Symbol;Acc:621345]	-4.0696622017532	Rattus norvegicus	S2	PIA vs naive
+Dbp	ENSRNOG00000021027	D site of albumin promoter (albumin D-box) binding protein [Source:RGD Symbol;Acc:2491]	-4.027792117901152	Rattus norvegicus	S2	PIA vs naive
+Csad	ENSRNOG00000011573	cysteine sulfinic acid decarboxylase [Source:RGD Symbol;Acc:621030]	-3.9946526891155463	Rattus norvegicus	S2	PIA vs naive
+Adam23	ENSRNOG00000012424	ADAM metallopeptidase domain 23 [Source:RGD Symbol;Acc:1305739]	-3.8505783438498944	Rattus norvegicus	S2	PIA vs naive
+Tacc2	ENSRNOG00000020457	transforming, acidic coiled-coil containing protein 2 [Source:RGD Symbol;Acc:1303004]	-3.836270898632421	Rattus norvegicus	S2	PIA vs naive
+Zfp704	ENSRNOG00000054426	zinc finger protein 704 [Source:RGD Symbol;Acc:1563869]	-3.8240858846931083	Rattus norvegicus	S2	PIA vs naive
+Cdc42bpg	ENSRNOG00000027456	CDC42 binding protein kinase gamma (DMPK- like) [Source:RGD Symbol;Acc:1307260]	-3.8185381172485764	Rattus norvegicus	S2	PIA vs naive
+Hmgcs1	ENSRNOG00000016552	3-hydroxy-3-methylglutaryl-CoA synthase 1 (soluble) [Source:RGD Symbol;Acc:70970]	-3.7787390677352497	Rattus norvegicus	S2	PIA vs naive
+Map7d2	ENSRNOG00000005176	MAP7 domain containing 2 [Source:RGD Symbol;Acc:1564852]	-3.7259487362854	Rattus norvegicus	S2	PIA vs naive
+Eepd1	ENSRNOG00000006931	endonuclease/exonuclease/phosphatase family domain containing 1 [Source:RGD Symbol;Acc:1307401]	-3.719560206534923	Rattus norvegicus	S2	PIA vs naive
+Aig1	ENSRNOG00000010753	androgen-induced 1 [Source:RGD Symbol;Acc:1562920]	-3.6994610260088394	Rattus norvegicus	S2	PIA vs naive
+Egln3	ENSRNOG00000005053	egl-9 family hypoxia-inducible factor 3 [Source:RGD Symbol;Acc:71019]	-3.672308409702143	Rattus norvegicus	S2	PIA vs naive
+Nudt12	ENSRNOG00000022576	nudix (nucleoside diphosphate linked moiety X)-type motif 12 [Source:RGD Symbol;Acc:1310902]	-3.6715188959251956	Rattus norvegicus	S2	PIA vs naive
+Mpzl2	ENSRNOG00000016085	myelin protein zero-like 2 [Source:RGD Symbol;Acc:1307196]	-3.6578258128527605	Rattus norvegicus	S2	PIA vs naive
+Mmrn1	ENSRNOG00000024986	multimerin 1 [Source:RGD Symbol;Acc:1587248]	-3.616705180515781	Rattus norvegicus	S2	PIA vs naive
+Dact1	ENSRNOG00000008445	dishevelled-binding antagonist of beta- catenin 1 [Source:RGD Symbol;Acc:1564008]	-3.604737924685685	Rattus norvegicus	S2	PIA vs naive
+Scara5	ENSRNOG00000014398	scavenger receptor class A, member 5 [Source:RGD Symbol;Acc:1306539]	-3.580134901312284	Rattus norvegicus	S2	PIA vs naive
+Scaper	ENSRNOG00000006864	S-phase cyclin A-associated protein in the ER [Source:RGD Symbol;Acc:621585]	-3.5329027823338923	Rattus norvegicus	S2	PIA vs naive
+Tmeff2	ENSRNOG00000016623	transmembrane protein with EGF-like and two follistatin-like domains 2 [Source:RGD Symbol;Acc:1308839]	-3.525646568035239	Rattus norvegicus	S2	PIA vs naive
+Irs3	ENSRNOG00000001389	insulin receptor substrate 3 [Source:RGD Symbol;Acc:69317]	-3.5059671415342963	Rattus norvegicus	S2	PIA vs naive
+Runx1t1	ENSRNOG00000005673	runt-related transcription factor 1; translocated to, 1 (cyclin D-related) [Source:RGD Symbol;Acc:1305490]	-3.4742651204305153	Rattus norvegicus	S2	PIA vs naive
+Igfbp3	ENSRNOG00000061910	insulin-like growth factor binding protein 3 [Source:RGD Symbol;Acc:2874]	-3.4455250588352246	Rattus norvegicus	S2	PIA vs naive
+Dmrt2	ENSRNOG00000016301	doublesex and mab-3 related transcription factor 2 [Source:RGD Symbol;Acc:1309047]	-3.426220259191152	Rattus norvegicus	S2	PIA vs naive
+Hibch	ENSRNOG00000028557	3-hydroxyisobutyryl-CoA hydrolase [Source:RGD Symbol;Acc:1308392]	-3.4244287658548918	Rattus norvegicus	S2	PIA vs naive
+Mcpt1l1	ENSRNOG00000053494	mast cell protease 1-like 1 [Source:RGD Symbol;Acc:2321286]	-3.384808291808812	Rattus norvegicus	S2	PIA vs naive
+Filip1	ENSRNOG00000011521	filamin A interacting protein 1 [Source:RGD Symbol;Acc:628597]	-3.3357087417489475	Rattus norvegicus	S2	PIA vs naive
+Olfml1	ENSRNOG00000056562	olfactomedin-like 1 [Source:RGD Symbol;Acc:1311854]	-3.3116142918519538	Rattus norvegicus	S2	PIA vs naive
+Pde3a	ENSRNOG00000025042	phosphodiesterase 3A, cGMP inhibited [Source:RGD Symbol;Acc:61942]	-3.2003544005737967	Rattus norvegicus	S2	PIA vs naive
+Ltbp1	ENSRNOG00000033090	latent transforming growth factor beta binding protein 1 [Source:RGD Symbol;Acc:68379]	-3.0129822525245347	Rattus norvegicus	S2	PIA vs naive
+Dagla	ENSRNOG00000027264	diacylglycerol lipase, alpha [Source:RGD Symbol;Acc:1359461]	-2.9604803438525655	Rattus norvegicus	S2	PIA vs naive
+Pi16	ENSRNOG00000000525	peptidase inhibitor 16 [Source:RGD Symbol;Acc:1304760]	-2.923642478096706	Rattus norvegicus	S2	PIA vs naive
+Parm1	ENSRNOG00000002579	prostate androgen-regulated mucin-like protein 1 [Source:RGD Symbol;Acc:708342]	-2.783812801697042	Rattus norvegicus	S2	PIA vs naive
+Angptl1	ENSRNOG00000004712	angiopoietin-like 1 [Source:RGD Symbol;Acc:1598128]	-2.4399291401746197	Rattus norvegicus	S2	PIA vs naive
+Arid3a	ENSRNOG00000026435	AT rich interactive domain 3A (Bright like) [Source:RGD Symbol;Acc:1305299]	2.357812997420084	Rattus norvegicus	S2	PIA vs naive
+Prdx5	ENSRNOG00000021125	peroxiredoxin 5 [Source:RGD Symbol;Acc:71007]	3.1809846828586346	Rattus norvegicus	S2	PIA vs naive
+Laptm5	ENSRNOG00000011054	lysosomal protein transmembrane 5 [Source:RGD Symbol;Acc:621838]	3.4117132615029795	Rattus norvegicus	S2	PIA vs naive
+Cxcr2	ENSRNOG00000014269	chemokine (C-X-C motif) receptor 2 [Source:RGD Symbol;Acc:2906]	3.5663403088632664	Rattus norvegicus	S2	PIA vs naive
+Clec5a	ENSRNOG00000026306	C-type lectin domain family 5, member A [Source:RGD Symbol;Acc:1584755]	3.717949932651324	Rattus norvegicus	S2	PIA vs naive
+Fes	ENSRNOG00000011683	FES proto-oncogene, tyrosine kinase [Source:RGD Symbol;Acc:1564385]	3.7258735824852827	Rattus norvegicus	S2	PIA vs naive
+Adgre1	ENSRNOG00000046254	adhesion G protein-coupled receptor E1 [Source:RGD Symbol;Acc:1359214]	3.7400988480990045	Rattus norvegicus	S2	PIA vs naive
+RT1-Db1	ENSRNOG00000033215	RT1 class II, locus Db1 [Source:RGD Symbol;Acc:1593282]	3.885838049995028	Rattus norvegicus	S2	PIA vs naive
+Ifit1	ENSRNOG00000019050	interferon-induced protein with tetratricopeptide repeats 1 [Source:RGD Symbol;Acc:620599]	3.9309049375916247	Rattus norvegicus	S2	PIA vs naive
+Cebpb	ENSRNOG00000057347	CCAAT/enhancer binding protein (C/EBP), beta [Source:RGD Symbol;Acc:2327]	3.9326924717917833	Rattus norvegicus	S2	PIA vs naive
+Fgf7	ENSRNOG00000009425	fibroblast growth factor 7 [Source:RGD Symbol;Acc:61805]	3.9549797967827014	Rattus norvegicus	S2	PIA vs naive
+Soat1	ENSRNOG00000004111	sterol O-acyltransferase 1 [Source:RGD Symbol;Acc:621641]	4.059228348717111	Rattus norvegicus	S2	PIA vs naive
+Bcl3	ENSRNOG00000043416	B-cell CLL/lymphoma 3 [Source:RGD Symbol;Acc:1589465]	4.091905706119895	Rattus norvegicus	S2	PIA vs naive
+Cit	ENSRNOG00000001143	citron rho-interacting serine/threonine kinase [Source:RGD Symbol;Acc:70878]	4.135819146425192	Rattus norvegicus	S2	PIA vs naive
+P3h1	ENSRNOG00000053991	prolyl 3-hydroxylase 1 [Source:RGD Symbol;Acc:628823]	4.147841669602469	Rattus norvegicus	S2	PIA vs naive
+Atp13a2	ENSRNOG00000008052	ATPase type 13A2 [Source:RGD Symbol;Acc:1307977]	4.153849870865124	Rattus norvegicus	S2	PIA vs naive
+Wisp2	ENSRNOG00000010666	WNT1 inducible signaling pathway protein 2 [Source:RGD Symbol;Acc:621867]	4.258730318508387	Rattus norvegicus	S2	PIA vs naive
+Ibsp	ENSRNOG00000002158	integrin-binding sialoprotein [Source:RGD Symbol;Acc:2855]	4.266191591507205	Rattus norvegicus	S2	PIA vs naive
+Ctsc	ENSRNOG00000016496	cathepsin C [Source:RGD Symbol;Acc:2445]	4.281489092295571	Rattus norvegicus	S2	PIA vs naive
+Fyb	ENSRNOG00000013886	FYN binding protein [Source:RGD Symbol;Acc:1563421]	4.369917596215549	Rattus norvegicus	S2	PIA vs naive
+Fzd1	ENSRNOG00000016242	frizzled class receptor 1 [Source:RGD Symbol;Acc:61916]	4.384829892343332	Rattus norvegicus	S2	PIA vs naive
+Lrrc25	ENSRNOG00000022565	leucine rich repeat containing 25 [Source:RGD Symbol;Acc:1564818]	4.4205014211617915	Rattus norvegicus	S2	PIA vs naive
+Unc93b1	ENSRNOG00000017703	unc-93 homolog B1 (C. elegans) [Source:RGD Symbol;Acc:1311984]	4.422438943178032	Rattus norvegicus	S2	PIA vs naive
+Gpr153	ENSRNOG00000010718	G protein-coupled receptor 153 [Source:RGD Symbol;Acc:1564170]	4.490509127688611	Rattus norvegicus	S2	PIA vs naive
+Siglec1	ENSRNOG00000021243	sialic acid binding Ig-like lectin 1, sialoadhesin [Source:RGD Symbol;Acc:1311953]	4.524957211577934	Rattus norvegicus	S2	PIA vs naive
+Adamts4	ENSRNOG00000003538	ADAM metallopeptidase with thrombospondin type 1 motif, 4 [Source:RGD Symbol;Acc:621242]	4.5453178206458675	Rattus norvegicus	S2	PIA vs naive
+Itgam	ENSRNOG00000019728	integrin, alpha M [Source:RGD Symbol;Acc:2926]	4.5634968166919325	Rattus norvegicus	S2	PIA vs naive
+Igsf3	ENSRNOG00000023851	immunoglobulin superfamily, member 3 [Source:RGD Symbol;Acc:1307796]	4.597410534184239	Rattus norvegicus	S2	PIA vs naive
+Pcsk5	ENSRNOG00000012036	proprotein convertase subtilisin/kexin type 5 [Source:RGD Symbol;Acc:620326]	4.619051398925589	Rattus norvegicus	S2	PIA vs naive
+Itgal	ENSRNOG00000017980	integrin, alpha L [Source:RGD Symbol;Acc:631424]	4.632426865932129	Rattus norvegicus	S2	PIA vs naive
+Vav1	ENSRNOG00000050430	vav 1 guanine nucleotide exchange factor [Source:RGD Symbol;Acc:3951]	4.65077300016693	Rattus norvegicus	S2	PIA vs naive
+Pappa2	ENSRNOG00000042860	pappalysin 2 [Source:RGD Symbol;Acc:1591785]	4.654439757887178	Rattus norvegicus	S2	PIA vs naive
+Aif1	ENSRNOG00000000853	allograft inflammatory factor 1 [Source:RGD Symbol;Acc:61924]	4.680094951379961	Rattus norvegicus	S2	PIA vs naive
+LOC102551184	ENSRNOG00000032224	histone H4-like [Source:RGD Symbol;Acc:7529415]	4.7066589746368015	Rattus norvegicus	S2	PIA vs naive
+Pde7a	ENSRNOG00000013048	phosphodiesterase 7A [Source:RGD Symbol;Acc:68391]	4.737894174718925	Rattus norvegicus	S2	PIA vs naive
+Lmnb1	ENSRNOG00000013774	lamin B1 [Source:RGD Symbol;Acc:620522]	4.756461827476125	Rattus norvegicus	S2	PIA vs naive
+Nfkbiz	ENSRNOG00000031163	nuclear factor of kappa light polypeptide gene enhancer in B-cells inhibitor, zeta [Source:RGD Symbol;Acc:1310834]	4.7824750761783035	Rattus norvegicus	S2	PIA vs naive
+Slc11a1	ENSRNOG00000014956	solute carrier family 11 (proton-coupled divalent metal ion transporter), member 1 [Source:RGD Symbol;Acc:1601463]	4.79034123164627	Rattus norvegicus	S2	PIA vs naive
+Sfrp2	ENSRNOG00000009465	secreted frizzled-related protein 2 [Source:RGD Symbol;Acc:735163]	4.800509720363174	Rattus norvegicus	S2	PIA vs naive
+Hist1h2ak	ENSRNOG00000052594	histone cluster 1, H2ak [Source:RGD Symbol;Acc:1589461]	4.846380152656242	Rattus norvegicus	S2	PIA vs naive
+Plod2	ENSRNOG00000030183	procollagen lysine, 2-oxoglutarate 5- dioxygenase 2 [Source:RGD Symbol;Acc:3353]	4.882774747487249	Rattus norvegicus	S2	PIA vs naive
+Serpine1	ENSRNOG00000001414	serpin peptidase inhibitor, clade E (nexin, plasminogen activator inhibitor type 1), member 1 [Source:RGD Symbol;Acc:3249]	4.909396709289601	Rattus norvegicus	S2	PIA vs naive
+Fcer1g	ENSRNOG00000024159	Fc fragment of IgE, high affinity I, receptor for; gamma polypeptide [Source:RGD Symbol;Acc:2599]	5.003058858429548	Rattus norvegicus	S2	PIA vs naive
+Tmem97	ENSRNOG00000022657	transmembrane protein 97 [Source:RGD Symbol;Acc:1307423]	5.0907949868322415	Rattus norvegicus	S2	PIA vs naive
+Fbln1	ENSRNOG00000014137	fibulin 1 [Source:RGD Symbol;Acc:1308667]	5.108212882614451	Rattus norvegicus	S2	PIA vs naive
+Ciita	ENSRNOG00000002659	class II, major histocompatibility complex, transactivator [Source:RGD Symbol;Acc:619813]	5.145931935933202	Rattus norvegicus	S2	PIA vs naive
+Chsy1	ENSRNOG00000012698	chondroitin sulfate synthase 1 [Source:RGD Symbol;Acc:1311904]	5.178075317294844	Rattus norvegicus	S2	PIA vs naive
+Ifi47	ENSRNOG00000002470	interferon gamma inducible protein 47 [Source:RGD Symbol;Acc:708470]	5.2832877966907645	Rattus norvegicus	S2	PIA vs naive
+Oasl2	ENSRNOG00000028814	2'-5' oligoadenylate synthetase-like 2 [Source:RGD Symbol;Acc:1307351]	5.323979163597098	Rattus norvegicus	S2	PIA vs naive
+Pde4b	ENSRNOG00000005905	phosphodiesterase 4B, cAMP specific [Source:RGD Symbol;Acc:3280]	5.37054351263804	Rattus norvegicus	S2	PIA vs naive
+Ccl6	ENSRNOG00000030021	chemokine (C-C motif) ligand 6 [Source:RGD Symbol;Acc:1303200]	5.402864778427181	Rattus norvegicus	S2	PIA vs naive
+Clec11a	ENSRNOG00000019138	C-type lectin domain family 11, member A [Source:RGD Symbol;Acc:3627]	5.413221417690895	Rattus norvegicus	S2	PIA vs naive
+Cd68	ENSRNOG00000037563	Cd68 molecule [Source:RGD Symbol;Acc:1305970]	5.42059567658971	Rattus norvegicus	S2	PIA vs naive
+Selplg	ENSRNOG00000000699	selectin P ligand [Source:RGD Symbol;Acc:1307971]	5.446895824721072	Rattus norvegicus	S2	PIA vs naive
+Adamts1	ENSRNOG00000001607	ADAM metallopeptidase with thrombospondin type 1 motif, 1 [Source:RGD Symbol;Acc:621241]	5.468284578066728	Rattus norvegicus	S2	PIA vs naive
+Coro1a	ENSRNOG00000019430	coronin, actin binding protein 1A [Source:RGD Symbol;Acc:620009]	5.494449911758332	Rattus norvegicus	S2	PIA vs naive
+Cebpd	ENSRNOG00000050869	CCAAT/enhancer binding protein (C/EBP), delta [Source:RGD Symbol;Acc:2328]	5.503728487152691	Rattus norvegicus	S2	PIA vs naive
+St8sia4	ENSRNOG00000019128	ST8 alpha-N-acetyl-neuraminide alpha-2,8- sialyltransferase 4 [Source:RGD Symbol;Acc:621845]	5.604743986070412	Rattus norvegicus	S2	PIA vs naive
+Nfam1	ENSRNOG00000022975	NFAT activating protein with ITAM motif 1 [Source:RGD Symbol;Acc:1308316]	5.621213261813944	Rattus norvegicus	S2	PIA vs naive
+Card11	ENSRNOG00000024277	caspase recruitment domain family, member 11 [Source:RGD Symbol;Acc:2323211]	5.634309441350087	Rattus norvegicus	S2	PIA vs naive
+Ncam1	ENSRNOG00000031890	neural cell adhesion molecule 1 [Source:RGD Symbol;Acc:67378]	5.660132888407901	Rattus norvegicus	S2	PIA vs naive
+Ccna2	ENSRNOG00000015423	cyclin A2 [Source:RGD Symbol;Acc:621059]	5.66031904249027	Rattus norvegicus	S2	PIA vs naive
+Fcgr1a	ENSRNOG00000021199	Fc fragment of IgG, high affinity Ia, receptor (CD64) [Source:RGD Symbol;Acc:1309912]	5.71068843156852	Rattus norvegicus	S2	PIA vs naive
+Cotl1	ENSRNOG00000016257	coactosin-like F-actin binding protein 1 [Source:RGD Symbol;Acc:1305498]	5.774634958676043	Rattus norvegicus	S2	PIA vs naive
+RT1-CE5	ENSRNOG00000000723	RT1 class I, locus CE5 [Source:RGD Symbol;Acc:1595868]	5.820668577712611	Rattus norvegicus	S2	PIA vs naive
+Cenpe	ENSRNOG00000009339	centromere protein E [Source:RGD Symbol;Acc:1307115]	5.879121526695191	Rattus norvegicus	S2	PIA vs naive
+Litaf	ENSRNOG00000002520	lipopolysaccharide-induced TNF factor [Source:RGD Symbol;Acc:69294]	5.930145489015464	Rattus norvegicus	S2	PIA vs naive
+Sema4d	ENSRNOG00000013679	sema domain, immunoglobulin domain (Ig), transmembrane domain (TM) and short cytoplasmic domain, (semaphorin) 4D [Source:RGD Symbol;Acc:1310554]	5.941185050670038	Rattus norvegicus	S2	PIA vs naive
+Hist1h2ah	ENSRNOG00000049649	histone cluster 1, H2ah [Source:RGD Symbol;Acc:1594367]	5.9642434619273335	Rattus norvegicus	S2	PIA vs naive
+Lyz2	ENSRNOG00000005825	lysozyme 2 [Source:RGD Symbol;Acc:3026]	6.030510455835742	Rattus norvegicus	S2	PIA vs naive
+Efemp2	ENSRNOG00000020587	EGF-containing fibulin-like extracellular matrix protein 2 [Source:RGD Symbol;Acc:1359496]	6.048885177085182	Rattus norvegicus	S2	PIA vs naive
+Thbs4	ENSRNOG00000012471	thrombospondin 4 [Source:RGD Symbol;Acc:62046]	6.163894204425846	Rattus norvegicus	S2	PIA vs naive
+Hck	ENSRNOG00000009331	hemopoietic cell kinase [Source:RGD Symbol;Acc:2785]	6.171896954550383	Rattus norvegicus	S2	PIA vs naive
+Ptgfr	ENSRNOG00000046468	prostaglandin F receptor [Source:RGD Symbol;Acc:3436]	6.184611405775991	Rattus norvegicus	S2	PIA vs naive
+Sla	ENSRNOG00000056714	src-like adaptor [Source:RGD Symbol;Acc:631373]	6.195077261694467	Rattus norvegicus	S2	PIA vs naive
+Tfpi2	ENSRNOG00000010513	tissue factor pathway inhibitor 2 [Source:RGD Symbol;Acc:628629]	6.239404607058573	Rattus norvegicus	S2	PIA vs naive
+Adam8	ENSRNOG00000017897	ADAM metallopeptidase domain 8 [Source:RGD Symbol;Acc:1566394]	6.2864060005387525	Rattus norvegicus	S2	PIA vs naive
+H2afx	ENSRNOG00000010386	H2A histone family, member X [Source:RGD Symbol;Acc:1566119]	6.378469526741829	Rattus norvegicus	S2	PIA vs naive
+LOC684828	ENSRNOG00000048264	similar to Histone H1.2 (H1 VAR.1) (H1c) [Source:RGD Symbol;Acc:1585568]	6.3938976480772345	Rattus norvegicus	S2	PIA vs naive
+Slc16a3	ENSRNOG00000036677	solute carrier family 16 (monocarboxylate transporter), member 3 [Source:RGD Symbol;Acc:620603]	6.525822885920431	Rattus norvegicus	S2	PIA vs naive
+Clec4a3	ENSRNOG00000010018	C-type lectin domain family 4, member A3 [Source:RGD Symbol;Acc:1359528]	6.590514940226339	Rattus norvegicus	S2	PIA vs naive
+RT1-Bb	ENSRNOG00000032708	RT1 class II, locus Bb [Source:RGD Symbol;Acc:3469]	6.691322133024752	Rattus norvegicus	S2	PIA vs naive
+RT1-Ba	ENSRNOG00000000451	RT1 class II, locus Ba [Source:RGD Symbol;Acc:1595867]	6.703813668029401	Rattus norvegicus	S2	PIA vs naive
+Itgb7	ENSRNOG00000012208	integrin, beta 7 [Source:RGD Symbol;Acc:2929]	6.809141316007687	Rattus norvegicus	S2	PIA vs naive
+Igsf6	ENSRNOG00000017277	immunoglobulin superfamily, member 6 [Source:RGD Symbol;Acc:620663]	6.8276839344049165	Rattus norvegicus	S2	PIA vs naive
+Pstpip1	ENSRNOG00000016413	proline-serine-threonine phosphatase- interacting protein 1 [Source:RGD Symbol;Acc:1307557]	6.872183930545202	Rattus norvegicus	S2	PIA vs naive
+Pak1	ENSRNOG00000029784	p21 protein (Cdc42/Rac)-activated kinase 1 [Source:RGD Symbol;Acc:3250]	6.890856468655268	Rattus norvegicus	S2	PIA vs naive
+Ccr5	ENSRNOG00000049115	chemokine (C-C motif) receptor 5 [Source:RGD Symbol;Acc:620596]	7.008103224534234	Rattus norvegicus	S2	PIA vs naive
+Wfdc1	ENSRNOG00000015904	WAP four-disulfide core domain 1 [Source:RGD Symbol;Acc:68938]	7.0271492969328415	Rattus norvegicus	S2	PIA vs naive
+Nuak2	ENSRNOG00000000034	NUAK family, SNF1-like kinase, 2 [Source:RGD Symbol;Acc:1359167]	7.074017889606748	Rattus norvegicus	S2	PIA vs naive
+Igsf10	ENSRNOG00000013917	immunoglobulin superfamily, member 10 [Source:RGD Symbol;Acc:735030]	7.132051151027123	Rattus norvegicus	S2	PIA vs naive
+P4ha3	ENSRNOG00000017118	prolyl 4-hydroxylase, alpha polypeptide III [Source:RGD Symbol;Acc:735150]	7.185523535886168	Rattus norvegicus	S2	PIA vs naive
+Hmox1	ENSRNOG00000014117	heme oxygenase 1 [Source:RGD Symbol;Acc:2806]	7.221367179284375	Rattus norvegicus	S2	PIA vs naive
+Lcn2	ENSRNOG00000013973	lipocalin 2 [Source:RGD Symbol;Acc:69408]	7.2372562795535655	Rattus norvegicus	S2	PIA vs naive
+Tyrobp	ENSRNOG00000020845	Tyro protein tyrosine kinase binding protein [Source:RGD Symbol;Acc:1303081]	7.297045755075697	Rattus norvegicus	S2	PIA vs naive
+Tnc	ENSRNOG00000058645	tenascin C [Source:RGD Symbol;Acc:621057]	7.348726070632005	Rattus norvegicus	S2	PIA vs naive
+Trpm2	ENSRNOG00000001216	transient receptor potential cation channel, subfamily M, member 2 [Source:RGD Symbol;Acc:1311889]	7.3936583230194906	Rattus norvegicus	S2	PIA vs naive
+Arhgap25	ENSRNOG00000009347	Rho GTPase activating protein 25 [Source:RGD Symbol;Acc:1562105]	7.439659276943656	Rattus norvegicus	S2	PIA vs naive
+Cdkn1c	ENSRNOG00000059500	cyclin-dependent kinase inhibitor 1C [Source:RGD Symbol;Acc:727892]	7.451671754052092	Rattus norvegicus	S2	PIA vs naive
+Tpx2	ENSRNOG00000008165	TPX2, microtubule-associated [Source:RGD Symbol;Acc:1311894]	7.54607623398255	Rattus norvegicus	S2	PIA vs naive
+Pappa	ENSRNOG00000033527	pregnancy-associated plasma protein A [Source:RGD Symbol;Acc:1307742]	7.588597888955139	Rattus norvegicus	S2	PIA vs naive
+Timp1	ENSRNOG00000010208	TIMP metallopeptidase inhibitor 1 [Source:RGD Symbol;Acc:621675]	7.702642673101165	Rattus norvegicus	S2	PIA vs naive
+Lbp	ENSRNOG00000014532	lipopolysaccharide binding protein [Source:RGD Symbol;Acc:61865]	7.744422840590266	Rattus norvegicus	S2	PIA vs naive
+Ctsz	ENSRNOG00000050697	cathepsin Z [Source:RGD Symbol;Acc:708479]	7.753842872833421	Rattus norvegicus	S2	PIA vs naive
+Lox	ENSRNOG00000014426	lysyl oxidase [Source:RGD Symbol;Acc:3015]	7.861911370752272	Rattus norvegicus	S2	PIA vs naive
+Ckap4	ENSRNOG00000008016	cytoskeleton-associated protein 4 [Source:RGD Symbol;Acc:1311989]	8.00449826445312	Rattus norvegicus	S2	PIA vs naive
+Ripk3	ENSRNOG00000020465	receptor-interacting serine-threonine kinase 3 [Source:RGD Symbol;Acc:628899]	8.009642354264642	Rattus norvegicus	S2	PIA vs naive
+Cxcr4	ENSRNOG00000003866	chemokine (C-X-C motif) receptor 4 [Source:RGD Symbol;Acc:620465]	8.18656378816442	Rattus norvegicus	S2	PIA vs naive
+Nek6	ENSRNOG00000010897	NIMA-related kinase 6 [Source:RGD Symbol;Acc:727779]	8.187197511765193	Rattus norvegicus	S2	PIA vs naive
+Cenpf	ENSRNOG00000003388	centromere protein F [Source:RGD Symbol;Acc:628667]	8.1941377734122	Rattus norvegicus	S2	PIA vs naive
+Il18rap	ENSRNOG00000054218	interleukin 18 receptor accessory protein [Source:RGD Symbol;Acc:727867]	8.2214143037784	Rattus norvegicus	S2	PIA vs naive
+Pirb	ENSRNOG00000054954	paired Ig-like receptor B [Source:RGD Symbol;Acc:70895]	8.249630499080503	Rattus norvegicus	S2	PIA vs naive
+Cx3cr1	ENSRNOG00000018509	chemokine (C-X3-C motif) receptor 1 [Source:RGD Symbol;Acc:620137]	8.269378098006042	Rattus norvegicus	S2	PIA vs naive
+Cemip	ENSRNOG00000012442	cell migration inducing protein, hyaluronan binding [Source:RGD Symbol;Acc:1305254]	8.28629003148159	Rattus norvegicus	S2	PIA vs naive
+Clec4d	ENSRNOG00000010181	C-type lectin domain family 4, member D [Source:RGD Symbol;Acc:1303339]	8.316477243198266	Rattus norvegicus	S2	PIA vs naive
+Kif26b	ENSRNOG00000028624	kinesin family member 26B [Source:RGD Symbol;Acc:1560022]	8.353267854475991	Rattus norvegicus	S2	PIA vs naive
+Ptgs2	ENSRNOG00000002525	prostaglandin-endoperoxide synthase 2 [Source:RGD Symbol;Acc:620349]	8.384458630163024	Rattus norvegicus	S2	PIA vs naive
+Cd84	ENSRNOG00000022884	CD84 molecule [Source:RGD Symbol;Acc:1564553]	8.39521223414276	Rattus norvegicus	S2	PIA vs naive
+Ifit3	ENSRNOG00000022839	interferon-induced protein with tetratricopeptide repeats 3 [Source:RGD Symbol;Acc:1359681]	8.422546422133433	Rattus norvegicus	S2	PIA vs naive
+Mnda	ENSRNOG00000003486	myeloid cell nuclear differentiation antigen [Source:RGD Symbol;Acc:1306089]	8.68210532845416	Rattus norvegicus	S2	PIA vs naive
+Prc1	ENSRNOG00000013057	protein regulator of cytokinesis 1 [Source:RGD Symbol;Acc:1311754]	8.711163354049116	Rattus norvegicus	S2	PIA vs naive
+Aldh1l2	ENSRNOG00000008586	aldehyde dehydrogenase 1 family, member L2 [Source:RGD Symbol;Acc:1309458]	8.837615868629614	Rattus norvegicus	S2	PIA vs naive
+Sgol2	ENSRNOG00000027035	shugoshin-like 2 (S. pombe) [Source:RGD Symbol;Acc:1308450]	8.930458643184023	Rattus norvegicus	S2	PIA vs naive
+Hist1h1b	ENSRNOG00000060355	histone cluster 1, H1b [Source:RGD Symbol;Acc:1590638]	9.023276531917737	Rattus norvegicus	S2	PIA vs naive
+Arg1	ENSRNOG00000013304	arginase 1 [Source:RGD Symbol;Acc:2150]	9.034162520872487	Rattus norvegicus	S2	PIA vs naive
+Ptk7	ENSRNOG00000039976	protein tyrosine kinase 7 [Source:RGD Symbol;Acc:1310472]	9.038575227187806	Rattus norvegicus	S2	PIA vs naive
+Fmod	ENSRNOG00000003183	fibromodulin [Source:RGD Symbol;Acc:619769]	9.065194347193763	Rattus norvegicus	S2	PIA vs naive
+Gja1	ENSRNOG00000000805	gap junction protein, alpha 1 [Source:RGD Symbol;Acc:2690]	9.156212844230115	Rattus norvegicus	S2	PIA vs naive
+Lum	ENSRNOG00000004610	lumican [Source:RGD Symbol;Acc:620984]	9.223465268519803	Rattus norvegicus	S2	PIA vs naive
+Arsi	ENSRNOG00000026060	arylsulfatase family, member I [Source:RGD Symbol;Acc:1310242]	9.292528932771683	Rattus norvegicus	S2	PIA vs naive
+Hk3	ENSRNOG00000026235	hexokinase 3 (white cell) [Source:RGD Symbol;Acc:2798]	9.327937955322463	Rattus norvegicus	S2	PIA vs naive
+Runx1	ENSRNOG00000001704	runt-related transcription factor 1 [Source:RGD Symbol;Acc:2283]	9.403871823978548	Rattus norvegicus	S2	PIA vs naive
+Steap2	ENSRNOG00000006076	STEAP family member 2, metalloreductase [Source:RGD Symbol;Acc:1307050]	9.411486611924438	Rattus norvegicus	S2	PIA vs naive
+Adamtsl2	ENSRNOG00000027742	ADAMTS-like 2 [Source:RGD Symbol;Acc:1305459]	9.502362520962597	Rattus norvegicus	S2	PIA vs naive
+Olr1	ENSRNOG00000056219	oxidized low density lipoprotein (lectin- like) receptor 1 [Source:RGD Symbol;Acc:620515]	9.592529356586361	Rattus norvegicus	S2	PIA vs naive
+Nlrc4	ENSRNOG00000005810	NLR family, CARD domain containing 4 [Source:RGD Symbol;Acc:1309831]	9.713842316657999	Rattus norvegicus	S2	PIA vs naive
+Clec2d	ENSRNOG00000007866	C-type lectin domain family 2, member D [Source:RGD Symbol;Acc:620070]	9.803591699381776	Rattus norvegicus	S2	PIA vs naive
+Socs3	ENSRNOG00000002946	suppressor of cytokine signaling 3 [Source:RGD Symbol;Acc:621087]	9.953572669347801	Rattus norvegicus	S2	PIA vs naive
+Gpr171	ENSRNOG00000025297	G protein-coupled receptor 171 [Source:RGD Symbol;Acc:1585271]	9.995783931372477	Rattus norvegicus	S2	PIA vs naive
+Mki67	ENSRNOG00000028137	marker of proliferation Ki-67 [Source:RGD Symbol;Acc:1305476]	10.122783375289261	Rattus norvegicus	S2	PIA vs naive
+Spon1	ENSRNOG00000058003	spondin 1, extracellular matrix protein [Source:RGD Symbol;Acc:619918]	10.179987077912154	Rattus norvegicus	S2	PIA vs naive
+Mdk	ENSRNOG00000017560	midkine [Source:RGD Symbol;Acc:69073]	10.347790243904095	Rattus norvegicus	S2	PIA vs naive
+Cd209f	ENSRNOG00000042317	CD209f antigen [Source:RGD Symbol;Acc:1585258]	10.36136935793674	Rattus norvegicus	S2	PIA vs naive
+Gxylt2	ENSRNOG00000005621	glucoside xylosyltransferase 2 [Source:RGD Symbol;Acc:1586482]	10.826835768619736	Rattus norvegicus	S2	PIA vs naive
+Hist1h2bo	ENSRNOG00000054296	histone cluster 1, H2bo [Source:RGD Symbol;Acc:1311828]	10.95075259170396	Rattus norvegicus	S2	PIA vs naive
+LOC691141	ENSRNOG00000033256	hypothetical protein LOC691141 [Source:RGD Symbol;Acc:1587445]	11.053366557855577	Rattus norvegicus	S2	PIA vs naive
+Parvg	ENSRNOG00000052064	parvin, gamma [Source:RGD Symbol;Acc:1597417]	11.185552200500585	Rattus norvegicus	S2	PIA vs naive
+Top2a	ENSRNOG00000053047	topoisomerase (DNA) II alpha [Source:RGD Symbol;Acc:62048]	11.268793650960667	Rattus norvegicus	S2	PIA vs naive
+Lilrb4	ENSRNOG00000027811	leukocyte immunoglobulin-like receptor, subfamily B, member 4 [Source:RGD Symbol;Acc:1359090]	11.37118301912043	Rattus norvegicus	S2	PIA vs naive
+Slfn3	ENSRNOG00000057092	schlafen 3 [Source:RGD Symbol;Acc:620455]	11.37876498111369	Rattus norvegicus	S2	PIA vs naive
+Clec7a	ENSRNOG00000054251	C-type lectin domain family 7, member A [Source:RGD Symbol;Acc:1565140]	11.431715003425143	Rattus norvegicus	S2	PIA vs naive
+Cxcl1	ENSRNOG00000002802	chemokine (C-X-C motif) ligand 1 [Source:RGD Symbol;Acc:619869]	11.62249107187357	Rattus norvegicus	S2	PIA vs naive
+Snai1	ENSRNOG00000009594	snail family zinc finger 1 [Source:RGD Symbol;Acc:620758]	11.912103177695386	Rattus norvegicus	S2	PIA vs naive
+Anlnl1	ENSRNOG00000018113	anillin, actin binding protein-like 1 [Source:RGD Symbol;Acc:1566097]	12.039613092639566	Rattus norvegicus	S2	PIA vs naive
+Mefv	ENSRNOG00000008134	Mediterranean fever [Source:RGD Symbol;Acc:61889]	12.31899071997244	Rattus norvegicus	S2	PIA vs naive
+Fgr	ENSRNOG00000009912	FGR proto-oncogene, Src family tyrosine kinase [Source:RGD Symbol;Acc:621319]	12.505327041390355	Rattus norvegicus	S2	PIA vs naive
+Tmem119	ENSRNOG00000000700	transmembrane protein 119 [Source:RGD Symbol;Acc:1307573]	12.528560373663067	Rattus norvegicus	S2	PIA vs naive
+Napsa	ENSRNOG00000019854	napsin A aspartic peptidase [Source:RGD Symbol;Acc:61940]	12.542571871928882	Rattus norvegicus	S2	PIA vs naive
+Mmp3	ENSRNOG00000032626	matrix metallopeptidase 3 [Source:RGD Symbol;Acc:621317]	12.602554602974896	Rattus norvegicus	S2	PIA vs naive
+Clec4e	ENSRNOG00000061394	C-type lectin domain family 4, member E [Source:RGD Symbol;Acc:1359298]	12.890285290770096	Rattus norvegicus	S2	PIA vs naive
+Mt1	ENSRNOG00000038047	metallothionein 1 [Source:RGD Symbol;Acc:3117]	12.965357214692741	Rattus norvegicus	S2	PIA vs naive
+Pram1	ENSRNOG00000039204	PML-RARA regulated adaptor molecule 1 [Source:RGD Symbol;Acc:1564330]	13.14911520768911	Rattus norvegicus	S2	PIA vs naive
+Basp1	ENSRNOG00000046313	brain abundant, membrane attached signal protein 1 [Source:RGD Symbol;Acc:621491]	13.222652414689714	Rattus norvegicus	S2	PIA vs naive
+LOC690171	ENSRNOG00000053155	similar to H3 histone, family 3B [Source:RGD Symbol;Acc:1584001]	13.22970186190524	Rattus norvegicus	S2	PIA vs naive
+Glipr1	ENSRNOG00000026644	GLI pathogenesis-related 1 [Source:RGD Symbol;Acc:1305978]	13.230676499278788	Rattus norvegicus	S2	PIA vs naive
+Hist1h2an	ENSRNOG00000058437	histone cluster 1, H2an [Source:RGD Symbol;Acc:1309078]	13.338872251976085	Rattus norvegicus	S2	PIA vs naive
+Emilin1	ENSRNOG00000008246	elastin microfibril interfacer 1 [Source:RGD Symbol;Acc:1311209]	13.405271186557272	Rattus norvegicus	S2	PIA vs naive
+Hmmr	ENSRNOG00000059894	hyaluronan mediated motility receptor (RHAMM) [Source:RGD Symbol;Acc:2805]	13.43593128726125	Rattus norvegicus	S2	PIA vs naive
+Cthrc1	ENSRNOG00000004578	collagen triple helix repeat containing 1 [Source:RGD Symbol;Acc:628801]	13.527931926277098	Rattus norvegicus	S2	PIA vs naive
+Atp1a3	ENSRNOG00000020263	ATPase, Na+/K+ transporting, alpha 3 polypeptide [Source:RGD Symbol;Acc:2169]	13.572844621612038	Rattus norvegicus	S2	PIA vs naive
+Tk1	ENSRNOG00000047314	thymidine kinase 1, soluble [Source:RGD Symbol;Acc:621014]	13.606624375885849	Rattus norvegicus	S2	PIA vs naive
+Has2	ENSRNOG00000004854	hyaluronan synthase 2 [Source:RGD Symbol;Acc:2781]	13.747834649825053	Rattus norvegicus	S2	PIA vs naive
+Grem1	ENSRNOG00000026053	gremlin 1 [Source:RGD Symbol;Acc:2359]	13.780117409048596	Rattus norvegicus	S2	PIA vs naive
+Adam12	ENSRNOG00000018384	ADAM metallopeptidase domain 12 [Source:RGD Symbol;Acc:1583652]	13.89349105850639	Rattus norvegicus	S2	PIA vs naive
+Rspo2	ENSRNOG00000037687	R-spondin 2 [Source:RGD Symbol;Acc:1562331]	13.92744293760218	Rattus norvegicus	S2	PIA vs naive
+Wisp1	ENSRNOG00000007078	WNT1 inducible signaling pathway protein 1 [Source:RGD Symbol;Acc:69431]	13.996339407770119	Rattus norvegicus	S2	PIA vs naive
+Ptprv	ENSRNOG00000005277	protein tyrosine phosphatase, receptor type, V [Source:RGD Symbol;Acc:621123]	14.2720757007415	Rattus norvegicus	S2	PIA vs naive
+Sfrp1	ENSRNOG00000017783	secreted frizzled-related protein 1 [Source:RGD Symbol;Acc:621074]	14.278167236606771	Rattus norvegicus	S2	PIA vs naive
+Fcar	ENSRNOG00000027855	Fc fragment of IgA receptor [Source:RGD Symbol;Acc:1303082]	14.42039489540995	Rattus norvegicus	S2	PIA vs naive
+Kif11	ENSRNOG00000056069	kinesin family member 11 [Source:RGD Symbol;Acc:621258]	14.497052472481556	Rattus norvegicus	S2	PIA vs naive
+Cenpa	ENSRNOG00000032178	centromere protein A [Source:RGD Symbol;Acc:1563607]	14.577831601877127	Rattus norvegicus	S2	PIA vs naive
+Mt1m	ENSRNOG00000028841	metallothionein 1M [Source:RGD Symbol;Acc:2324335]	14.839938160451526	Rattus norvegicus	S2	PIA vs naive
+Slc39a14	ENSRNOG00000009832	solute carrier family 39 (zinc transporter), member 14 [Source:RGD Symbol;Acc:1307026]	15.18314865227195	Rattus norvegicus	S2	PIA vs naive
+Ccl2	ENSRNOG00000007159	chemokine (C-C motif) ligand 2 [Source:RGD Symbol;Acc:3645]	15.231803583641295	Rattus norvegicus	S2	PIA vs naive
+Scimp	ENSRNOG00000037409	SLP adaptor and CSK interacting membrane protein [Source:RGD Symbol;Acc:1593299]	15.872481892828464	Rattus norvegicus	S2	PIA vs naive
+Slamf9	ENSRNOG00000008045	SLAM family member 9 [Source:RGD Symbol;Acc:1305945]	15.883074080713861	Rattus norvegicus	S2	PIA vs naive
+Chi3l1	ENSRNOG00000053272	chitinase 3-like 1 (cartilage glycoprotein- 39) [Source:RGD Symbol;Acc:620874]	16.53040644459953	Rattus norvegicus	S2	PIA vs naive
+Siglec8	ENSRNOG00000022640	sialic acid binding Ig-like lectin 8 [Source:RGD Symbol;Acc:1563073]	17.576474497158568	Rattus norvegicus	S2	PIA vs naive
+Masp1	ENSRNOG00000001827	mannan-binding lectin serine peptidase 1 [Source:RGD Symbol;Acc:620213]	17.82476683686749	Rattus norvegicus	S2	PIA vs naive
+Uhrf1	ENSRNOG00000048411	ubiquitin-like with PHD and ring finger domains 1 [Source:RGD Symbol;Acc:1595855]	17.954231031678223	Rattus norvegicus	S2	PIA vs naive
+Mt2A	ENSRNOG00000043098	metallothionein 2A [Source:RGD Symbol;Acc:1592345]	18.168948951929636	Rattus norvegicus	S2	PIA vs naive
+Tlr10	ENSRNOG00000038722	toll-like receptor 10 [Source:RGD Symbol;Acc:1311569]	18.21855460121382	Rattus norvegicus	S2	PIA vs naive
+Mmp8	ENSRNOG00000009907	matrix metallopeptidase 8 [Source:RGD Symbol;Acc:631408]	18.47496059939461	Rattus norvegicus	S2	PIA vs naive
+Tnfaip6	ENSRNOG00000050792	tumor necrosis factor alpha induced protein 6 [Source:RGD Symbol;Acc:621359]	18.59954475433258	Rattus norvegicus	S2	PIA vs naive
+Plk1	ENSRNOG00000018815	polo-like kinase 1 [Source:RGD Symbol;Acc:3352]	18.721780290380448	Rattus norvegicus	S2	PIA vs naive
+Hhipl1	ENSRNOG00000028390	HHIP-like 1 [Source:RGD Symbol;Acc:1311698]	18.768839692045585	Rattus norvegicus	S2	PIA vs naive
+Ltbp2	ENSRNOG00000012094	latent transforming growth factor beta binding protein 2 [Source:RGD Symbol;Acc:68380]	19.043997572541816	Rattus norvegicus	S2	PIA vs naive
+Oasl	ENSRNOG00000001187	2'-5'-oligoadenylate synthetase-like [Source:RGD Symbol;Acc:1308586]	19.44231087594224	Rattus norvegicus	S2	PIA vs naive
+Hist1h1a	ENSRNOG00000017175	histone cluster 1, H1a [Source:RGD Symbol;Acc:1305706]	19.566455057638283	Rattus norvegicus	S2	PIA vs naive
+Ccnb1	ENSRNOG00000058539	cyclin B1 [Source:RGD Symbol;Acc:2291]	19.668369041704526	Rattus norvegicus	S2	PIA vs naive
+Rasl11b	ENSRNOG00000002097	RAS-like family 11 member B [Source:RGD Symbol;Acc:1303099]	19.97378528442483	Rattus norvegicus	S2	PIA vs naive
+Clec4a2	ENSRNOG00000030012	C-type lectin domain family 4, member A2 [Source:RGD Symbol;Acc:1359163]	20.142425529523948	Rattus norvegicus	S2	PIA vs naive
+Bcl2a1	ENSRNOG00000047606	BCL2-related protein A1 [Source:RGD Symbol;Acc:620621]	20.581579162418414	Rattus norvegicus	S2	PIA vs naive
+Il21r	ENSRNOG00000015773	interleukin 21 receptor [Source:RGD Symbol;Acc:1304950]	21.069533657399813	Rattus norvegicus	S2	PIA vs naive
+Lrrc15	ENSRNOG00000038539	leucine rich repeat containing 15 [Source:RGD Symbol;Acc:70551]	21.10323547812543	Rattus norvegicus	S2	PIA vs naive
+LOC24906	ENSRNOG00000002820	RoBo-1 [Source:RGD Symbol;Acc:3683]	21.480773327685828	Rattus norvegicus	S2	PIA vs naive
+Ttk	ENSRNOG00000029055	Ttk protein kinase [Source:RGD Symbol;Acc:1305558]	21.501326680553262	Rattus norvegicus	S2	PIA vs naive
+LOC684773	ENSRNOG00000059748	similar to histone 2a [Source:RGD Symbol;Acc:1586722]	21.702590580425035	Rattus norvegicus	S2	PIA vs naive
+Il1rn	ENSRNOG00000005871	interleukin 1 receptor antagonist [Source:RGD Symbol;Acc:621159]	22.507882703135795	Rattus norvegicus	S2	PIA vs naive
+Spc24	ENSRNOG00000029862	SPC24, NDC80 kinetochore complex component [Source:RGD Symbol;Acc:1307631]	22.580997852717612	Rattus norvegicus	S2	PIA vs naive
+Steap1	ENSRNOG00000000017	six transmembrane epithelial antigen of the prostate 1 [Source:RGD Symbol;Acc:1311543]	22.806897378887143	Rattus norvegicus	S2	PIA vs naive
+Cxcl13	ENSRNOG00000024899	chemokine (C-X-C motif) ligand 13 [Source:RGD Symbol;Acc:1564256]	22.920203131513414	Rattus norvegicus	S2	PIA vs naive
+Mybl2	ENSRNOG00000007805	myeloblastosis oncogene-like 2 [Source:RGD Symbol;Acc:1308474]	23.369775298606672	Rattus norvegicus	S2	PIA vs naive
+C3	ENSRNOG00000046834	complement component 3 [Source:RGD Symbol;Acc:2232]	23.561717888346923	Rattus norvegicus	S2	PIA vs naive
+Fam83d	ENSRNOG00000015794	family with sequence similarity 83, member D [Source:RGD Symbol;Acc:1565583]	23.733680275098962	Rattus norvegicus	S2	PIA vs naive
+Vcan	ENSRNOG00000029212	versican [Source:RGD Symbol;Acc:619940]	24.07314203407165	Rattus norvegicus	S2	PIA vs naive
+Mmp10	ENSRNOG00000032832	matrix metallopeptidase 10 [Source:RGD Symbol;Acc:620192]	24.945337051697802	Rattus norvegicus	S2	PIA vs naive
+Oscar	ENSRNOG00000055716	osteoclast associated, immunoglobulin-like receptor [Source:RGD Symbol;Acc:1559897]	26.03549985225007	Rattus norvegicus	S2	PIA vs naive
+Mmp9	ENSRNOG00000017539	matrix metallopeptidase 9 [Source:RGD Symbol;Acc:621320]	26.582689567055837	Rattus norvegicus	S2	PIA vs naive
+Cdca3	ENSRNOG00000015529	cell division cycle associated 3 [Source:RGD Symbol;Acc:1359093]	27.283442813989346	Rattus norvegicus	S2	PIA vs naive
+Ccl7	ENSRNOG00000000239	chemokine (C-C motif) ligand 7 [Source:RGD Symbol;Acc:1359152]	29.35706122543686	Rattus norvegicus	S2	PIA vs naive
+Hist1h2ail1	ENSRNOG00000046144	histone cluster 1, H2ai-like1 [Source:RGD Symbol;Acc:1311554]	29.77060788286228	Rattus norvegicus	S2	PIA vs naive
+Ccl9	ENSRNOG00000028548	chemokine (C-C motif) ligand 9 [Source:RGD Symbol;Acc:1310563]	30.24456755125788	Rattus norvegicus	S2	PIA vs naive
+Pla2g7	ENSRNOG00000025691	phospholipase A2, group VII (platelet- activating factor acetylhydrolase, plasma) [Source:RGD Symbol;Acc:1310734]	30.705824560960416	Rattus norvegicus	S2	PIA vs naive
+Cfi	ENSRNOG00000053400	complement factor I [Source:RGD Symbol;Acc:620429]	32.052309887569244	Rattus norvegicus	S2	PIA vs naive
+Mcemp1	ENSRNOG00000028259	mast cell-expressed membrane protein 1 [Source:RGD Symbol;Acc:1565374]	33.2417954110491	Rattus norvegicus	S2	PIA vs naive
+Sell	ENSRNOG00000002776	selectin L [Source:RGD Symbol;Acc:3655]	35.35134479982174	Rattus norvegicus	S2	PIA vs naive
+C1qtnf3	ENSRNOG00000018570	C1q and tumor necrosis factor related protein 3 [Source:RGD Symbol;Acc:1305010]	35.63616447132753	Rattus norvegicus	S2	PIA vs naive
+Il6	ENSRNOG00000010278	interleukin 6 [Source:RGD Symbol;Acc:2901]	36.93016	Rattus norvegicus	S2	PIA vs naive
+S100a8	ENSRNOG00000011557	S100 calcium binding protein A8 [Source:RGD Symbol;Acc:620265]	37.235785194392264	Rattus norvegicus	S2	PIA vs naive
+Col12a1	ENSRNOG00000058470	collagen, type XII, alpha 1 [Source:RGD Symbol;Acc:2374]	40.16378141142572	Rattus norvegicus	S2	PIA vs naive
+Emb	ENSRNOG00000060329	embigin [Source:RGD Symbol;Acc:621067]	41.82658437726808	Rattus norvegicus	S2	PIA vs naive
+Lilrc2	ENSRNOG00000058087	leukocyte immunoglobulin-like receptor, subfamily C, member 2 [Source:RGD Symbol;Acc:1589872]	42.01027544698575	Rattus norvegicus	S2	PIA vs naive
+Ifit1bl	ENSRNOG00000036603	interferon-induced protein with tetratricopeptide repeats 1B-like [Source:RGD Symbol;Acc:1304872]	50.527675730500405	Rattus norvegicus	S2	PIA vs naive
+Cxcl6	ENSRNOG00000002843	chemokine (C-X-C motif) ligand 6 [Source:RGD Symbol;Acc:708540]	51.58771774287821	Rattus norvegicus	S2	PIA vs naive
+Il1b	ENSRNOG00000004649	interleukin 1 beta [Source:RGD Symbol;Acc:2891]	57.01476146663975	Rattus norvegicus	S2	PIA vs naive
+Csf3r	ENSRNOG00000008759	colony stimulating factor 3 receptor (granulocyte) [Source:RGD Symbol;Acc:1309114]	58.107498155411335	Rattus norvegicus	S2	PIA vs naive
+Ccl20	ENSRNOG00000015992	chemokine (C-C motif) ligand 20 [Source:RGD Symbol;Acc:3646]	73.64614434153037	Rattus norvegicus	S2	PIA vs naive
+Fcnb	ENSRNOG00000009342	ficolin B [Source:RGD Symbol;Acc:621222]	79.94877786279726	Rattus norvegicus	S2	PIA vs naive
+Slpi	ENSRNOG00000046699	secretory leukocyte peptidase inhibitor [Source:RGD Symbol;Acc:621768]	85.38412012775359	Rattus norvegicus	S2	PIA vs naive
+S100a9	ENSRNOG00000011483	S100 calcium binding protein A9 [Source:RGD Symbol;Acc:620267]	89.77874922402737	Rattus norvegicus	S2	PIA vs naive
+Mmp13	ENSRNOG00000008478	matrix metallopeptidase 13 [Source:RGD Symbol;Acc:620196]	94.32242206319866	Rattus norvegicus	S2	PIA vs naive
+Gbx2	ENSRNOG00000019495	gastrulation brain homeobox 2 [Source:RGD Symbol;Acc:621866]	97.42435871949992	Rattus norvegicus	S2	PIA vs naive
+Ptx3	ENSRNOG00000012280	pentraxin 3, long [Source:RGD Symbol;Acc:1593476]	98.86353446491306	Rattus norvegicus	S2	PIA vs naive
