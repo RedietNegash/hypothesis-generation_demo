@@ -1,6 +1,6 @@
 # RTD-1 / MTD transcriptomics
 
-Branch: `rtd1_mtd_transcriptomics`. Scope: **Specific Objectives 1 and 2 only**—collect/prepare biological datasets, analyse expression, identify cell populations provisionally, and examine pathway associations.
+Branch: `rtd1_mtd_transcriptomics`. Scope: **Specific Objectives 1 and 2 only** collect/prepare biological datasets, analyse expression, identify cell populations provisionally, and examine pathway associations.
 
 Open [the Jupyter notebook](RTD1_MTD_objectives_1_2.ipynb) for a guided walkthrough with saved results, plots, source checks, and optional full rerun cells. Its default mode reviews existing DESeq2/Scanpy fits and recomputes summary displays and validation.
 
